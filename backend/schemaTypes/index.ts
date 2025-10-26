@@ -14,9 +14,11 @@ import navigation from './navigation';
 import project from './project';
 import newsArticle from './newsArticle';
 import footerSettings from './footerSettings';
+import navbarSettings from './navbarSettings';
 
 export const schemaTypes = [
   // Singleton documents
+  navbarSettings,
   footerSettings,
   
   // Regular documents

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { NavBar } from './NavBar';
+import { NavBarCms } from './NavBarCms';
 import { FooterCms } from './FooterCms';
 
 function ScrollToTop() {
@@ -14,7 +14,7 @@ function ScrollToTop() {
 export function Layout() {
   return <div className="w-full min-h-screen bg-white">
     <ScrollToTop />
-    <NavBar />
+    <NavBarCms />
     <main>
       <Outlet />
     </main>
