@@ -50,6 +50,12 @@ export function CmsPage() {
               image{asset->{url}},
               excerpt
             },
+            primaryButton,
+            secondaryButton,
+            audiences[]{
+              title,
+              description
+            },
             asset->{url}
           }
         }`,

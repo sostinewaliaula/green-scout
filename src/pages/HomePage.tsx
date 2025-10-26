@@ -6,7 +6,7 @@ import { ImpactStatsSection } from '../components/ImpactStatsSection';
 import { FeaturedProjectsSectionCms } from '../components/FeaturedProjectsSectionCms';
 import { TestimonialsSectionCms } from '../components/TestimonialsSectionCms';
 import { NewsPreviewSectionCms } from '../components/NewsPreviewSectionCms';
-import { CallToActionSection } from '../components/CallToActionSection';
+import { CallToActionSectionCms } from '../components/CallToActionSectionCms';
 
 export function HomePage() {
   return (
@@ -18,7 +18,7 @@ export function HomePage() {
       <FeaturedProjectsSectionCms />
       <TestimonialsSectionCms />
       <NewsPreviewSectionCms />
-      <CallToActionSection />
+      <CallToActionSectionCms />
     </>
   );
 }

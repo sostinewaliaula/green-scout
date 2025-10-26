@@ -8,6 +8,7 @@ import blockAbout from './blockAbout';
 import blockMission from './blockMission';
 import blockProjects from './blockProjects';
 import blockNews from './blockNews';
+import blockCta from './blockCta';
 import galleryImage from './galleryImage';
 import navigation from './navigation';
 import project from './project';
@@ -26,6 +27,7 @@ export const schemaTypes = [
   blockMission,
   blockProjects,
   blockNews,
+  blockCta,
   galleryImage,
   navigation
 ];

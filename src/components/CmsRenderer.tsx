@@ -93,7 +93,26 @@ type BlockNews = {
   articles?: NewsArticle[];
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews;
+type Button = {
+  text?: string;
+  link?: string;
+};
+
+type Audience = {
+  title: string;
+  description: string;
+};
+
+type BlockCta = {
+  _type: 'blockCta';
+  title?: string;
+  subtitle?: string;
+  primaryButton?: Button;
+  secondaryButton?: Button;
+  audiences?: Audience[];
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -579,6 +598,53 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </a>
+                    </div>
+                  )}
+                </div>
+              </section>
+            );
+          }
+          case 'blockCta': {
+            const b = block as BlockCta;
+            return (
+              <section key={idx} className="py-20 px-4 md:px-8 bg-gradient-to-r from-green-600 to-purple-600 text-white">
+                <div className="max-w-6xl mx-auto text-center">
+                  {b.title && (
+                    <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                      {b.title}
+                    </h2>
+                  )}
+                  {b.subtitle && (
+                    <p className="text-xl md:text-2xl max-w-3xl mx-auto mb-8 text-green-50">
+                      {b.subtitle}
+                    </p>
+                  )}
+                  <div className="flex flex-col md:flex-row gap-4 justify-center">
+                    {b.primaryButton?.text && (
+                      <a
+                        href={b.primaryButton.link || '/get-involved'}
+                        className="px-8 py-3 bg-white text-purple-700 rounded-full font-medium hover:bg-green-50 transition-all transform hover:scale-105 shadow-lg"
+                      >
+                        {b.primaryButton.text}
+                      </a>
+                    )}
+                    {b.secondaryButton?.text && (
+                      <a
+                        href={b.secondaryButton.link || '/get-involved'}
+                        className="px-8 py-3 bg-transparent border-2 border-white text-white rounded-full font-medium hover:bg-white/10 transition-all transform hover:scale-105"
+                      >
+                        {b.secondaryButton.text}
+                      </a>
+                    )}
+                  </div>
+                  {b.audiences && b.audiences.length > 0 && (
+                    <div className="mt-12 pt-12 border-t border-white/20 grid grid-cols-1 md:grid-cols-3 gap-8">
+                      {b.audiences.map((audience, i) => (
+                        <div key={i} className="flex flex-col items-center">
+                          <h3 className="text-xl font-bold mb-3">{audience.title}</h3>
+                          <p className="text-green-50">{audience.description}</p>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>
