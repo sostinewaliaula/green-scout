@@ -13,11 +13,18 @@ import galleryImage from './galleryImage';
 import navigation from './navigation';
 import project from './project';
 import newsArticle from './newsArticle';
+import footerSettings from './footerSettings';
 
 export const schemaTypes = [
+  // Singleton documents
+  footerSettings,
+  
+  // Regular documents
   page,
   project,
   newsArticle,
+  
+  // Block types
   blockText,
   blockImage,
   blockGallery,
@@ -28,6 +35,8 @@ export const schemaTypes = [
   blockProjects,
   blockNews,
   blockCta,
+  
+  // Other types
   galleryImage,
   navigation
 ];

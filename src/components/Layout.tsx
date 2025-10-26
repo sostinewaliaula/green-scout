@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { NavBar } from './NavBar';
-import { Footer } from './Footer';
+import { FooterCms } from './FooterCms';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -18,6 +18,6 @@ export function Layout() {
     <main>
       <Outlet />
     </main>
-    <Footer />
+    <FooterCms />
   </div>;
 }
