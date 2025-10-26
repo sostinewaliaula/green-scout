@@ -5,7 +5,7 @@ import { MissionSection } from '../components/MissionSection';
 import { ImpactStatsSection } from '../components/ImpactStatsSection';
 import { FeaturedProjectsSectionCms } from '../components/FeaturedProjectsSectionCms';
 import { TestimonialsSectionCms } from '../components/TestimonialsSectionCms';
-import { NewsPreviewSection } from '../components/NewsPreviewSection';
+import { NewsPreviewSectionCms } from '../components/NewsPreviewSectionCms';
 import { CallToActionSection } from '../components/CallToActionSection';
 
 export function HomePage() {
@@ -17,7 +17,7 @@ export function HomePage() {
       <ImpactStatsSection />
       <FeaturedProjectsSectionCms />
       <TestimonialsSectionCms />
-      <NewsPreviewSection />
+      <NewsPreviewSectionCms />
       <CallToActionSection />
     </>
   );

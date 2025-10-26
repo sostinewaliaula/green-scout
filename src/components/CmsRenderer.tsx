@@ -76,7 +76,24 @@ type BlockTestimonials = {
   testimonials?: TestimonialItem[];
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials;
+type NewsArticle = {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  publishedAt: string;
+  image?: ImageAsset;
+  excerpt: string;
+};
+
+type BlockNews = {
+  _type: 'blockNews';
+  title?: string;
+  subtitle?: string;
+  showViewAllLink?: boolean;
+  articles?: NewsArticle[];
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -457,6 +474,107 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                         className="inline-flex items-center text-purple-700 font-medium hover:text-purple-900 transition-colors"
                       >
                         View all projects
+                        <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </section>
+            );
+          }
+          case 'blockNews': {
+            const b = block as BlockNews;
+            const formatDate = (dateString: string) => {
+              const date = new Date(dateString);
+              return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              });
+            };
+            
+            return (
+              <section key={idx} className="py-20 px-4 md:px-8 bg-white">
+                <div className="max-w-6xl mx-auto">
+                  <div className="flex justify-between items-end mb-12">
+                    <div>
+                      {b.title && (
+                        <h2 className="text-3xl md:text-4xl font-bold text-purple-700 mb-4">
+                          {b.title}
+                        </h2>
+                      )}
+                      {b.subtitle && (
+                        <p className="text-lg text-gray-700 max-w-2xl">
+                          {b.subtitle}
+                        </p>
+                      )}
+                    </div>
+                    {b.showViewAllLink && (
+                      <a
+                        href="/news"
+                        className="hidden md:flex items-center text-green-700 font-medium hover:text-green-900 transition-colors"
+                      >
+                        View all news
+                        <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+                  {b.articles && b.articles.length > 0 && (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                      {b.articles.map((article) => (
+                        <article
+                          key={article._id}
+                          className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                        >
+                          <div className="h-48 overflow-hidden">
+                            {article.image?.asset?.url ? (
+                              <img
+                                src={article.image.asset.url}
+                                alt={article.title}
+                                className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center">
+                                <span className="text-purple-600 text-4xl">📰</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="p-6">
+                            <div className="flex items-center text-gray-500 mb-3">
+                              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                              </svg>
+                              <span className="text-sm">{formatDate(article.publishedAt)}</span>
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">
+                              {article.title}
+                            </h3>
+                            <p className="text-gray-700 mb-4">{article.excerpt}</p>
+                            <a
+                              href={`/news/${article.slug.current}`}
+                              className="inline-flex items-center text-purple-700 font-medium hover:text-purple-900 transition-colors"
+                            >
+                              Read more
+                              <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                              </svg>
+                            </a>
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+                  )}
+                  {b.showViewAllLink && (
+                    <div className="mt-8 text-center md:hidden">
+                      <a
+                        href="/news"
+                        className="inline-flex items-center text-green-700 font-medium hover:text-green-900 transition-colors"
+                      >
+                        View all news
                         <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>

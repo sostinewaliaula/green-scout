@@ -42,6 +42,14 @@ export function CmsPage() {
               title,
               image{asset->{url}}
             },
+            articles[]->{
+              _id,
+              title,
+              slug,
+              publishedAt,
+              image{asset->{url}},
+              excerpt
+            },
             asset->{url}
           }
         }`,

@@ -7,13 +7,16 @@ import blockTestimonials from './blockTestimonials';
 import blockAbout from './blockAbout';
 import blockMission from './blockMission';
 import blockProjects from './blockProjects';
+import blockNews from './blockNews';
 import galleryImage from './galleryImage';
 import navigation from './navigation';
 import project from './project';
+import newsArticle from './newsArticle';
 
 export const schemaTypes = [
   page,
   project,
+  newsArticle,
   blockText,
   blockImage,
   blockGallery,
@@ -22,6 +25,7 @@ export const schemaTypes = [
   blockAbout,
   blockMission,
   blockProjects,
+  blockNews,
   galleryImage,
   navigation
 ];

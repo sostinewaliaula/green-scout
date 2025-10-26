@@ -15,6 +15,7 @@ const page = {
         { type: 'blockStats' },
         { type: 'blockProjects' },
         { type: 'blockTestimonials' },
+        { type: 'blockNews' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }
