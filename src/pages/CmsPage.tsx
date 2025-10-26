@@ -36,6 +36,12 @@ export function CmsPage() {
               treesPlanted,
               schoolsInvolved
             },
+            testimonials[]{
+              quote,
+              name,
+              title,
+              image{asset->{url}}
+            },
             asset->{url}
           }
         }`,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 type ImageAsset = { asset?: { url?: string } };
 
@@ -20,14 +20,6 @@ type BlockStats = {
   _type: 'blockStats';
   title?: string;
   stats?: Array<{ label?: string; value?: string; icon?: string }>;
-};
-
-type BlockTestimonial = {
-  _type: 'blockTestimonial';
-  name?: string;
-  role?: string;
-  quote?: string;
-  image?: ImageAsset;
 };
 
 type BlockAbout = {
@@ -71,7 +63,20 @@ type BlockProjects = {
   projects?: Project[];
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockTestimonial | BlockAbout | BlockMission | BlockProjects;
+type TestimonialItem = {
+  quote: string;
+  name: string;
+  title: string;
+  image?: ImageAsset;
+};
+
+type BlockTestimonials = {
+  _type: 'blockTestimonials';
+  title?: string;
+  testimonials?: TestimonialItem[];
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -146,21 +151,6 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                   </div>
                 </div>
               </section>
-            );
-          }
-          case 'blockTestimonial': {
-            const b = block as BlockTestimonial;
-            return (
-              <blockquote key={idx} className="max-w-4xl mx-auto px-4 bg-white rounded-xl shadow p-6">
-                <p className="italic text-gray-700">"{b.quote}"</p>
-                <div className="mt-4 flex items-center gap-3">
-                  {b.image?.asset?.url && <img src={b.image.asset.url} alt="" className="w-10 h-10 rounded-full object-cover" />}
-                  <div>
-                    <div className="font-semibold text-green-700">{b.name}</div>
-                    <div className="text-sm text-gray-500">{b.role}</div>
-                  </div>
-                </div>
-              </blockquote>
             );
           }
           case 'blockAbout': {
@@ -279,6 +269,104 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                       ))}
                     </div>
                   )}
+                </div>
+              </section>
+            );
+          }
+          case 'blockTestimonials': {
+            const b = block as BlockTestimonials;
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            const [currentIndex, setCurrentIndex] = useState(0);
+            
+            if (!b.testimonials || b.testimonials.length === 0) return null;
+            
+            const currentTestimonial = b.testimonials[currentIndex];
+            
+            const nextTestimonial = () => {
+              setCurrentIndex((prev) => (prev === b.testimonials!.length - 1 ? 0 : prev + 1));
+            };
+            
+            const prevTestimonial = () => {
+              setCurrentIndex((prev) => (prev === 0 ? b.testimonials!.length - 1 : prev - 1));
+            };
+            
+            return (
+              <section key={idx} className="py-20 px-4 md:px-8 bg-green-50">
+                <div className="max-w-6xl mx-auto">
+                  {b.title && (
+                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-green-700">
+                      {b.title}
+                    </h2>
+                  )}
+                  <div className="relative bg-white rounded-2xl shadow-lg p-6 md:p-10 overflow-hidden">
+                    <div className="absolute top-6 left-6 text-green-200">
+                      <svg className="w-16 h-16 md:w-24 md:h-24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                      </svg>
+                    </div>
+                    <div className="relative z-10">
+                      <div className="flex flex-col md:flex-row gap-8 items-center">
+                        <div className="md:w-1/4 flex flex-col items-center">
+                          <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-green-100">
+                            {currentTestimonial.image?.asset?.url ? (
+                              <img
+                                src={currentTestimonial.image.asset.url}
+                                alt={currentTestimonial.name}
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
+                                <span className="text-green-600 text-4xl">👤</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex mt-6 gap-2">
+                            <button
+                              onClick={prevTestimonial}
+                              className="p-2 rounded-full bg-green-100 hover:bg-green-200 transition-colors"
+                              aria-label="Previous testimonial"
+                            >
+                              <svg className="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                              </svg>
+                            </button>
+                            <button
+                              onClick={nextTestimonial}
+                              className="p-2 rounded-full bg-green-100 hover:bg-green-200 transition-colors"
+                              aria-label="Next testimonial"
+                            >
+                              <svg className="w-5 h-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                        <div className="md:w-3/4 text-center md:text-left">
+                          <p className="text-xl md:text-2xl text-gray-700 italic mb-6">
+                            "{currentTestimonial.quote}"
+                          </p>
+                          <div>
+                            <h3 className="text-lg font-bold text-gray-900">
+                              {currentTestimonial.name}
+                            </h3>
+                            <p className="text-purple-700">{currentTestimonial.title}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-8 flex justify-center gap-2">
+                      {b.testimonials.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentIndex(index)}
+                          className={`w-3 h-3 rounded-full transition-all ${
+                            index === currentIndex ? 'bg-green-700 w-6' : 'bg-green-200'
+                          }`}
+                          aria-label={`Go to testimonial ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </section>
             );

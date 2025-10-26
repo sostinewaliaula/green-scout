@@ -3,7 +3,7 @@ import blockText from './blockText';
 import blockImage from './blockImage';
 import blockGallery from './blockGallery';
 import blockStats from './blockStats';
-import blockTestimonial from './blockTestimonial';
+import blockTestimonials from './blockTestimonials';
 import blockAbout from './blockAbout';
 import blockMission from './blockMission';
 import blockProjects from './blockProjects';
@@ -18,7 +18,7 @@ export const schemaTypes = [
   blockImage,
   blockGallery,
   blockStats,
-  blockTestimonial,
+  blockTestimonials,
   blockAbout,
   blockMission,
   blockProjects,

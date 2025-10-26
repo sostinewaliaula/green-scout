@@ -14,10 +14,10 @@ const page = {
         { type: 'blockMission' },
         { type: 'blockStats' },
         { type: 'blockProjects' },
+        { type: 'blockTestimonials' },
         { type: 'blockText' },
         { type: 'blockImage' },
-        { type: 'blockGallery' },
-        { type: 'blockTestimonial' }
+        { type: 'blockGallery' }
       ]
     }
   ]
