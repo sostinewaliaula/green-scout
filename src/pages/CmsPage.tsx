@@ -27,6 +27,15 @@ export function CmsPage() {
             image{asset->{url}},
             stats[]{label, value, sublabel, theme, icon},
             intro,
+            projects[]->{
+              _id,
+              title,
+              location,
+              image{asset->{url}},
+              description,
+              treesPlanted,
+              schoolsInvolved
+            },
             asset->{url}
           }
         }`,

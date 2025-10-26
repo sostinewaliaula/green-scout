@@ -53,7 +53,25 @@ type BlockMission = {
   images?: Array<ImageAsset>;
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockTestimonial | BlockAbout | BlockMission;
+type Project = {
+  _id: string;
+  title: string;
+  location: string;
+  image?: ImageAsset;
+  description: string;
+  treesPlanted: number;
+  schoolsInvolved: number;
+};
+
+type BlockProjects = {
+  _type: 'blockProjects';
+  title?: string;
+  subtitle?: string;
+  showViewAllLink?: boolean;
+  projects?: Project[];
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockTestimonial | BlockAbout | BlockMission | BlockProjects;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -259,6 +277,102 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                           )}
                         </div>
                       ))}
+                    </div>
+                  )}
+                </div>
+              </section>
+            );
+          }
+          case 'blockProjects': {
+            const b = block as BlockProjects;
+            return (
+              <section key={idx} className="py-20 px-4 md:px-8 bg-white">
+                <div className="max-w-6xl mx-auto">
+                  <div className="flex justify-between items-end mb-12">
+                    <div>
+                      {b.title && (
+                        <h2 className="text-3xl md:text-4xl font-bold text-green-700 mb-4">
+                          {b.title}
+                        </h2>
+                      )}
+                      {b.subtitle && (
+                        <p className="text-lg text-gray-700 max-w-2xl">
+                          {b.subtitle}
+                        </p>
+                      )}
+                    </div>
+                    {b.showViewAllLink && (
+                      <a
+                        href="/impact"
+                        className="hidden md:flex items-center text-purple-700 font-medium hover:text-purple-900 transition-colors"
+                      >
+                        View all projects
+                        <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+                  {b.projects && b.projects.length > 0 && (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                      {b.projects.map((project) => (
+                        <div
+                          key={project._id}
+                          className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                        >
+                          <div className="h-48 overflow-hidden">
+                            {project.image?.asset?.url ? (
+                              <img
+                                src={project.image.asset.url}
+                                alt={project.title}
+                                className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
+                                <span className="text-green-600 text-4xl">🌳</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="p-6">
+                            <div className="flex justify-between items-start mb-3">
+                              <h3 className="text-xl font-bold text-gray-900">
+                                {project.title}
+                              </h3>
+                              <span className="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full whitespace-nowrap ml-2">
+                                {project.location}
+                              </span>
+                            </div>
+                            <p className="text-gray-700 mb-4">{project.description}</p>
+                            <div className="flex justify-between pt-4 border-t border-gray-100">
+                              <div className="text-center">
+                                <p className="text-2xl font-bold text-green-700">
+                                  {project.treesPlanted.toLocaleString()}
+                                </p>
+                                <p className="text-sm text-gray-600">Trees Planted</p>
+                              </div>
+                              <div className="text-center">
+                                <p className="text-2xl font-bold text-purple-700">
+                                  {project.schoolsInvolved}
+                                </p>
+                                <p className="text-sm text-gray-600">Schools</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {b.showViewAllLink && (
+                    <div className="mt-8 text-center md:hidden">
+                      <a
+                        href="/impact"
+                        className="inline-flex items-center text-purple-700 font-medium hover:text-purple-900 transition-colors"
+                      >
+                        View all projects
+                        <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </a>
                     </div>
                   )}
                 </div>

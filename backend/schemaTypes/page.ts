@@ -12,10 +12,11 @@ const page = {
       of: [
         { type: 'blockAbout' },
         { type: 'blockMission' },
+        { type: 'blockStats' },
+        { type: 'blockProjects' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' },
-        { type: 'blockStats' },
         { type: 'blockTestimonial' }
       ]
     }
