@@ -20,10 +20,13 @@ export function CmsPage() {
       .fetch(
         `*[_type == "page" && slug.current == $slug][0]{
           _id, title, slug, content[]{
+            _type,
+            _key,
             ...,
             images[]{asset->{url}},
             image{asset->{url}},
-            stats[]{label, value, icon},
+            stats[]{label, value, sublabel, theme, icon},
+            intro,
             asset->{url}
           }
         }`,
