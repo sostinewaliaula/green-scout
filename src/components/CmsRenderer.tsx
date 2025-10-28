@@ -112,7 +112,20 @@ type BlockCta = {
   audiences?: Audience[];
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta;
+type Stat = {
+  value: string;
+  label: string;
+};
+
+type BlockScoutHero = {
+  _type: 'blockScoutHero';
+  heading?: string;
+  subtitle?: string;
+  backgroundImage?: ImageAsset;
+  stats?: Stat[];
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -598,6 +611,52 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </a>
+                    </div>
+                  )}
+                </div>
+              </section>
+            );
+          }
+          case 'blockScoutHero': {
+            const b = block as BlockScoutHero;
+            const backgroundImage = b.backgroundImage?.asset?.url || 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80';
+            
+            return (
+              <section key={idx} className="relative w-full h-[60vh] overflow-hidden">
+                <div className="absolute inset-0 z-0">
+                  <img
+                    src={backgroundImage}
+                    alt="Green Scouts in action"
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-green-900/70 to-purple-900/70" />
+                </div>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10 px-4">
+                  {b.heading && (
+                    <h1 className="text-4xl md:text-6xl font-bold mb-4 text-center">
+                      {b.heading.split(' ').map((word, i) => {
+                        if (word.toLowerCase() === 'green') {
+                          return <span key={i} className="text-green-400">{word} </span>;
+                        } else if (word.toLowerCase() === 'scouts') {
+                          return <span key={i} className="text-purple-400">{word} </span>;
+                        }
+                        return word + ' ';
+                      })}
+                    </h1>
+                  )}
+                  {b.subtitle && (
+                    <p className="text-xl md:text-2xl text-center max-w-2xl mb-8">
+                      {b.subtitle}
+                    </p>
+                  )}
+                  {b.stats && b.stats.length > 0 && (
+                    <div className="flex flex-wrap justify-center gap-4 mt-6">
+                      {b.stats.map((stat, i) => (
+                        <div key={i} className="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-lg">
+                          <p className="text-3xl font-bold text-white">{stat.value}</p>
+                          <p className="text-sm text-green-200">{stat.label}</p>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>

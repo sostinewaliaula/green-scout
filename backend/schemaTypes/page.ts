@@ -17,6 +17,7 @@ const page = {
         { type: 'blockTestimonials' },
         { type: 'blockNews' },
         { type: 'blockCta' },
+        { type: 'blockScoutHero' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }

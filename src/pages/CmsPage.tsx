@@ -56,6 +56,11 @@ export function CmsPage() {
               title,
               description
             },
+            backgroundImage{asset->{url}},
+            stats[]{
+              value,
+              label
+            },
             asset->{url}
           }
         }`,
