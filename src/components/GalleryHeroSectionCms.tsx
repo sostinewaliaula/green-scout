@@ -10,12 +10,22 @@ interface BlockGalleryHero {
 
 interface GalleryHeroSectionCmsProps {
   onCountyChange?: (county: string) => void;
+  onDateRangeChange?: (dateRange: string) => void;
+  onCustomDateChange?: (startDate: string, endDate: string) => void;
 }
 
-export function GalleryHeroSectionCms({ onCountyChange }: GalleryHeroSectionCmsProps) {
+export function GalleryHeroSectionCms({ 
+  onCountyChange, 
+  onDateRangeChange,
+  onCustomDateChange 
+}: GalleryHeroSectionCmsProps) {
   const [heroBlock, setHeroBlock] = useState<BlockGalleryHero | null>(null);
   const [counties, setCounties] = useState<string[]>([]);
   const [selectedCounty, setSelectedCounty] = useState<string>('All Counties');
+  const [selectedDateRange, setSelectedDateRange] = useState<string>('all');
+  const [showCustomDatePicker, setShowCustomDatePicker] = useState(false);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,11 +47,17 @@ export function GalleryHeroSectionCms({ onCountyChange }: GalleryHeroSectionCmsP
         const block = pageData?.content?.find((b: any) => b._type === 'blockGalleryHero');
         setHeroBlock(block || null);
 
-        // Fetch unique counties from projects
-        const countyData = await sanityClient.fetch(
-          `*[_type == "project" && defined(county)]{county} | order(county asc)`
-        );
-        const uniqueCounties = [...new Set(countyData.map((p: any) => p.county))].filter(Boolean) as string[];
+        // Fetch unique counties from both projects and gallery images
+        const [projectCounties, imageCounties] = await Promise.all([
+          sanityClient.fetch(`*[_type == "project" && defined(county)]{county}`),
+          sanityClient.fetch(`*[_type == "galleryImage" && defined(county)]{county}`)
+        ]);
+        
+        const allCounties = [
+          ...projectCounties.map((p: any) => p.county),
+          ...imageCounties.map((i: any) => i.county)
+        ];
+        const uniqueCounties = [...new Set(allCounties)].filter(Boolean).sort() as string[];
         setCounties(uniqueCounties);
 
         setLoading(false);
@@ -59,6 +75,22 @@ export function GalleryHeroSectionCms({ onCountyChange }: GalleryHeroSectionCmsP
     setSelectedCounty(county);
     if (onCountyChange) {
       onCountyChange(county);
+    }
+  };
+
+  const handleDateRangeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const range = e.target.value;
+    setSelectedDateRange(range);
+    setShowCustomDatePicker(range === 'custom');
+    
+    if (range !== 'custom' && onDateRangeChange) {
+      onDateRangeChange(range);
+    }
+  };
+
+  const handleApplyCustomDate = () => {
+    if (startDate && endDate && onCustomDateChange) {
+      onCustomDateChange(startDate, endDate);
     }
   };
 
@@ -94,28 +126,89 @@ export function GalleryHeroSectionCms({ onCountyChange }: GalleryHeroSectionCmsP
           </p>
         )}
         
-        {heroBlock.showCountyFilter && counties.length > 0 && (
-          <div className="mt-8 flex justify-center items-center gap-3">
-            <label htmlFor="county-filter" className="font-medium">
-              County:
-            </label>
-            <select
-              id="county-filter"
-              value={selectedCounty}
-              onChange={handleCountyChange}
-              className="px-4 py-2 rounded-lg text-gray-800 font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-white"
+        {heroBlock.showCountyFilter && (
+          <div className="mt-8 flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6">
+            {/* County Filter */}
+            <div className="flex items-center gap-3">
+              <label htmlFor="county-filter" className="font-medium">
+                County:
+              </label>
+              <select
+                id="county-filter"
+                value={selectedCounty}
+                onChange={handleCountyChange}
+                className="px-4 py-2 rounded-lg text-gray-800 font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-white"
+              >
+                <option value="All Counties">All Counties</option>
+                {counties.map((county) => (
+                  <option key={county} value={county}>
+                    {county}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Date Range Filter */}
+            <div className="flex items-center gap-3">
+              <label htmlFor="date-filter" className="font-medium">
+                Date:
+              </label>
+              <select
+                id="date-filter"
+                value={selectedDateRange}
+                onChange={handleDateRangeChange}
+                className="px-4 py-2 rounded-lg text-gray-800 font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-white"
+              >
+                <option value="all">All Time</option>
+                <option value="last-week">Last Week</option>
+                <option value="last-month">Last Month</option>
+                <option value="this-month">This Month</option>
+                <option value="last-3-months">Last 3 Months</option>
+                <option value="last-6-months">Last 6 Months</option>
+                <option value="this-year">This Year</option>
+                <option value="custom">Custom Range</option>
+              </select>
+            </div>
+          </div>
+        )}
+
+        {/* Custom Date Picker */}
+        {showCustomDatePicker && (
+          <div className="mt-6 flex flex-col md:flex-row justify-center items-center gap-4 bg-white/10 backdrop-blur-sm rounded-lg p-4 max-w-2xl mx-auto">
+            <div className="flex items-center gap-2">
+              <label htmlFor="start-date" className="font-medium text-sm">
+                From:
+              </label>
+              <input
+                type="date"
+                id="start-date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="px-3 py-2 rounded-lg text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white"
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <label htmlFor="end-date" className="font-medium text-sm">
+                To:
+              </label>
+              <input
+                type="date"
+                id="end-date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="px-3 py-2 rounded-lg text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white"
+              />
+            </div>
+            <button
+              onClick={handleApplyCustomDate}
+              disabled={!startDate || !endDate}
+              className="px-6 py-2 bg-white text-purple-700 rounded-lg font-medium text-sm hover:bg-purple-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              <option value="All Counties">All Counties</option>
-              {counties.map((county) => (
-                <option key={county} value={county}>
-                  {county}
-                </option>
-              ))}
-            </select>
+              Apply
+            </button>
           </div>
         )}
       </div>
     </section>
   );
 }
-

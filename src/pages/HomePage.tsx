@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header } from '../components/Header';
+import { HeroCarouselCms } from '../components/HeroCarouselCms';
 import { AboutSection } from '../components/AboutSection';
 import { MissionSection } from '../components/MissionSection';
 import { ImpactStatsSection } from '../components/ImpactStatsSection';
@@ -11,7 +11,7 @@ import { CallToActionSectionCms } from '../components/CallToActionSectionCms';
 export function HomePage() {
   return (
     <>
-      <Header />
+      <HeroCarouselCms />
       <AboutSection />
       <MissionSection />
       <ImpactStatsSection />

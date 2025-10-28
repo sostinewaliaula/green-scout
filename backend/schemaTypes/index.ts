@@ -25,6 +25,7 @@ import blockImpactTimeline from './blockImpactTimeline';
 import blockImpactStories from './blockImpactStories';
 import blockImpactCta from './blockImpactCta';
 import blockGalleryHero from './blockGalleryHero';
+import blockHeroCarousel from './blockHeroCarousel';
 import galleryImage from './galleryImage';
 import navigation from './navigation';
 import project from './project';
@@ -71,6 +72,7 @@ export const schemaTypes = [
   blockImpactStories,
   blockImpactCta,
   blockGalleryHero,
+  blockHeroCarousel,
   
   // Other types
   galleryImage,

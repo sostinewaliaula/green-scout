@@ -3,105 +3,221 @@ import sanityClient from '../sanityClient';
 
 type ImageAsset = { asset?: { url?: string } };
 
-interface Project {
+interface GalleryItem {
   _id: string;
+  _type: 'project' | 'galleryImage';
   title: string;
   location: string;
   county: string;
   image?: ImageAsset;
+  date?: string;
+  category?: string;
   slug?: { current: string };
 }
 
 interface GalleryGridSectionCmsProps {
   selectedCounty: string;
+  dateRange: string;
+  customStartDate?: string;
+  customEndDate?: string;
 }
 
-export function GalleryGridSectionCms({ selectedCounty }: GalleryGridSectionCmsProps) {
-  const [projects, setProjects] = useState<Project[]>([]);
+export function GalleryGridSectionCms({ 
+  selectedCounty, 
+  dateRange,
+  customStartDate,
+  customEndDate 
+}: GalleryGridSectionCmsProps) {
+  const [items, setItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchGalleryItems = async () => {
       setLoading(true);
       try {
-        let query = `*[_type == "project"`;
+        // Calculate date filter
+        let dateFilter = '';
+        const now = new Date();
         
-        if (selectedCounty && selectedCounty !== 'All Counties') {
-          query += ` && county == "${selectedCounty}"`;
+        if (dateRange === 'last-week') {
+          const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+          dateFilter = ` && date >= "${lastWeek.toISOString().split('T')[0]}"`;
+        } else if (dateRange === 'last-month') {
+          const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+          dateFilter = ` && date >= "${lastMonth.toISOString().split('T')[0]}"`;
+        } else if (dateRange === 'this-month') {
+          const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+          dateFilter = ` && date >= "${firstDayOfMonth.toISOString().split('T')[0]}"`;
+        } else if (dateRange === 'last-3-months') {
+          const last3Months = new Date(now.getFullYear(), now.getMonth() - 3, now.getDate());
+          dateFilter = ` && date >= "${last3Months.toISOString().split('T')[0]}"`;
+        } else if (dateRange === 'last-6-months') {
+          const last6Months = new Date(now.getFullYear(), now.getMonth() - 6, now.getDate());
+          dateFilter = ` && date >= "${last6Months.toISOString().split('T')[0]}"`;
+        } else if (dateRange === 'this-year') {
+          const firstDayOfYear = new Date(now.getFullYear(), 0, 1);
+          dateFilter = ` && date >= "${firstDayOfYear.toISOString().split('T')[0]}"`;
+        } else if (dateRange === 'custom' && customStartDate && customEndDate) {
+          dateFilter = ` && date >= "${customStartDate}" && date <= "${customEndDate}"`;
         }
-        
-        query += `]{
+
+        // County filter
+        const countyFilter = selectedCounty && selectedCounty !== 'All Counties' 
+          ? ` && county == "${selectedCounty}"` 
+          : '';
+
+        // Fetch gallery images
+        const galleryImagesQuery = `*[_type == "galleryImage"${countyFilter}${dateFilter}]{
           _id,
+          _type,
+          title,
+          location,
+          county,
+          date,
+          category,
+          image{asset->{url}}
+        }`;
+
+        // Fetch projects (they might not have dates, so we'll include them separately)
+        const projectsQuery = `*[_type == "project"${countyFilter}]{
+          _id,
+          _type,
           title,
           location,
           county,
           image{asset->{url}},
           slug
-        } | order(title asc)`;
+        }`;
 
-        const data = await sanityClient.fetch(query);
-        setProjects(data || []);
+        const [galleryImages, projects] = await Promise.all([
+          sanityClient.fetch(galleryImagesQuery),
+          sanityClient.fetch(projectsQuery)
+        ]);
+
+        // Combine and sort by date (images first, then projects)
+        const combinedItems = [
+          ...galleryImages,
+          ...(dateRange === 'all' ? projects : []) // Only include projects if "All Time" is selected
+        ];
+
+        // Sort by date (most recent first) for gallery images
+        combinedItems.sort((a, b) => {
+          if (!a.date) return 1;
+          if (!b.date) return -1;
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
+
+        setItems(combinedItems);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching projects:', err);
+        console.error('Error fetching gallery items:', err);
         setLoading(false);
       }
     };
 
-    fetchProjects();
-  }, [selectedCounty]);
+    fetchGalleryItems();
+  }, [selectedCounty, dateRange, customStartDate, customEndDate]);
 
   if (loading) {
     return (
       <section className="py-16 px-4 md:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto text-center text-gray-600">
-          Loading projects...
+          Loading gallery...
         </div>
       </section>
     );
   }
 
-  if (projects.length === 0) {
+  if (items.length === 0) {
     return (
       <section className="py-16 px-4 md:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto text-center text-gray-600 px-4">
-          {selectedCounty === 'All Counties' 
-            ? 'No projects found. Please add projects in Sanity Studio.'
-            : `No projects found in ${selectedCounty}.`}
+          {selectedCounty === 'All Counties' && dateRange === 'all'
+            ? 'No images or projects found. Please add content in Sanity Studio.'
+            : `No images found matching your filters.`}
         </div>
       </section>
     );
   }
+
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  const getCategoryLabel = (category?: string) => {
+    if (!category) return '';
+    const labels: { [key: string]: string } = {
+      'scout-trip': 'Scout Trip',
+      'tree-planting': 'Tree Planting',
+      'training': 'Training',
+      'community-event': 'Community Event',
+      'other': 'Other'
+    };
+    return labels[category] || category;
+  };
 
   return (
     <section className="py-16 px-4 md:px-8 bg-gray-50">
       <div className="max-w-7xl mx-auto">
+        <div className="mb-6 text-center text-gray-600">
+          <p className="text-sm">
+            Showing {items.length} {items.length === 1 ? 'item' : 'items'}
+            {selectedCounty !== 'All Counties' && ` in ${selectedCounty}`}
+          </p>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {projects.map((project) => (
+          {items.map((item) => (
             <div
-              key={project._id}
-              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
+              key={item._id}
+              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group"
             >
-              <div className="h-64 overflow-hidden">
-                {project.image?.asset?.url ? (
+              <div className="h-64 overflow-hidden relative">
+                {item.image?.asset?.url ? (
                   <img
-                    src={project.image.asset.url}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform hover:scale-110 duration-500"
+                    src={item.image.asset.url}
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500"
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-green-100 to-blue-100 flex items-center justify-center">
-                    <span className="text-6xl">🌳</span>
+                    <span className="text-6xl">
+                      {item._type === 'project' ? '🌳' : '📸'}
+                    </span>
                   </div>
                 )}
+                
+                {/* Category badge for gallery images */}
+                {item._type === 'galleryImage' && item.category && (
+                  <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-gray-700">
+                    {getCategoryLabel(item.category)}
+                  </div>
+                )}
+                
+                {/* Type badge */}
+                <div className="absolute top-2 left-2 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-white">
+                  {item._type === 'project' ? 'Project' : 'Photo'}
+                </div>
               </div>
+              
               <div className="p-4">
                 <h3 className="font-bold text-gray-900 mb-1 line-clamp-2">
-                  {project.title}
+                  {item.title}
                 </h3>
-                <p className="text-sm text-gray-600">
-                  {project.location}
+                <p className="text-sm text-gray-600 mb-1">
+                  📍 {item.location}
                 </p>
+                {item.date && (
+                  <p className="text-xs text-gray-500">
+                    📅 {formatDate(item.date)}
+                  </p>
+                )}
               </div>
             </div>
           ))}
@@ -110,4 +226,3 @@ export function GalleryGridSectionCms({ selectedCounty }: GalleryGridSectionCmsP
     </section>
   );
 }
-

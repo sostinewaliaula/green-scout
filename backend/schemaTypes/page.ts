@@ -33,6 +33,7 @@ const page = {
         { type: 'blockImpactStories' },
         { type: 'blockImpactCta' },
         { type: 'blockGalleryHero' },
+        { type: 'blockHeroCarousel' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }

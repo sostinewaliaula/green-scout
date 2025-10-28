@@ -59,25 +59,19 @@ export function NavBarCms() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Show navbar after scrolling down
+      // Update scroll state for styling changes
       if (window.scrollY > 100) {
         setIsScrolled(true);
-        setIsVisible(true);
       } else {
         setIsScrolled(false);
-        // Always show navbar on pages other than home
-        setIsVisible(location.pathname !== '/' || window.scrollY > 100);
       }
     };
-    // Initialize visibility based on current path
-    setIsVisible(location.pathname !== '/');
+    
+    // Always show navbar on all pages
+    setIsVisible(true);
+    
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [location.pathname]);
-
-  // Make navbar visible on all pages except home page (when at the top)
-  useEffect(() => {
-    setIsVisible(location.pathname !== '/');
   }, [location.pathname]);
 
   const scrollToTop = () => {
@@ -112,7 +106,7 @@ export function NavBarCms() {
               (isScrolled
                 ? 'bg-white shadow-md'
                 : location.pathname === '/'
-                ? 'bg-transparent'
+                ? 'bg-black/20 backdrop-blur-sm'
                 : 'bg-white shadow-md')
             : 'opacity-0 -translate-y-full'
         }`}
@@ -127,10 +121,10 @@ export function NavBarCms() {
               />
             ) : (
               <span className="text-xl font-bold">
-                <span className="text-green-700">
+                <span className={location.pathname === '/' && !isScrolled ? 'text-green-400' : 'text-green-700'}>
                   {branding.siteName?.split(' ')[0]}
                 </span>{' '}
-                <span className="text-purple-700">
+                <span className={location.pathname === '/' && !isScrolled ? 'text-purple-400' : 'text-purple-700'}>
                   {branding.siteName?.split(' ')[1]}
                 </span>
               </span>
@@ -159,6 +153,8 @@ export function NavBarCms() {
                   className={`text-sm font-medium transition-colors px-2 py-1 rounded-md ${
                     isActive
                       ? 'text-white bg-gradient-to-r from-green-600 to-purple-600'
+                      : location.pathname === '/' && !isScrolled
+                      ? 'text-white hover:text-green-300'
                       : 'text-gray-600 hover:text-purple-700'
                   }`}
                 >
@@ -168,7 +164,9 @@ export function NavBarCms() {
             })}
           </div>
           <button
-            className="md:hidden text-gray-800 focus:outline-none"
+            className={`md:hidden focus:outline-none ${
+              location.pathname === '/' && !isScrolled ? 'text-white' : 'text-gray-800'
+            }`}
             aria-label="Menu"
           >
             <svg
