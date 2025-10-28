@@ -308,7 +308,19 @@ type BlockObjectives = {
   objectives?: ObjectiveItem[];
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout | BlockTreeOfMonth | BlockNamedTrees | BlockImpactMap | BlockImpactHero | BlockObjectives;
+type ImpactStat = {
+  value: string;
+  label: string;
+  colorTheme?: 'green' | 'purple';
+};
+
+type BlockImpactNumbers = {
+  _type: 'blockImpactNumbers';
+  title?: string;
+  stats?: ImpactStat[];
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout | BlockTreeOfMonth | BlockNamedTrees | BlockImpactMap | BlockImpactHero | BlockObjectives | BlockImpactNumbers;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -1683,6 +1695,44 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                   ) : (
                     <div className="text-center text-gray-600">
                       No objectives configured.
+                    </div>
+                  )}
+                </div>
+              </section>
+            );
+          }
+          case 'blockImpactNumbers': {
+            const b = block as BlockImpactNumbers;
+            
+            return (
+              <section key={idx} className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-50 to-purple-50">
+                <div className="max-w-5xl mx-auto">
+                  {b.title && (
+                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-green-700">
+                      {b.title}
+                    </h2>
+                  )}
+                  {b.stats && b.stats.length > 0 ? (
+                    <div className={`grid grid-cols-2 md:grid-cols-${Math.min(b.stats.length, 4)} gap-8 text-center`}>
+                      {b.stats.map((stat, i) => {
+                        const isGreen = stat.colorTheme === 'green';
+                        const textColor = isGreen ? 'text-green-700' : 'text-purple-700';
+
+                        return (
+                          <div key={i}>
+                            <div className={`text-5xl font-bold ${textColor} mb-2`}>
+                              {stat.value}
+                            </div>
+                            <div className="text-gray-700">
+                              {stat.label}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="text-center text-gray-600">
+                      No impact statistics configured.
                     </div>
                   )}
                 </div>

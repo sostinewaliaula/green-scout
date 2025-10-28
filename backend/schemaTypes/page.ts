@@ -28,6 +28,7 @@ const page = {
         { type: 'blockImpactMap' },
         { type: 'blockImpactHero' },
         { type: 'blockObjectives' },
+        { type: 'blockImpactNumbers' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }

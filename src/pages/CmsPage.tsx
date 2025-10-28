@@ -153,6 +153,11 @@ export function CmsPage() {
               description,
               colorTheme
             },
+            stats[]{
+              value,
+              label,
+              colorTheme
+            },
             asset->{url}
           }
         }`,
