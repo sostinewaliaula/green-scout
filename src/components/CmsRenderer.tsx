@@ -262,7 +262,32 @@ type BlockNamedTrees = {
   viewAllButtonLink?: string;
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout | BlockTreeOfMonth | BlockNamedTrees;
+type MapCoordinates = {
+  lat: number;
+  lng: number;
+};
+
+type MapLocation = {
+  name: string;
+  treeName: string;
+  description?: string;
+  coordinates: MapCoordinates;
+  treesPlanted?: number;
+  plantedDate?: string;
+  image?: ImageAsset;
+  detailsLink?: string;
+};
+
+type BlockImpactMap = {
+  _type: 'blockImpactMap';
+  title?: string;
+  subtitle?: string;
+  locations?: MapLocation[];
+  defaultCenter?: MapCoordinates;
+  defaultZoom?: number;
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout | BlockTreeOfMonth | BlockNamedTrees | BlockImpactMap;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -1477,6 +1502,75 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                   ) : (
                     <div className="text-center text-gray-600">
                       No trees configured. Please select trees in Sanity Studio.
+                    </div>
+                  )}
+                </div>
+              </section>
+            );
+          }
+          case 'blockImpactMap': {
+            const b = block as BlockImpactMap;
+            
+            // Note: For full interactive map functionality, use the dedicated ImpactMapSectionCms component.
+            // This renders a simplified list view of locations.
+            
+            return (
+              <section key={idx} className="py-20 px-4 md:px-8 bg-white">
+                <div className="max-w-6xl mx-auto">
+                  <div className="text-center mb-12">
+                    {b.title && (
+                      <h2 className="text-3xl md:text-4xl font-bold mb-4 text-purple-700">
+                        {b.title}
+                      </h2>
+                    )}
+                    {b.subtitle && (
+                      <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+                        {b.subtitle}
+                      </p>
+                    )}
+                  </div>
+
+                  {b.locations && b.locations.length > 0 ? (
+                    <div className="bg-purple-50 rounded-xl p-8 border-2 border-purple-200">
+                      <p className="text-center text-gray-600 mb-6">
+                        📍 Interactive map with {b.locations.length} planting locations
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {b.locations.map((location, i) => (
+                          <div key={i} className="bg-white rounded-lg p-4 shadow-md">
+                            {location.image?.asset?.url && (
+                              <img
+                                src={location.image.asset.url}
+                                alt={location.treeName}
+                                className="w-full h-32 object-cover rounded mb-3"
+                              />
+                            )}
+                            <h3 className="font-bold text-green-700 mb-1">
+                              {location.treeName}
+                            </h3>
+                            <p className="text-sm font-medium text-gray-900 mb-2">
+                              {location.name}
+                            </p>
+                            {location.description && (
+                              <p className="text-sm text-gray-700 mb-2">
+                                {location.description}
+                              </p>
+                            )}
+                            {location.treesPlanted && (
+                              <p className="text-sm text-purple-700">
+                                🌳 {location.treesPlanted} trees planted
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      <p className="text-center text-sm text-gray-500 mt-6">
+                        Note: Use the dedicated ImpactMapSectionCms component for full interactive map experience.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="text-center text-gray-600">
+                      No locations configured. Please add locations in Sanity Studio.
                     </div>
                   )}
                 </div>

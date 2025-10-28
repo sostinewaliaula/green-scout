@@ -25,6 +25,7 @@ const page = {
         { type: 'blockJoinScout' },
         { type: 'blockTreeOfMonth' },
         { type: 'blockNamedTrees' },
+        { type: 'blockImpactMap' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }

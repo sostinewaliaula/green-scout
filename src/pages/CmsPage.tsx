@@ -134,6 +134,18 @@ export function CmsPage() {
             showViewAllButton,
             viewAllButtonText,
             viewAllButtonLink,
+            locations[]{
+              name,
+              treeName,
+              description,
+              coordinates,
+              treesPlanted,
+              plantedDate,
+              image{asset->{url}},
+              detailsLink
+            },
+            defaultCenter,
+            defaultZoom,
             asset->{url}
           }
         }`,

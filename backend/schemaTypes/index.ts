@@ -17,6 +17,7 @@ import blockScoutTestimonials from './blockScoutTestimonials';
 import blockJoinScout from './blockJoinScout';
 import blockTreeOfMonth from './blockTreeOfMonth';
 import blockNamedTrees from './blockNamedTrees';
+import blockImpactMap from './blockImpactMap';
 import galleryImage from './galleryImage';
 import navigation from './navigation';
 import project from './project';
@@ -55,6 +56,7 @@ export const schemaTypes = [
   blockJoinScout,
   blockTreeOfMonth,
   blockNamedTrees,
+  blockImpactMap,
   
   // Other types
   galleryImage,
