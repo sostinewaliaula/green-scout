@@ -333,7 +333,21 @@ type BlockImpactTimeline = {
   steps?: TimelineStep[];
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout | BlockTreeOfMonth | BlockNamedTrees | BlockImpactMap | BlockImpactHero | BlockObjectives | BlockImpactNumbers | BlockImpactTimeline;
+type ImpactStory = {
+  quote: string;
+  authorName: string;
+  authorRole: string;
+  location: string;
+  colorTheme?: 'green' | 'purple';
+};
+
+type BlockImpactStories = {
+  _type: 'blockImpactStories';
+  title?: string;
+  stories?: ImpactStory[];
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout | BlockTreeOfMonth | BlockNamedTrees | BlockImpactMap | BlockImpactHero | BlockObjectives | BlockImpactNumbers | BlockImpactTimeline | BlockImpactStories;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -1800,6 +1814,44 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                   ) : (
                     <div className="text-center text-gray-600">
                       No timeline steps configured.
+                    </div>
+                  )}
+                </div>
+              </section>
+            );
+          }
+          case 'blockImpactStories': {
+            const b = block as BlockImpactStories;
+            
+            return (
+              <section key={idx} className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-100 to-purple-100">
+                <div className="max-w-4xl mx-auto">
+                  {b.title && (
+                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-green-800">
+                      {b.title}
+                    </h2>
+                  )}
+                  {b.stories && b.stories.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      {b.stories.map((story, i) => {
+                        const isGreen = story.colorTheme === 'green';
+                        const authorColor = isGreen ? 'text-green-700' : 'text-purple-700';
+
+                        return (
+                          <div key={i} className="bg-white rounded-xl p-6 shadow flex flex-col">
+                            <p className="text-gray-700 mb-4">
+                              "{story.quote}"
+                            </p>
+                            <div className={`font-bold ${authorColor}`}>
+                              — {story.authorName}, {story.authorRole}, {story.location}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="text-center text-gray-600">
+                      No stories configured.
                     </div>
                   )}
                 </div>

@@ -3,6 +3,7 @@ import { ImpactHeroSectionCms } from '../components/ImpactHeroSectionCms';
 import { ObjectivesSectionCms } from '../components/ObjectivesSectionCms';
 import { ImpactNumbersSectionCms } from '../components/ImpactNumbersSectionCms';
 import { ImpactTimelineSectionCms } from '../components/ImpactTimelineSectionCms';
+import { ImpactStoriesSectionCms } from '../components/ImpactStoriesSectionCms';
 
 export function ImpactPage() {
   return (
@@ -20,29 +21,7 @@ export function ImpactPage() {
       <ImpactTimelineSectionCms />
 
       {/* Real Stories/Testimonials */}
-      <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-100 to-purple-100">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-green-800">Real Stories</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white rounded-xl p-6 shadow flex flex-col">
-              <p className="text-gray-700 mb-4">“Planting trees with GreenScout taught me how important every tree is for our future. Now, my friends and I care for our school garden every week!”</p>
-              <div className="font-bold text-green-700">— Amina, Student, Nairobi</div>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow flex flex-col">
-              <p className="text-gray-700 mb-4">“Our school’s participation in GreenScout has transformed our environment and inspired students to become environmental leaders.”</p>
-              <div className="font-bold text-purple-700">— Mr. Otieno, Teacher, Kisumu</div>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow flex flex-col">
-              <p className="text-gray-700 mb-4">“I joined GreenScout to make a difference. Seeing our trees grow is the best reward!”</p>
-              <div className="font-bold text-green-700">— Brian, GreenScout, Eldoret</div>
-            </div>
-            <div className="bg-white rounded-xl p-6 shadow flex flex-col">
-              <p className="text-gray-700 mb-4">“The GreenScout program has brought our community together and made us proud of our green spaces.”</p>
-              <div className="font-bold text-purple-700">— Mama Wanjiku, Community Member, Nakuru</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ImpactStoriesSectionCms />
 
       {/* Call to Action */}
       <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-200 to-purple-200">

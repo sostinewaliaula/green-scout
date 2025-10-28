@@ -164,6 +164,13 @@ export function CmsPage() {
               description,
               colorTheme
             },
+            stories[]{
+              quote,
+              authorName,
+              authorRole,
+              location,
+              colorTheme
+            },
             asset->{url}
           }
         }`,

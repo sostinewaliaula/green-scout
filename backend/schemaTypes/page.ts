@@ -30,6 +30,7 @@ const page = {
         { type: 'blockObjectives' },
         { type: 'blockImpactNumbers' },
         { type: 'blockImpactTimeline' },
+        { type: 'blockImpactStories' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }
