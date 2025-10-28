@@ -19,6 +19,7 @@ const page = {
         { type: 'blockCta' },
         { type: 'blockScoutHero' },
         { type: 'blockScoutOfMonth' },
+        { type: 'blockScoutProgram' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }

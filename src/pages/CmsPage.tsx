@@ -66,6 +66,13 @@ export function CmsPage() {
             month,
             achievements,
             quote,
+            levels[]{
+              name,
+              icon,
+              color,
+              description,
+              requirements
+            },
             asset->{url}
           }
         }`,

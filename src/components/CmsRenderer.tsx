@@ -137,7 +137,22 @@ type BlockScoutOfMonth = {
   quote?: string;
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth;
+type ProgramLevel = {
+  name: string;
+  icon?: string;
+  color: 'green' | 'purple';
+  description: string;
+  requirements?: string[];
+};
+
+type BlockScoutProgram = {
+  _type: 'blockScoutProgram';
+  title?: string;
+  subtitle?: string;
+  levels?: ProgramLevel[];
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -737,6 +752,98 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                       </div>
                     </div>
                   </div>
+                </div>
+              </section>
+            );
+          }
+          case 'blockScoutProgram': {
+            const b = block as BlockScoutProgram;
+            
+            const getIconSvg = (iconName?: string, color?: 'green' | 'purple') => {
+              const iconClass = color === 'purple' ? 'text-purple-700' : 'text-green-600';
+              
+              switch (iconName) {
+                case 'shield':
+                  return (
+                    <svg className={`w-8 h-8 ${iconClass}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  );
+                case 'tree':
+                  return (
+                    <svg className={`w-8 h-8 ${iconClass}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2L9 8h2v6H9l-3 6h12l-3-6h-2V8h2z" />
+                    </svg>
+                  );
+                case 'sprout':
+                  return (
+                    <svg className={`w-8 h-8 ${iconClass}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 20V10M12 10C10.8 8.8 8 7 5 7c0 3 2 5 4 6m3-3c1.2-1.2 4-3 7-3 0 3-2 5-4 6" />
+                    </svg>
+                  );
+                default: // leaf
+                  return (
+                    <svg className={`w-8 h-8 ${iconClass}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                    </svg>
+                  );
+              }
+            };
+            
+            return (
+              <section key={idx} className="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-green-50">
+                <div className="max-w-6xl mx-auto">
+                  <div className="text-center mb-16">
+                    {b.title && (
+                      <h2 className="text-3xl md:text-4xl font-bold mb-6 text-green-800">
+                        {b.title}
+                      </h2>
+                    )}
+                    {b.subtitle && (
+                      <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+                        {b.subtitle}
+                      </p>
+                    )}
+                  </div>
+                  {b.levels && b.levels.length > 0 && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      {b.levels.map((level, i) => (
+                        <div
+                          key={i}
+                          className={`bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border-t-4 ${
+                            level.color === 'green' ? 'border-green-600' : 'border-purple-600'
+                          }`}
+                        >
+                          <div className="p-6">
+                            <div className="flex items-start gap-4">
+                              <div className={`p-3 rounded-lg ${level.color === 'green' ? 'bg-green-100' : 'bg-purple-100'}`}>
+                                {getIconSvg(level.icon, level.color)}
+                              </div>
+                              <div>
+                                <h3 className={`text-xl font-bold mb-2 ${level.color === 'green' ? 'text-green-700' : 'text-purple-700'}`}>
+                                  {level.name}
+                                </h3>
+                                <p className="text-gray-700 mb-4">{level.description}</p>
+                              </div>
+                            </div>
+                            {level.requirements && level.requirements.length > 0 && (
+                              <div className="mt-4 pt-4 border-t border-gray-100">
+                                <h4 className="font-medium text-gray-900 mb-2">Requirements:</h4>
+                                <ul className="space-y-2">
+                                  {level.requirements.map((req, reqIdx) => (
+                                    <li key={reqIdx} className="flex items-start gap-2">
+                                      <div className={`w-2 h-2 rounded-full mt-2 ${level.color === 'green' ? 'bg-green-600' : 'bg-purple-600'}`}></div>
+                                      <span className="text-gray-700">{req}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </section>
             );
