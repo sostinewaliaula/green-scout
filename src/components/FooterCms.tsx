@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { FacebookIcon, TwitterIcon, InstagramIcon, YoutubeIcon } from 'lucide-react';
+import { FacebookIcon, InstagramIcon, YoutubeIcon } from 'lucide-react';
+import { XIcon } from './XIcon';
 import sanityClient from '../sanityClient';
 
 interface SocialMedia {
@@ -116,9 +117,9 @@ export function FooterCms() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-green-300 transition-colors"
-                aria-label="Twitter"
+                aria-label="X (formerly Twitter)"
               >
-                <TwitterIcon className="w-6 h-6" />
+                <XIcon className="w-6 h-6" />
               </a>
             )}
             {socialMedia.instagram && (
