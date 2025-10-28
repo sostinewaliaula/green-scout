@@ -19,6 +19,7 @@ import blockTreeOfMonth from './blockTreeOfMonth';
 import blockNamedTrees from './blockNamedTrees';
 import blockImpactMap from './blockImpactMap';
 import blockImpactHero from './blockImpactHero';
+import blockObjectives from './blockObjectives';
 import galleryImage from './galleryImage';
 import navigation from './navigation';
 import project from './project';
@@ -59,6 +60,7 @@ export const schemaTypes = [
   blockNamedTrees,
   blockImpactMap,
   blockImpactHero,
+  blockObjectives,
   
   // Other types
   galleryImage,

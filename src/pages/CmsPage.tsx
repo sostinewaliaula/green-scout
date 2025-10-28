@@ -147,6 +147,12 @@ export function CmsPage() {
             defaultCenter,
             defaultZoom,
             overlayOpacity,
+            objectives[]{
+              icon,
+              title,
+              description,
+              colorTheme
+            },
             asset->{url}
           }
         }`,

@@ -27,6 +27,7 @@ const page = {
         { type: 'blockNamedTrees' },
         { type: 'blockImpactMap' },
         { type: 'blockImpactHero' },
+        { type: 'blockObjectives' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }

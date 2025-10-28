@@ -1,5 +1,6 @@
 import React from 'react';
 import { ImpactHeroSectionCms } from '../components/ImpactHeroSectionCms';
+import { ObjectivesSectionCms } from '../components/ObjectivesSectionCms';
 
 export function ImpactPage() {
   return (
@@ -8,38 +9,7 @@ export function ImpactPage() {
       <ImpactHeroSectionCms />
 
       {/* Objectives Grid */}
-      <section className="py-16 px-4 md:px-8 bg-white">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-purple-700">Our Objectives</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-green-50 rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition-shadow">
-              <span className="text-4xl mb-3">🌱</span>
-              <h3 className="font-bold text-lg mb-2 text-green-700">Empower Youth</h3>
-              <p className="text-gray-700 text-center">Inspire and equip young people to lead climate action in their communities.</p>
-            </div>
-            <div className="bg-purple-50 rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition-shadow">
-              <span className="text-4xl mb-3">🌳</span>
-              <h3 className="font-bold text-lg mb-2 text-purple-700">Restore Forests</h3>
-              <p className="text-gray-700 text-center">Increase Kenya’s tree cover by planting and nurturing indigenous trees.</p>
-            </div>
-            <div className="bg-green-50 rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition-shadow">
-              <span className="text-4xl mb-3">📚</span>
-              <h3 className="font-bold text-lg mb-2 text-green-700">Environmental Education</h3>
-              <p className="text-gray-700 text-center">Promote knowledge about biodiversity, conservation, and sustainability.</p>
-            </div>
-            <div className="bg-purple-50 rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition-shadow">
-              <span className="text-4xl mb-3">🤝</span>
-              <h3 className="font-bold text-lg mb-2 text-purple-700">Community Engagement</h3>
-              <p className="text-gray-700 text-center">Foster partnerships and involve local communities in greening efforts.</p>
-            </div>
-            <div className="bg-green-50 rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition-shadow">
-              <span className="text-4xl mb-3">🦋</span>
-              <h3 className="font-bold text-lg mb-2 text-green-700">Support Biodiversity</h3>
-              <p className="text-gray-700 text-center">Protect native species and create habitats for wildlife.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ObjectivesSectionCms />
 
       {/* Impact in Numbers */}
       <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-50 to-purple-50">

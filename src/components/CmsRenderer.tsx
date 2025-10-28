@@ -295,7 +295,20 @@ type BlockImpactHero = {
   overlayOpacity?: number;
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout | BlockTreeOfMonth | BlockNamedTrees | BlockImpactMap | BlockImpactHero;
+type ObjectiveItem = {
+  icon: string;
+  title: string;
+  description: string;
+  colorTheme?: 'green' | 'purple';
+};
+
+type BlockObjectives = {
+  _type: 'blockObjectives';
+  title?: string;
+  objectives?: ObjectiveItem[];
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout | BlockTreeOfMonth | BlockNamedTrees | BlockImpactMap | BlockImpactHero | BlockObjectives;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -1626,6 +1639,51 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                     <p className="text-xl md:text-2xl text-green-100 max-w-3xl leading-relaxed">
                       {b.subtitle}
                     </p>
+                  )}
+                </div>
+              </section>
+            );
+          }
+          case 'blockObjectives': {
+            const b = block as BlockObjectives;
+            
+            return (
+              <section key={idx} className="py-16 px-4 md:px-8 bg-white">
+                <div className="max-w-5xl mx-auto">
+                  {b.title && (
+                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-purple-700">
+                      {b.title}
+                    </h2>
+                  )}
+                  {b.objectives && b.objectives.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                      {b.objectives.map((objective, i) => {
+                        const isGreen = objective.colorTheme === 'green';
+                        const bgColor = isGreen ? 'bg-green-50' : 'bg-purple-50';
+                        const titleColor = isGreen ? 'text-green-700' : 'text-purple-700';
+
+                        return (
+                          <div
+                            key={i}
+                            className={`${bgColor} rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition-shadow text-center`}
+                          >
+                            <span className="text-4xl mb-3" role="img" aria-label={objective.title}>
+                              {objective.icon}
+                            </span>
+                            <h3 className={`font-bold text-lg mb-2 ${titleColor}`}>
+                              {objective.title}
+                            </h3>
+                            <p className="text-gray-700">
+                              {objective.description}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="text-center text-gray-600">
+                      No objectives configured.
+                    </div>
                   )}
                 </div>
               </section>
