@@ -1,16 +1,11 @@
 import React from 'react';
+import { ImpactHeroSectionCms } from '../components/ImpactHeroSectionCms';
 
 export function ImpactPage() {
   return (
     <div className="pt-16">
       {/* Hero Section */}
-      <section className="relative py-20 px-4 md:px-8 bg-gradient-to-br from-green-200 to-purple-100 flex flex-col items-center justify-center text-center">
-        <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=1200&q=80" alt="Green forest" className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" />
-        <div className="relative z-10 max-w-2xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold text-green-800 mb-4 drop-shadow-lg">The Impact of GreenScout</h1>
-          <p className="text-lg md:text-2xl text-gray-700 mb-6">Empowering youth, restoring forests, and building a greener Kenya—one tree at a time.</p>
-        </div>
-      </section>
+      <ImpactHeroSectionCms />
 
       {/* Objectives Grid */}
       <section className="py-16 px-4 md:px-8 bg-white">

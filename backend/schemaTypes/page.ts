@@ -26,6 +26,7 @@ const page = {
         { type: 'blockTreeOfMonth' },
         { type: 'blockNamedTrees' },
         { type: 'blockImpactMap' },
+        { type: 'blockImpactHero' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }
