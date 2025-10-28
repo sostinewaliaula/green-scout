@@ -22,6 +22,7 @@ const page = {
         { type: 'blockScoutProgram' },
         { type: 'blockScoutActivities' },
         { type: 'blockScoutTestimonials' },
+        { type: 'blockJoinScout' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }

@@ -198,7 +198,37 @@ type BlockScoutTestimonials = {
   leaderQuote?: LeaderQuote;
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials;
+type JoinStep = {
+  title: string;
+  description: string;
+};
+
+type ApplyButton = {
+  text?: string;
+  link?: string;
+};
+
+type OrganizationsBox = {
+  enabled?: boolean;
+  heading?: string;
+  description?: string;
+  linkText?: string;
+  linkUrl?: string;
+};
+
+type BlockJoinScout = {
+  _type: 'blockJoinScout';
+  title?: string;
+  description?: string;
+  benefitsHeading?: string;
+  benefits?: string[];
+  applyButton?: ApplyButton;
+  stepsHeading?: string;
+  steps?: JoinStep[];
+  organizationsBox?: OrganizationsBox;
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -1100,6 +1130,123 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                       </div>
                     </div>
                   )}
+                </div>
+              </section>
+            );
+          }
+          case 'blockJoinScout': {
+            const b = block as BlockJoinScout;
+            return (
+              <section key={idx} className="py-20 px-4 md:px-8 bg-gradient-to-br from-purple-50 via-white to-green-50">
+                <div className="max-w-6xl mx-auto">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    {/* Left Column - Main Info */}
+                    <div>
+                      {b.title && (
+                        <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-purple-700 to-purple-900 bg-clip-text text-transparent">
+                          {b.title}
+                        </h2>
+                      )}
+                      
+                      {b.description && (
+                        <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+                          {b.description}
+                        </p>
+                      )}
+
+                      {b.benefits && b.benefits.length > 0 && (
+                        <div className="mb-8">
+                          {b.benefitsHeading && (
+                            <h3 className="text-xl font-bold mb-4 text-green-800">
+                              {b.benefitsHeading}
+                            </h3>
+                          )}
+                          <ul className="space-y-3">
+                            {b.benefits.map((benefit, i) => (
+                              <li key={i} className="flex items-start gap-3">
+                                <div className="mt-1 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                                  <svg className="w-3 h-3 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                  </svg>
+                                </div>
+                                <span className="text-gray-700">{benefit}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {b.applyButton?.text && (
+                        <a
+                          href={b.applyButton.link || '/get-involved'}
+                          className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-green-600 to-purple-600 text-white rounded-full font-medium hover:from-green-700 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg"
+                        >
+                          {b.applyButton.text}
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                          </svg>
+                        </a>
+                      )}
+                    </div>
+
+                    {/* Right Column - Steps & Organizations */}
+                    <div className="space-y-6">
+                      {/* Steps */}
+                      {b.steps && b.steps.length > 0 && (
+                        <div className="bg-white rounded-xl shadow-md p-8">
+                          {b.stepsHeading && (
+                            <h3 className="text-2xl font-bold mb-6 text-gray-900">
+                              {b.stepsHeading}
+                            </h3>
+                          )}
+                          <div className="space-y-6">
+                            {b.steps.map((step, i) => (
+                              <div key={i} className="flex gap-4">
+                                <div className="w-12 h-12 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-lg flex-shrink-0">
+                                  {String(i + 1).padStart(2, '0')}
+                                </div>
+                                <div>
+                                  <h4 className="font-bold text-gray-900 mb-1">
+                                    {step.title}
+                                  </h4>
+                                  <p className="text-gray-600 text-sm">
+                                    {step.description}
+                                  </p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Organizations Box */}
+                      {b.organizationsBox?.enabled && (
+                        <div className="bg-gradient-to-br from-yellow-50 to-amber-50 border-2 border-yellow-200 rounded-xl p-6">
+                          {b.organizationsBox.heading && (
+                            <h3 className="text-xl font-bold mb-3 text-gray-900">
+                              {b.organizationsBox.heading}
+                            </h3>
+                          )}
+                          {b.organizationsBox.description && (
+                            <p className="text-gray-700 mb-4">
+                              {b.organizationsBox.description}
+                            </p>
+                          )}
+                          {b.organizationsBox.linkText && (
+                            <a
+                              href={b.organizationsBox.linkUrl || '/get-involved'}
+                              className="inline-flex items-center gap-2 text-purple-700 font-medium hover:text-purple-900 transition-colors"
+                            >
+                              {b.organizationsBox.linkText}
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                              </svg>
+                            </a>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </section>
             );

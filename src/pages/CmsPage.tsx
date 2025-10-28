@@ -99,6 +99,24 @@ export function CmsPage() {
               name,
               title
             },
+            benefitsHeading,
+            benefits,
+            applyButton{
+              text,
+              link
+            },
+            stepsHeading,
+            steps[]{
+              title,
+              description
+            },
+            organizationsBox{
+              enabled,
+              heading,
+              description,
+              linkText,
+              linkUrl
+            },
             asset->{url}
           }
         }`,

@@ -4,7 +4,7 @@ import { ScoutSectionCms } from '../components/ScoutSectionCms';
 import { ScoutProgramSectionCms } from '../components/ScoutProgramSectionCms';
 import { ScoutActivitiesSectionCms } from '../components/ScoutActivitiesSectionCms';
 import { ScoutTestimonialsSectionCms } from '../components/ScoutTestimonialsSectionCms';
-import { JoinScoutSection } from '../components/JoinScoutSection';
+import { JoinScoutSectionCms } from '../components/JoinScoutSectionCms';
 export function ScoutsPage() {
   return <div>
       <ScoutHeroSectionCms />
@@ -12,6 +12,6 @@ export function ScoutsPage() {
       <ScoutProgramSectionCms />
       <ScoutActivitiesSectionCms />
       <ScoutTestimonialsSectionCms />
-      <JoinScoutSection />
+      <JoinScoutSectionCms />
     </div>;
 }

@@ -14,6 +14,7 @@ import blockScoutOfMonth from './blockScoutOfMonth';
 import blockScoutProgram from './blockScoutProgram';
 import blockScoutActivities from './blockScoutActivities';
 import blockScoutTestimonials from './blockScoutTestimonials';
+import blockJoinScout from './blockJoinScout';
 import galleryImage from './galleryImage';
 import navigation from './navigation';
 import project from './project';
@@ -47,6 +48,7 @@ export const schemaTypes = [
   blockScoutProgram,
   blockScoutActivities,
   blockScoutTestimonials,
+  blockJoinScout,
   
   // Other types
   galleryImage,
