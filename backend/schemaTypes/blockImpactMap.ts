@@ -1,3 +1,5 @@
+import { GeocodeHelper } from '../components/GeocodeHelper';
+
 const blockImpactMap = {
   name: 'blockImpactMap',
   title: 'Impact Map Block',
@@ -27,7 +29,7 @@ const blockImpactMap = {
               name: 'name',
               title: 'Location Name',
               type: 'string',
-              description: 'e.g., Nakuru High School',
+              description: 'Enter the full location name (e.g., "Nakuru High School, Kenya" or "Nairobi, Kenya"). Click "Fetch Coordinates" button below after entering.',
               validation: (Rule: any) => Rule.required()
             },
             {
@@ -44,9 +46,19 @@ const blockImpactMap = {
               description: 'Brief description of the planting project'
             },
             {
+              name: 'geocodeHelper',
+              title: '🌍 Search & Auto-Fetch Coordinates',
+              type: 'string',
+              description: 'Use the search box below to find your location in Kenya and automatically get coordinates.',
+              components: {
+                input: GeocodeHelper
+              }
+            },
+            {
               name: 'coordinates',
               title: 'Map Coordinates',
               type: 'object',
+              description: 'Enter coordinates manually OR use the "Fetch Coordinates" button above to get them automatically.',
               fields: [
                 {
                   name: 'lat',
