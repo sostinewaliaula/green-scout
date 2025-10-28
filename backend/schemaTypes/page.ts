@@ -32,6 +32,7 @@ const page = {
         { type: 'blockImpactTimeline' },
         { type: 'blockImpactStories' },
         { type: 'blockImpactCta' },
+        { type: 'blockGalleryHero' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }

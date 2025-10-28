@@ -27,6 +27,13 @@ const project = {
       validation: (Rule: any) => Rule.required()
     },
     {
+      name: 'county',
+      title: 'County',
+      type: 'string',
+      description: 'County name for filtering (e.g., Nairobi, Mombasa, Nakuru)',
+      validation: (Rule: any) => Rule.required()
+    },
+    {
       name: 'image',
       title: 'Project Image',
       type: 'image',

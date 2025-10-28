@@ -173,6 +173,7 @@ export function CmsPage() {
             },
             buttonText,
             buttonLink,
+            showCountyFilter,
             asset->{url}
           }
         }`,

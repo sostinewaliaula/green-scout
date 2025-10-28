@@ -355,7 +355,14 @@ type BlockImpactCta = {
   buttonLink?: string;
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout | BlockTreeOfMonth | BlockNamedTrees | BlockImpactMap | BlockImpactHero | BlockObjectives | BlockImpactNumbers | BlockImpactTimeline | BlockImpactStories | BlockImpactCta;
+type BlockGalleryHero = {
+  _type: 'blockGalleryHero';
+  title?: string;
+  subtitle?: string;
+  showCountyFilter?: boolean;
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout | BlockTreeOfMonth | BlockNamedTrees | BlockImpactMap | BlockImpactHero | BlockObjectives | BlockImpactNumbers | BlockImpactTimeline | BlockImpactStories | BlockImpactCta | BlockGalleryHero;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -1889,6 +1896,31 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                     >
                       {b.buttonText}
                     </a>
+                  )}
+                </div>
+              </section>
+            );
+          }
+          case 'blockGalleryHero': {
+            const b = block as BlockGalleryHero;
+            
+            return (
+              <section key={idx} className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 text-white">
+                <div className="max-w-6xl mx-auto text-center">
+                  {b.title && (
+                    <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                      {b.title}
+                    </h1>
+                  )}
+                  {b.subtitle && (
+                    <p className="text-xl mb-8">
+                      {b.subtitle}
+                    </p>
+                  )}
+                  {b.showCountyFilter && (
+                    <div className="mt-8 text-center text-sm text-white/80">
+                      Note: County filter is available on the dedicated Gallery page.
+                    </div>
                   )}
                 </div>
               </section>
