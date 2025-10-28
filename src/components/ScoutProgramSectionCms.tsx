@@ -69,9 +69,9 @@ export function ScoutProgramSectionCms() {
   // Show loading state
   if (loading) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-green-50">
+      <section className="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-green-50 dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="text-gray-600">Loading...</div>
+          <div className="text-gray-600 dark:text-gray-400">Loading...</div>
         </div>
       </section>
     );
@@ -80,12 +80,12 @@ export function ScoutProgramSectionCms() {
   // If no data found, show empty state
   if (!programBlock || !programBlock.levels || programBlock.levels.length === 0) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-green-50">
+      <section className="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-green-50 dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-green-800">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-green-800 dark:text-green-400">
             The Green Scout Program
           </h2>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400">
             Program levels will appear here once added in Sanity Studio.
           </p>
         </div>
@@ -94,13 +94,13 @@ export function ScoutProgramSectionCms() {
   }
 
   return (
-    <section className="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-green-50">
+    <section className="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-green-50 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-green-800">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-green-800 dark:text-green-400">
             {programBlock.title || 'The Green Scout Program'}
           </h2>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+          <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
             {programBlock.subtitle || 'Our structured program helps young people progress from beginners to environmental leaders through education, hands-on experience, and mentorship.'}
           </p>
         </div>
@@ -108,15 +108,15 @@ export function ScoutProgramSectionCms() {
           {programBlock.levels.map((level, index) => (
             <div
               key={index}
-              className={`bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border-t-4 ${
-                level.color === 'green' ? 'border-green-600' : 'border-purple-600'
+              className={`bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-900/50 overflow-hidden hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-300 border-t-4 ${
+                level.color === 'green' ? 'border-green-600 dark:border-green-400' : 'border-purple-600 dark:border-purple-400'
               }`}
             >
               <div className="p-6">
                 <div className="flex items-start gap-4">
                   <div
                     className={`p-3 rounded-lg ${
-                      level.color === 'green' ? 'bg-green-100' : 'bg-purple-100'
+                      level.color === 'green' ? 'bg-green-100 dark:bg-green-900/30' : 'bg-purple-100 dark:bg-purple-900/30'
                     }`}
                   >
                     {getIcon(level.icon)}
@@ -124,17 +124,17 @@ export function ScoutProgramSectionCms() {
                   <div>
                     <h3
                       className={`text-xl font-bold mb-2 ${
-                        level.color === 'green' ? 'text-green-700' : 'text-purple-700'
+                        level.color === 'green' ? 'text-green-700 dark:text-green-400' : 'text-purple-700 dark:text-purple-400'
                       }`}
                     >
                       {level.name}
                     </h3>
-                    <p className="text-gray-700 mb-4">{level.description}</p>
+                    <p className="text-gray-700 dark:text-gray-300 mb-4">{level.description}</p>
                   </div>
                 </div>
                 {level.requirements && level.requirements.length > 0 && (
-                  <div className="mt-4 pt-4 border-t border-gray-100">
-                    <h4 className="font-medium text-gray-900 mb-2">
+                  <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
+                    <h4 className="font-medium text-gray-900 dark:text-white mb-2">
                       Requirements:
                     </h4>
                     <ul className="space-y-2">
@@ -142,10 +142,10 @@ export function ScoutProgramSectionCms() {
                         <li key={idx} className="flex items-start gap-2">
                           <div
                             className={`w-2 h-2 rounded-full mt-2 ${
-                              level.color === 'green' ? 'bg-green-600' : 'bg-purple-600'
+                              level.color === 'green' ? 'bg-green-600 dark:bg-green-400' : 'bg-purple-600 dark:bg-purple-400'
                             }`}
                           ></div>
-                          <span className="text-gray-700">{req}</span>
+                          <span className="text-gray-700 dark:text-gray-300">{req}</span>
                         </li>
                       ))}
                     </ul>

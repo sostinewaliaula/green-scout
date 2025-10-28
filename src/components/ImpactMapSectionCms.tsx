@@ -3,6 +3,18 @@ import sanityClient from '../sanityClient';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { useDarkMode } from '../context/DarkModeContext';
+
+// Add custom styles for dark mode popups
+const darkModePopupStyles = `
+  .dark-mode-popup .leaflet-popup-content-wrapper {
+    background-color: #1f2937;
+    color: #e5e7eb;
+  }
+  .dark-mode-popup .leaflet-popup-tip {
+    background-color: #1f2937;
+  }
+`;
 
 type ImageAsset = { asset?: { url?: string } };
 
@@ -45,6 +57,29 @@ const customIcon = new Icon({
 export function ImpactMapSectionCms() {
   const [mapBlock, setMapBlock] = useState<BlockImpactMap | null>(null);
   const [loading, setLoading] = useState(true);
+  const { isDarkMode } = useDarkMode();
+
+  // Inject custom dark mode popup styles
+  useEffect(() => {
+    const styleId = 'dark-mode-popup-styles';
+    let styleElement = document.getElementById(styleId) as HTMLStyleElement;
+    
+    if (!styleElement) {
+      styleElement = document.createElement('style');
+      styleElement.id = styleId;
+      document.head.appendChild(styleElement);
+    }
+    
+    styleElement.textContent = darkModePopupStyles;
+    
+    return () => {
+      // Clean up on unmount
+      const el = document.getElementById(styleId);
+      if (el) {
+        el.remove();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     sanityClient
@@ -92,16 +127,16 @@ export function ImpactMapSectionCms() {
 
   if (loading) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-white">
-        <div className="max-w-6xl mx-auto text-center text-gray-600">Loading impact map...</div>
+      <section className="py-20 px-4 md:px-8 bg-white dark:bg-gray-900">
+        <div className="max-w-6xl mx-auto text-center text-gray-600 dark:text-gray-400">Loading impact map...</div>
       </section>
     );
   }
 
   if (!mapBlock || !mapBlock.locations || mapBlock.locations.length === 0) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-white">
-        <div className="max-w-6xl mx-auto text-center text-gray-600 px-4">
+      <section className="py-20 px-4 md:px-8 bg-white dark:bg-gray-900">
+        <div className="max-w-6xl mx-auto text-center text-gray-600 dark:text-gray-400 px-4">
           No impact map configured yet. Please add an "Impact Map Block" to your Trees page in Sanity Studio.
         </div>
       </section>
@@ -115,22 +150,22 @@ export function ImpactMapSectionCms() {
   const zoom = mapBlock.defaultZoom || 6;
 
   return (
-    <section className="py-20 px-4 md:px-8 bg-white">
+    <section className="py-20 px-4 md:px-8 bg-white dark:bg-gray-900">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           {mapBlock.title && (
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-purple-700">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-purple-700 dark:text-purple-400">
               {mapBlock.title}
             </h2>
           )}
           {mapBlock.subtitle && (
-            <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
               {mapBlock.subtitle}
             </p>
           )}
         </div>
 
-        <div className="rounded-xl overflow-hidden shadow-xl border-2 border-purple-100" style={{ height: '600px' }}>
+        <div className="rounded-xl overflow-hidden shadow-xl dark:shadow-gray-900/50 border-2 border-purple-100 dark:border-purple-900/30" style={{ height: '600px' }}>
           <MapContainer
             center={center}
             zoom={zoom}
@@ -138,8 +173,14 @@ export function ImpactMapSectionCms() {
             scrollWheelZoom={true}
           >
             <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution={isDarkMode 
+                ? '&copy; <a href="https://carto.com/">CartoDB</a> contributors' 
+                : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              }
+              url={isDarkMode
+                ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              }
             />
             {mapBlock.locations.map((location, index) => (
               <Marker
@@ -147,7 +188,7 @@ export function ImpactMapSectionCms() {
                 position={[location.coordinates.lat, location.coordinates.lng]}
                 icon={customIcon}
               >
-                <Popup>
+                <Popup className={isDarkMode ? 'dark-mode-popup' : ''}>
                   <div className="p-2 min-w-[250px]">
                     {location.image?.asset?.url && (
                       <img
@@ -156,27 +197,27 @@ export function ImpactMapSectionCms() {
                         className="w-full h-32 object-cover rounded mb-3"
                       />
                     )}
-                    <h3 className="font-bold text-green-700 mb-2">
+                    <h3 className="font-bold text-green-700 dark:text-green-400 mb-2">
                       {location.treeName}
                     </h3>
-                    <p className="text-sm font-medium text-gray-900 mb-1">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white mb-1">
                       {location.name}
                     </p>
                     {location.description && (
-                      <p className="text-sm text-gray-700 mb-2">
+                      <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
                         {location.description}
                         {location.plantedDate && ` Planted ${formatDate(location.plantedDate)}`}
                       </p>
                     )}
                     {location.treesPlanted && (
-                      <p className="text-sm text-purple-700 mb-2">
+                      <p className="text-sm text-purple-700 dark:text-purple-400 mb-2">
                         🌳 {location.treesPlanted} trees planted
                       </p>
                     )}
                     {location.detailsLink && (
                       <a
                         href={location.detailsLink}
-                        className="text-sm text-purple-600 hover:text-purple-800 font-medium"
+                        className="text-sm text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium"
                       >
                         View Details →
                       </a>

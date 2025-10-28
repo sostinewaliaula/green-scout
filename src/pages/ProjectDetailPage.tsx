@@ -80,10 +80,10 @@ export function ProjectDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="pt-32 pb-20 px-4 md:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="text-gray-600">Loading project...</div>
+            <div className="text-gray-600 dark:text-gray-400">Loading project...</div>
           </div>
         </div>
       </div>
@@ -92,14 +92,14 @@ export function ProjectDetailPage() {
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="pt-32 pb-20 px-4 md:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Project Not Found</h1>
-            <p className="text-gray-600 mb-8">The project you're looking for doesn't exist.</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Project Not Found</h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-8">The project you're looking for doesn't exist.</p>
             <Link
               to="/news"
-              className="inline-flex items-center text-green-700 font-medium hover:text-green-900 transition-colors"
+              className="inline-flex items-center text-green-700 dark:text-green-400 font-medium hover:text-green-900 transition-colors"
             >
               <ArrowLeftIcon className="w-5 h-5 mr-2" />
               Back to All Items
@@ -111,7 +111,7 @@ export function ProjectDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
 
       {/* Project Header */}
       <article className="pt-32 pb-20 px-4 md:px-8">
@@ -119,7 +119,7 @@ export function ProjectDetailPage() {
           {/* Back Button */}
           <Link
             to="/news"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-8 transition-colors"
+            className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white mb-8 transition-colors"
           >
             <ArrowLeftIcon className="w-5 h-5 mr-2" />
             Back to All Items
@@ -133,12 +133,12 @@ export function ProjectDetailPage() {
           </div>
 
           {/* Title */}
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
             {project.title}
           </h1>
 
           {/* Location */}
-          <div className="flex items-center text-gray-600 mb-8 pb-8 border-b">
+          <div className="flex items-center text-gray-600 dark:text-gray-400 mb-8 pb-8 border-b">
             <MapPinIcon className="w-5 h-5 mr-2" />
             <span className="text-lg">{project.location}</span>
           </div>
@@ -164,7 +164,7 @@ export function ProjectDetailPage() {
                 <div className="text-3xl font-bold text-green-800">
                   {project.treesPlanted.toLocaleString()}
                 </div>
-                <div className="text-gray-700">Trees Planted</div>
+                <div className="text-gray-700 dark:text-gray-300">Trees Planted</div>
               </div>
             </div>
             <div className="bg-purple-50 border-2 border-purple-200 rounded-xl p-6 flex items-center gap-4">
@@ -175,24 +175,24 @@ export function ProjectDetailPage() {
                 <div className="text-3xl font-bold text-purple-800">
                   {project.schoolsInvolved}
                 </div>
-                <div className="text-gray-700">Schools Involved</div>
+                <div className="text-gray-700 dark:text-gray-300">Schools Involved</div>
               </div>
             </div>
           </div>
 
           {/* Description */}
-          <div className="text-xl text-gray-700 mb-8 leading-relaxed border-l-4 border-green-600 pl-6 py-2 bg-green-50">
+          <div className="text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed border-l-4 border-green-600 pl-6 py-2 bg-green-50">
             {project.description}
           </div>
 
           {/* Full Description */}
           {project.fullDescription && project.fullDescription.length > 0 ? (
             <div className="prose prose-lg max-w-none">
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">Project Details</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Project Details</h2>
               <PortableText value={project.fullDescription} />
             </div>
           ) : (
-            <div className="text-gray-600 italic">
+            <div className="text-gray-600 dark:text-gray-400 italic">
               No additional details available for this project.
             </div>
           )}
@@ -201,15 +201,15 @@ export function ProjectDetailPage() {
 
       {/* Related Projects */}
       {relatedProjects.length > 0 && (
-        <section className="py-16 px-4 md:px-8 bg-white border-t">
+        <section className="py-16 px-4 md:px-8 bg-white dark:bg-gray-800 border-t">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">Related Projects</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Related Projects</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {relatedProjects.map((related) => (
                 <Link
                   key={related._id}
                   to={`/projects/${related.slug.current}`}
-                  className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  className="bg-white dark:bg-gray-800 border border-gray-200 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                 >
                   <div className="h-40 overflow-hidden">
                     {related.image?.asset?.url ? (
@@ -229,14 +229,14 @@ export function ProjectDetailPage() {
                       <MapPinIcon className="w-4 h-4 mr-1" />
                       <span className="text-xs">{related.location}</span>
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
                       {related.title}
                     </h3>
                     <div className="flex gap-3 text-sm">
-                      <span className="text-green-700 font-semibold">
+                      <span className="text-green-700 dark:text-green-400 font-semibold">
                         {related.treesPlanted.toLocaleString()} trees
                       </span>
-                      <span className="text-purple-700 font-semibold">
+                      <span className="text-purple-700 dark:text-purple-400 font-semibold">
                         {related.schoolsInvolved} schools
                       </span>
                     </div>

@@ -96,7 +96,7 @@ export function GalleryHeroSectionCms({
 
   if (loading) {
     return (
-      <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 text-white">
+      <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 dark:from-green-700 dark:via-blue-700 dark:to-purple-700 text-white dark:text-gray-100">
         <div className="max-w-6xl mx-auto text-center">Loading...</div>
       </section>
     );
@@ -104,7 +104,7 @@ export function GalleryHeroSectionCms({
 
   if (!heroBlock) {
     return (
-      <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 text-white">
+      <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 dark:from-green-700 dark:via-blue-700 dark:to-purple-700 text-white dark:text-gray-100">
         <div className="max-w-6xl mx-auto text-center px-4">
           No gallery hero section configured yet.
         </div>
@@ -113,15 +113,15 @@ export function GalleryHeroSectionCms({
   }
 
   return (
-    <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 text-white">
+    <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-500 via-blue-500 to-purple-500 dark:from-green-700 dark:via-blue-700 dark:to-purple-700 text-white dark:text-gray-100">
       <div className="max-w-6xl mx-auto text-center">
         {heroBlock.title && (
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white dark:text-white">
             {heroBlock.title}
           </h1>
         )}
         {heroBlock.subtitle && (
-          <p className="text-xl mb-8">
+          <p className="text-xl mb-8 text-white dark:text-gray-100">
             {heroBlock.subtitle}
           </p>
         )}
@@ -130,14 +130,14 @@ export function GalleryHeroSectionCms({
           <div className="mt-8 flex flex-col md:flex-row justify-center items-center gap-4 md:gap-6">
             {/* County Filter */}
             <div className="flex items-center gap-3">
-              <label htmlFor="county-filter" className="font-medium">
+              <label htmlFor="county-filter" className="font-medium text-white dark:text-gray-100">
                 County:
               </label>
               <select
                 id="county-filter"
                 value={selectedCounty}
                 onChange={handleCountyChange}
-                className="px-4 py-2 rounded-lg text-gray-800 font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-white"
+                className="px-4 py-2 rounded-lg text-gray-800 dark:text-gray-900 bg-white dark:bg-gray-100 font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-white dark:focus:ring-gray-300"
               >
                 <option value="All Counties">All Counties</option>
                 {counties.map((county) => (
@@ -150,14 +150,14 @@ export function GalleryHeroSectionCms({
 
             {/* Date Range Filter */}
             <div className="flex items-center gap-3">
-              <label htmlFor="date-filter" className="font-medium">
+              <label htmlFor="date-filter" className="font-medium text-white dark:text-gray-100">
                 Date:
               </label>
               <select
                 id="date-filter"
                 value={selectedDateRange}
                 onChange={handleDateRangeChange}
-                className="px-4 py-2 rounded-lg text-gray-800 font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-white"
+                className="px-4 py-2 rounded-lg text-gray-800 dark:text-gray-900 bg-white dark:bg-gray-100 font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-white dark:focus:ring-gray-300"
               >
                 <option value="all">All Time</option>
                 <option value="last-week">Last Week</option>
@@ -174,7 +174,7 @@ export function GalleryHeroSectionCms({
 
         {/* Custom Date Picker */}
         {showCustomDatePicker && (
-          <div className="mt-6 flex flex-col md:flex-row justify-center items-center gap-4 bg-white/10 backdrop-blur-sm rounded-lg p-4 max-w-2xl mx-auto">
+          <div className="mt-6 flex flex-col md:flex-row justify-center items-center gap-4 bg-white/10 dark:bg-black/20 backdrop-blur-sm rounded-lg p-4 max-w-2xl mx-auto">
             <div className="flex items-center gap-2">
               <label htmlFor="start-date" className="font-medium text-sm">
                 From:
@@ -184,7 +184,7 @@ export function GalleryHeroSectionCms({
                 id="start-date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="px-3 py-2 rounded-lg text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white"
+                className="px-3 py-2 rounded-lg text-gray-800 dark:text-gray-900 bg-white dark:bg-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-white dark:focus:ring-gray-300"
               />
             </div>
             <div className="flex items-center gap-2">
@@ -196,13 +196,13 @@ export function GalleryHeroSectionCms({
                 id="end-date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="px-3 py-2 rounded-lg text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white"
+                className="px-3 py-2 rounded-lg text-gray-800 dark:text-gray-900 bg-white dark:bg-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-white dark:focus:ring-gray-300"
               />
             </div>
             <button
               onClick={handleApplyCustomDate}
               disabled={!startDate || !endDate}
-              className="px-6 py-2 bg-white text-purple-700 rounded-lg font-medium text-sm hover:bg-purple-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-6 py-2 bg-white dark:bg-gray-100 text-purple-700 dark:text-purple-800 rounded-lg font-medium text-sm hover:bg-purple-50 dark:hover:bg-purple-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Apply
             </button>

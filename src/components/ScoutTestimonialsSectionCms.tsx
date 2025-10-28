@@ -63,16 +63,16 @@ export function ScoutTestimonialsSectionCms() {
 
   if (loading) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-green-50">
-        <div className="max-w-6xl mx-auto text-center text-gray-600">Loading testimonials...</div>
+      <section className="py-20 px-4 md:px-8 bg-green-50 dark:bg-gray-800">
+        <div className="max-w-6xl mx-auto text-center text-gray-600 dark:text-gray-400">Loading testimonials...</div>
       </section>
     );
   }
 
   if (!testimonialsBlock || !testimonialsBlock.testimonials || testimonialsBlock.testimonials.length === 0) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-green-50">
-        <div className="max-w-6xl mx-auto text-center text-gray-600 px-4">
+      <section className="py-20 px-4 md:px-8 bg-green-50 dark:bg-gray-800">
+        <div className="max-w-6xl mx-auto text-center text-gray-600 dark:text-gray-400 px-4">
           No scout testimonials configured yet. Please add a "Scout Testimonials Block" to your Scouts page in Sanity Studio.
         </div>
       </section>
@@ -80,16 +80,16 @@ export function ScoutTestimonialsSectionCms() {
   }
 
   return (
-    <section className="py-20 px-4 md:px-8 bg-green-50">
+    <section className="py-20 px-4 md:px-8 bg-green-50 dark:bg-gray-800">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           {testimonialsBlock.title && (
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-green-800">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-green-800 dark:text-green-400">
               {testimonialsBlock.title}
             </h2>
           )}
           {testimonialsBlock.subtitle && (
-            <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
               {testimonialsBlock.subtitle}
             </p>
           )}
@@ -99,7 +99,7 @@ export function ScoutTestimonialsSectionCms() {
           {testimonialsBlock.testimonials.map((testimonial, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              className="bg-white dark:bg-gray-900 rounded-xl shadow-md dark:shadow-gray-900/50 overflow-hidden hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-300 transform hover:-translate-y-1"
             >
               <div className="h-64 overflow-hidden">
                 {testimonial.image?.asset?.url ? (
@@ -109,26 +109,26 @@ export function ScoutTestimonialsSectionCms() {
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-green-100 to-purple-100 flex items-center justify-center">
+                  <div className="w-full h-full bg-gradient-to-br from-green-100 to-purple-100 dark:from-green-900/30 dark:to-purple-900/30 flex items-center justify-center">
                     <span className="text-6xl">👤</span>
                   </div>
                 )}
               </div>
               <div className="p-6">
-                <p className="text-gray-700 italic mb-4">
+                <p className="text-gray-700 dark:text-gray-300 italic mb-4">
                   "{testimonial.quote}"
                 </p>
-                <div className="border-t border-gray-100 pt-4">
-                  <h3 className="font-bold text-gray-900">
+                <div className="border-t border-gray-100 dark:border-gray-700 pt-4">
+                  <h3 className="font-bold text-gray-900 dark:text-white">
                     {testimonial.scoutName}
                   </h3>
                   {testimonial.scoutLevel && testimonial.age && (
-                    <p className="text-sm text-green-700">
+                    <p className="text-sm text-green-700 dark:text-green-400">
                       {testimonial.scoutLevel}, Age {testimonial.age}
                     </p>
                   )}
                   {testimonial.school && (
-                    <p className="text-sm text-gray-600">{testimonial.school}</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{testimonial.school}</p>
                   )}
                 </div>
               </div>
@@ -137,15 +137,15 @@ export function ScoutTestimonialsSectionCms() {
         </div>
 
         {testimonialsBlock.leaderQuote && (
-          <div className="bg-white rounded-xl shadow-md p-8 border-l-4 border-purple-600">
-            <p className="text-lg italic text-gray-700 mb-4">
+          <div className="bg-white dark:bg-gray-900 rounded-xl shadow-md dark:shadow-gray-900/50 p-8 border-l-4 border-purple-600 dark:border-purple-400">
+            <p className="text-lg italic text-gray-700 dark:text-gray-300 mb-4">
               "{testimonialsBlock.leaderQuote.quote}"
             </p>
             <div className="text-right">
-              <p className="font-bold text-gray-900">
+              <p className="font-bold text-gray-900 dark:text-white">
                 — {testimonialsBlock.leaderQuote.name}
               </p>
-              <p className="text-sm text-purple-700">
+              <p className="text-sm text-purple-700 dark:text-purple-400">
                 {testimonialsBlock.leaderQuote.title}
               </p>
             </div>

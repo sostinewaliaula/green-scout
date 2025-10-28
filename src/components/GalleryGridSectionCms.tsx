@@ -120,8 +120,8 @@ export function GalleryGridSectionCms({
 
   if (loading) {
     return (
-      <section className="py-16 px-4 md:px-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto text-center text-gray-600">
+      <section className="py-16 px-4 md:px-8 bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-7xl mx-auto text-center text-gray-600 dark:text-gray-400">
           Loading gallery...
         </div>
       </section>
@@ -130,8 +130,8 @@ export function GalleryGridSectionCms({
 
   if (items.length === 0) {
     return (
-      <section className="py-16 px-4 md:px-8 bg-gray-50">
-        <div className="max-w-7xl mx-auto text-center text-gray-600 px-4">
+      <section className="py-16 px-4 md:px-8 bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-7xl mx-auto text-center text-gray-600 dark:text-gray-400 px-4">
           {selectedCounty === 'All Counties' && dateRange === 'all'
             ? 'No images or projects found. Please add content in Sanity Studio.'
             : `No images found matching your filters.`}
@@ -163,9 +163,9 @@ export function GalleryGridSectionCms({
   };
 
   return (
-    <section className="py-16 px-4 md:px-8 bg-gray-50">
+    <section className="py-16 px-4 md:px-8 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-6 text-center text-gray-600">
+        <div className="mb-6 text-center text-gray-600 dark:text-gray-400">
           <p className="text-sm">
             Showing {items.length} {items.length === 1 ? 'item' : 'items'}
             {selectedCounty !== 'All Counties' && ` in ${selectedCounty}`}
@@ -176,7 +176,7 @@ export function GalleryGridSectionCms({
           {items.map((item) => (
             <div
               key={item._id}
-              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-900/50 overflow-hidden hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-300 cursor-pointer group"
             >
               <div className="h-64 overflow-hidden relative">
                 {item.image?.asset?.url ? (
@@ -186,7 +186,7 @@ export function GalleryGridSectionCms({
                     className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-green-100 to-blue-100 flex items-center justify-center">
+                  <div className="w-full h-full bg-gradient-to-br from-green-100 to-blue-100 dark:from-green-900/30 dark:to-blue-900/30 flex items-center justify-center">
                     <span className="text-6xl">
                       {item._type === 'project' ? '🌳' : '📸'}
                     </span>
@@ -195,7 +195,7 @@ export function GalleryGridSectionCms({
                 
                 {/* Category badge for gallery images */}
                 {item._type === 'galleryImage' && item.category && (
-                  <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-gray-700">
+                  <div className="absolute top-2 right-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-gray-700 dark:text-gray-200">
                     {getCategoryLabel(item.category)}
                   </div>
                 )}
@@ -207,14 +207,14 @@ export function GalleryGridSectionCms({
               </div>
               
               <div className="p-4">
-                <h3 className="font-bold text-gray-900 mb-1 line-clamp-2">
+                <h3 className="font-bold text-gray-900 dark:text-white mb-1 line-clamp-2">
                   {item.title}
                 </h3>
-                <p className="text-sm text-gray-600 mb-1">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
                   📍 {item.location}
                 </p>
                 {item.date && (
-                  <p className="text-xs text-gray-500">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
                     📅 {formatDate(item.date)}
                   </p>
                 )}

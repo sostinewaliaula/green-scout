@@ -72,9 +72,9 @@ export function ScoutActivitiesSectionCms() {
   // Show loading state
   if (loading) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-white">
+      <section className="py-20 px-4 md:px-8 bg-white dark:bg-gray-900">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="text-gray-600">Loading...</div>
+          <div className="text-gray-600 dark:text-gray-400">Loading...</div>
         </div>
       </section>
     );
@@ -83,12 +83,12 @@ export function ScoutActivitiesSectionCms() {
   // If no data found, show empty state
   if (!activitiesBlock) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-white">
+      <section className="py-20 px-4 md:px-8 bg-white dark:bg-gray-900">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-purple-700">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-purple-700 dark:text-purple-400">
             Scout Activities & Achievements
           </h2>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400">
             Activities and achievements will appear here once added in Sanity Studio.
           </p>
         </div>
@@ -97,13 +97,13 @@ export function ScoutActivitiesSectionCms() {
   }
 
   return (
-    <section className="py-20 px-4 md:px-8 bg-white">
+    <section className="py-20 px-4 md:px-8 bg-white dark:bg-gray-900">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-purple-700">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-purple-700 dark:text-purple-400">
             {activitiesBlock.title || 'Scout Activities & Achievements'}
           </h2>
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+          <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
             {activitiesBlock.subtitle || "Green Scouts participate in a diverse range of activities that build environmental knowledge, leadership skills, and make a tangible impact on Kenya's ecosystems."}
           </p>
         </div>
@@ -114,7 +114,7 @@ export function ScoutActivitiesSectionCms() {
             {activitiesBlock.activities.map((activity, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-200"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-900/50 overflow-hidden hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-300 transform hover:-translate-y-1 border border-gray-200 dark:border-gray-700"
               >
                 <div className="h-56 overflow-hidden">
                   {activity.image?.asset?.url ? (
@@ -124,31 +124,31 @@ export function ScoutActivitiesSectionCms() {
                       className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-green-100 to-purple-100 flex items-center justify-center">
+                    <div className="w-full h-full bg-gradient-to-br from-green-100 to-purple-100 dark:from-green-900/30 dark:to-purple-900/30 flex items-center justify-center">
                       <span className="text-6xl">🌳</span>
                     </div>
                   )}
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
                     {activity.title}
                   </h3>
-                  <p className="text-gray-700 mb-4">{activity.description}</p>
+                  <p className="text-gray-700 dark:text-gray-300 mb-4">{activity.description}</p>
                   <div className="grid grid-cols-3 gap-4 text-sm">
-                    <div className="flex flex-col items-center p-2 bg-green-50 rounded-lg">
-                      <CalendarIcon className="w-5 h-5 text-green-700 mb-1" />
-                      <span className="font-medium text-gray-900">Frequency</span>
-                      <span className="text-gray-600">{activity.frequency}</span>
+                    <div className="flex flex-col items-center p-2 bg-green-50 dark:bg-green-900/30 rounded-lg">
+                      <CalendarIcon className="w-5 h-5 text-green-700 dark:text-green-400 mb-1" />
+                      <span className="font-medium text-gray-900 dark:text-white">Frequency</span>
+                      <span className="text-gray-600 dark:text-gray-400">{activity.frequency}</span>
                     </div>
-                    <div className="flex flex-col items-center p-2 bg-purple-50 rounded-lg">
-                      <UsersIcon className="w-5 h-5 text-purple-700 mb-1" />
-                      <span className="font-medium text-gray-900">Participants</span>
-                      <span className="text-gray-600">{activity.participants}</span>
+                    <div className="flex flex-col items-center p-2 bg-purple-50 dark:bg-purple-900/30 rounded-lg">
+                      <UsersIcon className="w-5 h-5 text-purple-700 dark:text-purple-400 mb-1" />
+                      <span className="font-medium text-gray-900 dark:text-white">Participants</span>
+                      <span className="text-gray-600 dark:text-gray-400">{activity.participants}</span>
                     </div>
-                    <div className="flex flex-col items-center p-2 bg-green-50 rounded-lg">
-                      <MapPinIcon className="w-5 h-5 text-green-700 mb-1" />
-                      <span className="font-medium text-gray-900">Location</span>
-                      <span className="text-gray-600">{activity.locations}</span>
+                    <div className="flex flex-col items-center p-2 bg-green-50 dark:bg-green-900/30 rounded-lg">
+                      <MapPinIcon className="w-5 h-5 text-green-700 dark:text-green-400 mb-1" />
+                      <span className="font-medium text-gray-900 dark:text-white">Location</span>
+                      <span className="text-gray-600 dark:text-gray-400">{activity.locations}</span>
                     </div>
                   </div>
                 </div>
@@ -159,21 +159,21 @@ export function ScoutActivitiesSectionCms() {
 
         {/* Key Achievements */}
         {activitiesBlock.achievements && activitiesBlock.achievements.length > 0 && (
-          <div className="mt-16 bg-gradient-to-r from-green-100 to-purple-100 rounded-xl p-8">
-            <h3 className="text-2xl font-bold text-center mb-8 text-gray-900">
+          <div className="mt-16 bg-gradient-to-r from-green-100 to-purple-100 dark:from-green-900/30 dark:to-purple-900/30 rounded-xl p-8">
+            <h3 className="text-2xl font-bold text-center mb-8 text-gray-900 dark:text-white">
               Key Achievements
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {activitiesBlock.achievements.map((achievement, index) => (
-                <div key={index} className="bg-white p-6 rounded-xl shadow-sm">
+                <div key={index} className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm dark:shadow-gray-900/50">
                   <div
                     className={`text-4xl font-bold mb-2 ${
-                      achievement.color === 'purple' ? 'text-purple-700' : 'text-green-700'
+                      achievement.color === 'purple' ? 'text-purple-700 dark:text-purple-400' : 'text-green-700 dark:text-green-400'
                     }`}
                   >
                     {achievement.value}
                   </div>
-                  <p className="text-gray-700">{achievement.description}</p>
+                  <p className="text-gray-700 dark:text-gray-300">{achievement.description}</p>
                 </div>
               ))}
             </div>

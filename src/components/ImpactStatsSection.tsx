@@ -58,9 +58,9 @@ export function ImpactStatsSection() {
   // Show loading state
   if (loading) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-gradient-to-r from-green-50 to-purple-50">
+      <section className="py-20 px-4 md:px-8 bg-gradient-to-r from-green-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="text-gray-600">Loading impact stats...</div>
+          <div className="text-gray-600 dark:text-gray-400">Loading impact stats...</div>
         </div>
       </section>
     );
@@ -69,12 +69,12 @@ export function ImpactStatsSection() {
   // If no stats found, show empty state
   if (!statsBlock || !statsBlock.stats || statsBlock.stats.length === 0) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-gradient-to-r from-green-50 to-purple-50">
+      <section className="py-20 px-4 md:px-8 bg-gradient-to-r from-green-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-purple-700">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-purple-700 dark:text-purple-400">
             Our Impact at a Glance
           </h2>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400">
             Impact statistics will appear here once added in Sanity Studio.
           </p>
         </div>
@@ -83,18 +83,18 @@ export function ImpactStatsSection() {
   }
 
   return (
-    <section className="py-20 px-4 md:px-8 bg-gradient-to-r from-green-50 to-purple-50">
+    <section className="py-20 px-4 md:px-8 bg-gradient-to-r from-green-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-purple-700">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-purple-700 dark:text-purple-400">
           {statsBlock.title || 'Our Impact at a Glance'}
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
           {statsBlock.stats.map((stat, index) => {
             // Determine color theme (alternate between green and purple)
             const isGreen = index % 2 === 0;
-            const bgColor = isGreen ? 'bg-green-100' : 'bg-purple-100';
-            const textColor = isGreen ? 'text-green-600' : 'text-purple-600';
-            const headingColor = isGreen ? 'text-green-700' : 'text-purple-700';
+            const bgColor = isGreen ? 'bg-green-100 dark:bg-green-900/30' : 'bg-purple-100 dark:bg-purple-900/30';
+            const textColor = isGreen ? 'text-green-600 dark:text-green-400' : 'text-purple-600 dark:text-purple-400';
+            const headingColor = isGreen ? 'text-green-700 dark:text-green-400' : 'text-purple-700 dark:text-purple-400';
 
             // Get the icon component if it's a name, otherwise treat as emoji
             const IconComponent = stat.icon ? iconMap[stat.icon.toLowerCase()] : null;
@@ -103,7 +103,7 @@ export function ImpactStatsSection() {
             return (
               <div
                 key={index}
-                className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow flex flex-col items-center text-center"
+                className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md dark:shadow-gray-900/50 hover:shadow-lg dark:hover:shadow-gray-900 transition-shadow flex flex-col items-center text-center"
               >
                 {stat.icon && (
                   <div className={`w-16 h-16 ${bgColor} rounded-full flex items-center justify-center mb-4`}>
@@ -119,13 +119,13 @@ export function ImpactStatsSection() {
                 <h3 className={`text-3xl font-bold ${headingColor} mb-2`}>
                   {stat.value}
                 </h3>
-                <p className="text-gray-700">{stat.label}</p>
+                <p className="text-gray-700 dark:text-gray-300">{stat.label}</p>
               </div>
             );
           })}
         </div>
         <div className="mt-12 text-center">
-          <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+          <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl mx-auto">
             Every tree planted is a step toward a greener future. Join us in our
             mission to combat climate change and create sustainable ecosystems
             across Kenya.
@@ -135,4 +135,3 @@ export function ImpactStatsSection() {
     </section>
   );
 }
-

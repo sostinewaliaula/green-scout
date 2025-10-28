@@ -48,8 +48,8 @@ export function ImpactHeroSectionCms() {
 
   if (!heroBlock) {
     return (
-      <section className="relative w-full h-[50vh] flex items-center justify-center bg-gray-100">
-        <div className="text-xl text-gray-600 text-center px-4">
+      <section className="relative w-full h-[50vh] flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+        <div className="text-xl text-gray-600 dark:text-gray-400 text-center px-4">
           No Impact Hero section configured yet. Please add an "Impact Hero Section" to your Impact page in Sanity Studio.
         </div>
       </section>

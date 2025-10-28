@@ -42,16 +42,16 @@ export function ImpactCtaSectionCms() {
 
   if (loading) {
     return (
-      <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-200 to-purple-200">
-        <div className="max-w-3xl mx-auto text-center text-gray-600">Loading...</div>
+      <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-200 to-purple-200 dark:from-gray-800 dark:to-gray-700">
+        <div className="max-w-3xl mx-auto text-center text-gray-600 dark:text-gray-400">Loading...</div>
       </section>
     );
   }
 
   if (!ctaBlock) {
     return (
-      <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-200 to-purple-200">
-        <div className="max-w-3xl mx-auto text-center text-gray-600 px-4">
+      <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-200 to-purple-200 dark:from-gray-800 dark:to-gray-700">
+        <div className="max-w-3xl mx-auto text-center text-gray-600 dark:text-gray-400 px-4">
           No CTA section configured yet. Please add an "Impact CTA Block" to your Impact page in Sanity Studio.
         </div>
       </section>
@@ -59,22 +59,22 @@ export function ImpactCtaSectionCms() {
   }
 
   return (
-    <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-200 to-purple-200">
+    <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-200 to-purple-200 dark:from-gray-800 dark:to-gray-700">
       <div className="max-w-3xl mx-auto text-center">
         {ctaBlock.title && (
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-green-800">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-green-800 dark:text-green-400">
             {ctaBlock.title}
           </h2>
         )}
         {ctaBlock.description && (
-          <p className="text-lg text-gray-700 mb-8">
+          <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
             {ctaBlock.description}
           </p>
         )}
         {ctaBlock.buttonText && ctaBlock.buttonLink && (
           <Link
             to={ctaBlock.buttonLink}
-            className="inline-block px-8 py-4 bg-gradient-to-r from-green-500 to-purple-500 text-white rounded-full font-semibold text-lg shadow-lg hover:scale-105 transition-transform"
+            className="inline-block px-8 py-4 bg-gradient-to-r from-green-500 to-purple-500 text-white dark:text-gray-100 rounded-full font-semibold text-lg shadow-lg hover:scale-105 transition-transform"
           >
             {ctaBlock.buttonText}
           </Link>

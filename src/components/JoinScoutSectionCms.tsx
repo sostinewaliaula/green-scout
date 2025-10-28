@@ -64,16 +64,16 @@ export function JoinScoutSectionCms() {
 
   if (loading) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-gradient-to-br from-purple-50 via-white to-green-50">
-        <div className="max-w-6xl mx-auto text-center text-gray-600">Loading join section...</div>
+      <section className="py-20 px-4 md:px-8 bg-gradient-to-br from-purple-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+        <div className="max-w-6xl mx-auto text-center text-gray-600 dark:text-gray-400">Loading join section...</div>
       </section>
     );
   }
 
   if (!joinBlock) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-gradient-to-br from-purple-50 via-white to-green-50">
-        <div className="max-w-6xl mx-auto text-center text-gray-600 px-4">
+      <section className="py-20 px-4 md:px-8 bg-gradient-to-br from-purple-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
+        <div className="max-w-6xl mx-auto text-center text-gray-600 dark:text-gray-400 px-4">
           No "Join Scout Section" configured yet. Please add a "Join Scout Section" block to your Scouts page in Sanity Studio.
         </div>
       </section>
@@ -81,19 +81,19 @@ export function JoinScoutSectionCms() {
   }
 
   return (
-    <section className="py-20 px-4 md:px-8 bg-gradient-to-br from-purple-50 via-white to-green-50">
+    <section className="py-20 px-4 md:px-8 bg-gradient-to-br from-purple-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left Column - Main Info */}
           <div>
             {joinBlock.title && (
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-purple-700 to-purple-900 bg-clip-text text-transparent">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-gradient-to-r from-purple-700 to-purple-900 dark:from-purple-400 dark:to-purple-600 bg-clip-text text-transparent">
                 {joinBlock.title}
               </h2>
             )}
             
             {joinBlock.description && (
-              <p className="text-lg text-gray-700 mb-8 leading-relaxed">
+              <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
                 {joinBlock.description}
               </p>
             )}
@@ -101,17 +101,17 @@ export function JoinScoutSectionCms() {
             {joinBlock.benefits && joinBlock.benefits.length > 0 && (
               <div className="mb-8">
                 {joinBlock.benefitsHeading && (
-                  <h3 className="text-xl font-bold mb-4 text-green-800">
+                  <h3 className="text-xl font-bold mb-4 text-green-800 dark:text-green-400">
                     {joinBlock.benefitsHeading}
                   </h3>
                 )}
                 <ul className="space-y-3">
                   {joinBlock.benefits.map((benefit, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <div className="mt-1 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                        <CheckIcon className="w-3 h-3 text-green-700" />
+                      <div className="mt-1 w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
+                        <CheckIcon className="w-3 h-3 text-green-700 dark:text-green-400" />
                       </div>
-                      <span className="text-gray-700">{benefit}</span>
+                      <span className="text-gray-700 dark:text-gray-300">{benefit}</span>
                     </li>
                   ))}
                 </ul>
@@ -121,7 +121,7 @@ export function JoinScoutSectionCms() {
             {joinBlock.applyButton?.text && (
               <Link
                 to={joinBlock.applyButton.link || '/get-involved'}
-                className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-green-600 to-purple-600 text-white rounded-full font-medium hover:from-green-700 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg"
+                className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-green-600 to-purple-600 dark:from-green-700 dark:to-purple-700 text-white rounded-full font-medium hover:from-green-700 hover:to-purple-700 dark:hover:from-green-800 dark:hover:to-purple-800 transition-all transform hover:scale-105 shadow-lg"
               >
                 {joinBlock.applyButton.text}
                 <ArrowRightIcon className="w-5 h-5" />
@@ -133,23 +133,23 @@ export function JoinScoutSectionCms() {
           <div className="space-y-6">
             {/* Steps */}
             {joinBlock.steps && joinBlock.steps.length > 0 && (
-              <div className="bg-white rounded-xl shadow-md p-8">
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-900/50 p-8">
                 {joinBlock.stepsHeading && (
-                  <h3 className="text-2xl font-bold mb-6 text-gray-900">
+                  <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
                     {joinBlock.stepsHeading}
                   </h3>
                 )}
                 <div className="space-y-6">
                   {joinBlock.steps.map((step, i) => (
                     <div key={i} className="flex gap-4">
-                      <div className="w-12 h-12 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-lg flex-shrink-0">
+                      <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 flex items-center justify-center font-bold text-lg flex-shrink-0">
                         {String(i + 1).padStart(2, '0')}
                       </div>
                       <div>
-                        <h4 className="font-bold text-gray-900 mb-1">
+                        <h4 className="font-bold text-gray-900 dark:text-white mb-1">
                           {step.title}
                         </h4>
-                        <p className="text-gray-600 text-sm">
+                        <p className="text-gray-600 dark:text-gray-400 text-sm">
                           {step.description}
                         </p>
                       </div>
@@ -161,21 +161,21 @@ export function JoinScoutSectionCms() {
 
             {/* Organizations Box */}
             {joinBlock.organizationsBox?.enabled && (
-              <div className="bg-gradient-to-br from-yellow-50 to-amber-50 border-2 border-yellow-200 rounded-xl p-6">
+              <div className="bg-gradient-to-br from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border-2 border-yellow-200 dark:border-yellow-700 rounded-xl p-6">
                 {joinBlock.organizationsBox.heading && (
-                  <h3 className="text-xl font-bold mb-3 text-gray-900">
+                  <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
                     {joinBlock.organizationsBox.heading}
                   </h3>
                 )}
                 {joinBlock.organizationsBox.description && (
-                  <p className="text-gray-700 mb-4">
+                  <p className="text-gray-700 dark:text-gray-300 mb-4">
                     {joinBlock.organizationsBox.description}
                   </p>
                 )}
                 {joinBlock.organizationsBox.linkText && (
                   <Link
                     to={joinBlock.organizationsBox.linkUrl || '/get-involved'}
-                    className="inline-flex items-center gap-2 text-purple-700 font-medium hover:text-purple-900 transition-colors"
+                    className="inline-flex items-center gap-2 text-purple-700 dark:text-purple-400 font-medium hover:text-purple-900 dark:hover:text-purple-300 transition-colors"
                   >
                     {joinBlock.organizationsBox.linkText}
                     <ArrowRightIcon className="w-4 h-4" />

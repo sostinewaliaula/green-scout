@@ -65,9 +65,9 @@ export function FeaturedProjectsSectionCms() {
   // Show loading state
   if (loading) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-white">
+      <section className="py-20 px-4 md:px-8 bg-white dark:bg-gray-900">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="text-gray-600">Loading featured projects...</div>
+          <div className="text-gray-600 dark:text-gray-400">Loading featured projects...</div>
         </div>
       </section>
     );
@@ -76,12 +76,12 @@ export function FeaturedProjectsSectionCms() {
   // If no projects found, show empty state
   if (!projectsBlock || !projectsBlock.projects || projectsBlock.projects.length === 0) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-white">
+      <section className="py-20 px-4 md:px-8 bg-white dark:bg-gray-900">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-green-700 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-green-700 dark:text-green-400 mb-4">
             Featured Projects
           </h2>
-          <p className="text-gray-600">
+          <p className="text-gray-600 dark:text-gray-400">
             Featured projects will appear here once added in Sanity Studio.
           </p>
         </div>
@@ -90,21 +90,21 @@ export function FeaturedProjectsSectionCms() {
   }
 
   return (
-    <section className="py-20 px-4 md:px-8 bg-white">
+    <section className="py-20 px-4 md:px-8 bg-white dark:bg-gray-900">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-end mb-12">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-green-700 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-green-700 dark:text-green-400 mb-4">
               {projectsBlock.title || 'Featured Projects'}
             </h2>
-            <p className="text-lg text-gray-700 max-w-2xl">
+            <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl">
               {projectsBlock.subtitle || 'Explore some of our most impactful initiatives across Kenya.'}
             </p>
           </div>
           {projectsBlock.showViewAllLink && (
             <Link
               to="/impact"
-              className="hidden md:flex items-center text-purple-700 font-medium hover:text-purple-900 transition-colors"
+              className="hidden md:flex items-center text-purple-700 dark:text-purple-400 font-medium hover:text-purple-900 dark:hover:text-purple-300 transition-colors"
             >
               View all projects
               <ArrowRightIcon className="w-5 h-5 ml-2" />
@@ -115,7 +115,7 @@ export function FeaturedProjectsSectionCms() {
           {projectsBlock.projects.map((project) => (
             <div
               key={project._id}
-              className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-md dark:shadow-gray-900/50 hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-300 transform hover:-translate-y-1"
             >
               <div className="h-48 overflow-hidden">
                 {project.image?.asset?.url ? (
@@ -125,33 +125,33 @@ export function FeaturedProjectsSectionCms() {
                     className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
-                    <span className="text-green-600 text-4xl">🌳</span>
+                  <div className="w-full h-full bg-gradient-to-br from-green-100 to-green-200 dark:from-green-900/30 dark:to-green-900/50 flex items-center justify-center">
+                    <span className="text-green-600 dark:text-green-400 text-4xl">🌳</span>
                   </div>
                 )}
               </div>
               <div className="p-6">
                 <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-xl font-bold text-gray-900">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                     {project.title}
                   </h3>
-                  <span className="px-3 py-1 bg-green-100 text-green-800 text-xs rounded-full whitespace-nowrap ml-2">
+                  <span className="px-3 py-1 bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-400 text-xs rounded-full whitespace-nowrap ml-2">
                     {project.location}
                   </span>
                 </div>
-                <p className="text-gray-700 mb-4">{project.description}</p>
-                <div className="flex justify-between pt-4 border-t border-gray-100">
+                <p className="text-gray-700 dark:text-gray-300 mb-4">{project.description}</p>
+                <div className="flex justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-green-700">
+                    <p className="text-2xl font-bold text-green-700 dark:text-green-400">
                       {project.treesPlanted.toLocaleString()}
                     </p>
-                    <p className="text-sm text-gray-600">Trees Planted</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Trees Planted</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-2xl font-bold text-purple-700">
+                    <p className="text-2xl font-bold text-purple-700 dark:text-purple-400">
                       {project.schoolsInvolved}
                     </p>
-                    <p className="text-sm text-gray-600">Schools</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">Schools</p>
                   </div>
                 </div>
               </div>
@@ -162,7 +162,7 @@ export function FeaturedProjectsSectionCms() {
           <div className="mt-8 text-center md:hidden">
             <Link
               to="/impact"
-              className="inline-flex items-center text-purple-700 font-medium hover:text-purple-900 transition-colors"
+              className="inline-flex items-center text-purple-700 dark:text-purple-400 font-medium hover:text-purple-900 dark:hover:text-purple-300 transition-colors"
             >
               View all projects
               <ArrowRightIcon className="w-5 h-5 ml-2" />
@@ -173,4 +173,3 @@ export function FeaturedProjectsSectionCms() {
     </section>
   );
 }
-

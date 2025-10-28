@@ -48,16 +48,16 @@ export function ObjectivesSectionCms() {
 
   if (loading) {
     return (
-      <section className="py-16 px-4 md:px-8 bg-white">
-        <div className="max-w-5xl mx-auto text-center text-gray-600">Loading objectives...</div>
+      <section className="py-16 px-4 md:px-8 bg-white dark:bg-gray-900">
+        <div className="max-w-5xl mx-auto text-center text-gray-600 dark:text-gray-400">Loading objectives...</div>
       </section>
     );
   }
 
   if (!objectivesBlock || !objectivesBlock.objectives || objectivesBlock.objectives.length === 0) {
     return (
-      <section className="py-16 px-4 md:px-8 bg-white">
-        <div className="max-w-5xl mx-auto text-center text-gray-600 px-4">
+      <section className="py-16 px-4 md:px-8 bg-white dark:bg-gray-900">
+        <div className="max-w-5xl mx-auto text-center text-gray-600 dark:text-gray-400 px-4">
           No objectives configured yet. Please add an "Objectives Block" to your Impact page in Sanity Studio.
         </div>
       </section>
@@ -65,23 +65,23 @@ export function ObjectivesSectionCms() {
   }
 
   return (
-    <section className="py-16 px-4 md:px-8 bg-white">
+    <section className="py-16 px-4 md:px-8 bg-white dark:bg-gray-900">
       <div className="max-w-5xl mx-auto">
         {objectivesBlock.title && (
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-purple-700">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-purple-700 dark:text-purple-400">
             {objectivesBlock.title}
           </h2>
         )}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {objectivesBlock.objectives.map((objective, index) => {
             const isGreen = objective.colorTheme === 'green';
-            const bgColor = isGreen ? 'bg-green-50' : 'bg-purple-50';
-            const titleColor = isGreen ? 'text-green-700' : 'text-purple-700';
+            const bgColor = isGreen ? 'bg-green-50 dark:bg-green-900/20' : 'bg-purple-50 dark:bg-purple-900/20';
+            const titleColor = isGreen ? 'text-green-700 dark:text-green-400' : 'text-purple-700 dark:text-purple-400';
 
             return (
               <div
                 key={index}
-                className={`${bgColor} rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition-shadow text-center`}
+                className={`${bgColor} rounded-xl p-6 flex flex-col items-center shadow dark:shadow-gray-900/50 hover:shadow-lg dark:hover:shadow-gray-900 transition-shadow text-center`}
               >
                 <span className="text-4xl mb-3" role="img" aria-label={objective.title}>
                   {objective.icon}
@@ -89,7 +89,7 @@ export function ObjectivesSectionCms() {
                 <h3 className={`font-bold text-lg mb-2 ${titleColor}`}>
                   {objective.title}
                 </h3>
-                <p className="text-gray-700">
+                <p className="text-gray-700 dark:text-gray-300">
                   {objective.description}
                 </p>
               </div>

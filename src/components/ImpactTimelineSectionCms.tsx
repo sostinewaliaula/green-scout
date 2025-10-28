@@ -48,16 +48,16 @@ export function ImpactTimelineSectionCms() {
 
   if (loading) {
     return (
-      <section className="py-16 px-4 md:px-8 bg-white">
-        <div className="max-w-4xl mx-auto text-center text-gray-600">Loading timeline...</div>
+      <section className="py-16 px-4 md:px-8 bg-white dark:bg-gray-900">
+        <div className="max-w-4xl mx-auto text-center text-gray-600 dark:text-gray-400">Loading timeline...</div>
       </section>
     );
   }
 
   if (!timelineBlock || !timelineBlock.steps || timelineBlock.steps.length === 0) {
     return (
-      <section className="py-16 px-4 md:px-8 bg-white">
-        <div className="max-w-4xl mx-auto text-center text-gray-600 px-4">
+      <section className="py-16 px-4 md:px-8 bg-white dark:bg-gray-900">
+        <div className="max-w-4xl mx-auto text-center text-gray-600 dark:text-gray-400 px-4">
           No timeline configured yet. Please add an "Impact Timeline Block" to your Impact page in Sanity Studio.
         </div>
       </section>
@@ -68,10 +68,10 @@ export function ImpactTimelineSectionCms() {
   const sortedSteps = [...timelineBlock.steps].sort((a, b) => a.stepNumber - b.stepNumber);
 
   return (
-    <section className="py-16 px-4 md:px-8 bg-white">
+    <section className="py-16 px-4 md:px-8 bg-white dark:bg-gray-900">
       <div className="max-w-4xl mx-auto">
         {timelineBlock.title && (
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-purple-700">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-purple-700 dark:text-purple-400">
             {timelineBlock.title}
           </h2>
         )}
@@ -79,7 +79,7 @@ export function ImpactTimelineSectionCms() {
           {sortedSteps.map((step, index) => {
             const isGreen = step.colorTheme === 'green';
             const bgColor = isGreen ? 'bg-green-500' : 'bg-purple-500';
-            const textColor = isGreen ? 'text-green-700' : 'text-purple-700';
+            const textColor = isGreen ? 'text-green-700 dark:text-green-400' : 'text-purple-700 dark:text-purple-400';
             const isLastStep = index === sortedSteps.length - 1;
 
             return (
@@ -99,7 +99,7 @@ export function ImpactTimelineSectionCms() {
                   <h3 className={`text-xl font-bold mb-2 ${textColor}`}>
                     {step.title}
                   </h3>
-                  <p className="text-gray-700">
+                  <p className="text-gray-700 dark:text-gray-300">
                     {step.description}
                   </p>
                 </div>

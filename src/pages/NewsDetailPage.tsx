@@ -109,10 +109,10 @@ export function NewsDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="pt-32 pb-20 px-4 md:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="text-gray-600">Loading article...</div>
+            <div className="text-gray-600 dark:text-gray-400">Loading article...</div>
           </div>
         </div>
       </div>
@@ -121,14 +121,14 @@ export function NewsDetailPage() {
 
   if (!article) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
         <div className="pt-32 pb-20 px-4 md:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Article Not Found</h1>
-            <p className="text-gray-600 mb-8">The article you're looking for doesn't exist.</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Article Not Found</h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-8">The article you're looking for doesn't exist.</p>
             <Link
               to="/news"
-              className="inline-flex items-center text-purple-700 font-medium hover:text-purple-900 transition-colors"
+              className="inline-flex items-center text-purple-700 dark:text-purple-400 font-medium hover:text-purple-900 transition-colors"
             >
               <ArrowLeftIcon className="w-5 h-5 mr-2" />
               Back to News
@@ -140,7 +140,7 @@ export function NewsDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
 
       {/* Article Header */}
       <article className="pt-32 pb-20 px-4 md:px-8">
@@ -148,7 +148,7 @@ export function NewsDetailPage() {
           {/* Back Button */}
           <Link
             to="/news"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-8 transition-colors"
+            className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:text-white mb-8 transition-colors"
           >
             <ArrowLeftIcon className="w-5 h-5 mr-2" />
             Back to News
@@ -164,13 +164,13 @@ export function NewsDetailPage() {
           )}
 
           {/* Title */}
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
             {article.title}
           </h1>
 
           {/* Meta Information */}
           <div className="flex items-center justify-between mb-8 pb-8 border-b">
-            <div className="flex items-center text-gray-600">
+            <div className="flex items-center text-gray-600 dark:text-gray-400">
               <CalendarIcon className="w-5 h-5 mr-2" />
               <span>{formatDate(article.publishedAt)}</span>
             </div>
@@ -195,7 +195,7 @@ export function NewsDetailPage() {
           )}
 
           {/* Excerpt */}
-          <div className="text-xl text-gray-700 mb-8 leading-relaxed font-medium border-l-4 border-purple-600 pl-6 py-2 bg-purple-50">
+          <div className="text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed font-medium border-l-4 border-purple-600 pl-6 py-2 bg-purple-50">
             {article.excerpt}
           </div>
 
@@ -205,7 +205,7 @@ export function NewsDetailPage() {
               <PortableText value={article.content} />
             </div>
           ) : (
-            <div className="text-gray-600 italic">
+            <div className="text-gray-600 dark:text-gray-400 italic">
               No additional content available for this article.
             </div>
           )}
@@ -214,15 +214,15 @@ export function NewsDetailPage() {
 
       {/* Related Articles */}
       {relatedArticles.length > 0 && (
-        <section className="py-16 px-4 md:px-8 bg-white border-t">
+        <section className="py-16 px-4 md:px-8 bg-white dark:bg-gray-800 border-t">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">Related Articles</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Related Articles</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {relatedArticles.map((related) => (
                 <Link
                   key={related._id}
                   to={`/news/${related.slug.current}`}
-                  className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  className="bg-white dark:bg-gray-800 border border-gray-200 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                 >
                   <div className="h-40 overflow-hidden">
                     {related.image?.asset?.url ? (
@@ -242,7 +242,7 @@ export function NewsDetailPage() {
                       <CalendarIcon className="w-4 h-4 mr-1" />
                       <span className="text-xs">{formatDate(related.publishedAt)}</span>
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900 line-clamp-2">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white line-clamp-2">
                       {related.title}
                     </h3>
                   </div>
