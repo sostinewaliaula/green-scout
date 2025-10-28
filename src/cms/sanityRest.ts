@@ -5,8 +5,11 @@ export type SanityResult<T> = { result: T };
 export async function fetchSanity<T>(query: string, params: Record<string, unknown> = {}): Promise<T | null> {
   const { projectId, dataset, apiVersion, token } = sanityConfig;
   const search = new URLSearchParams({ query });
+  // Add each parameter with $ prefix
   if (params && Object.keys(params).length) {
-    search.set('$params', JSON.stringify(params));
+    Object.entries(params).forEach(([key, value]) => {
+      search.set(`$${key}`, JSON.stringify(value));
+    });
   }
   const url = `https://${projectId}.api.sanity.io/v${apiVersion}/data/query/${dataset}?${search.toString()}`;
 

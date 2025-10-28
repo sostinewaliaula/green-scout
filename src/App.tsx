@@ -8,6 +8,10 @@ import { ImpactPage } from './pages/ImpactPage';
 import { GalleryPage } from './pages/GalleryPage';
 import { NamedTreesPage } from './pages/NamedTreesPage';
 import { GetInvolvedPage } from './pages/GetInvolvedPage';
+import { NewsListPage } from './pages/NewsListPage';
+import { NewsDetailPage } from './pages/NewsDetailPage';
+import { ProjectDetailPage } from './pages/ProjectDetailPage';
+
 export function App() {
   return <BrowserRouter>
       <Routes>
@@ -19,6 +23,9 @@ export function App() {
           <Route path="gallery" element={<GalleryPage />} />
           <Route path="named-trees" element={<NamedTreesPage />} />
           <Route path="get-involved" element={<GetInvolvedPage />} />
+          <Route path="news" element={<NewsListPage />} />
+          <Route path="news/:slug" element={<NewsDetailPage />} />
+          <Route path="projects/:slug" element={<ProjectDetailPage />} />
         </Route>
       </Routes>
     </BrowserRouter>;
