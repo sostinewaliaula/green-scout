@@ -73,6 +73,19 @@ export function CmsPage() {
               description,
               requirements
             },
+            activities[]{
+              title,
+              image{asset->{url}},
+              description,
+              frequency,
+              participants,
+              locations
+            },
+            achievements[]{
+              value,
+              description,
+              color
+            },
             asset->{url}
           }
         }`,

@@ -12,6 +12,7 @@ import blockCta from './blockCta';
 import blockScoutHero from './blockScoutHero';
 import blockScoutOfMonth from './blockScoutOfMonth';
 import blockScoutProgram from './blockScoutProgram';
+import blockScoutActivities from './blockScoutActivities';
 import galleryImage from './galleryImage';
 import navigation from './navigation';
 import project from './project';
@@ -43,6 +44,7 @@ export const schemaTypes = [
   blockScoutHero,
   blockScoutOfMonth,
   blockScoutProgram,
+  blockScoutActivities,
   
   // Other types
   galleryImage,

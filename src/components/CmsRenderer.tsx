@@ -152,7 +152,30 @@ type BlockScoutProgram = {
   levels?: ProgramLevel[];
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram;
+type Activity = {
+  title: string;
+  image?: ImageAsset;
+  description: string;
+  frequency: string;
+  participants: string;
+  locations: string;
+};
+
+type Achievement = {
+  value: string;
+  description: string;
+  color?: 'green' | 'purple';
+};
+
+type BlockScoutActivities = {
+  _type: 'blockScoutActivities';
+  title?: string;
+  subtitle?: string;
+  activities?: Activity[];
+  achievements?: Achievement[];
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -842,6 +865,91 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                           </div>
                         </div>
                       ))}
+                    </div>
+                  )}
+                </div>
+              </section>
+            );
+          }
+          case 'blockScoutActivities': {
+            const b = block as BlockScoutActivities;
+            return (
+              <section key={idx} className="py-20 px-4 md:px-8 bg-white">
+                <div className="max-w-6xl mx-auto">
+                  <div className="text-center mb-16">
+                    {b.title && (
+                      <h2 className="text-3xl md:text-4xl font-bold mb-6 text-purple-700">
+                        {b.title}
+                      </h2>
+                    )}
+                    {b.subtitle && (
+                      <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+                        {b.subtitle}
+                      </p>
+                    )}
+                  </div>
+                  
+                  {/* Activities Grid */}
+                  {b.activities && b.activities.length > 0 && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      {b.activities.map((activity, i) => (
+                        <div key={i} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-200">
+                          <div className="h-56 overflow-hidden">
+                            {activity.image?.asset?.url ? (
+                              <img src={activity.image.asset.url} alt={activity.title} className="w-full h-full object-cover transition-transform hover:scale-105 duration-500" />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-green-100 to-purple-100 flex items-center justify-center">
+                                <span className="text-6xl">🌳</span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="p-6">
+                            <h3 className="text-xl font-bold text-gray-900 mb-3">{activity.title}</h3>
+                            <p className="text-gray-700 mb-4">{activity.description}</p>
+                            <div className="grid grid-cols-3 gap-4 text-sm">
+                              <div className="flex flex-col items-center p-2 bg-green-50 rounded-lg">
+                                <svg className="w-5 h-5 text-green-700 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span className="font-medium text-gray-900">Frequency</span>
+                                <span className="text-gray-600">{activity.frequency}</span>
+                              </div>
+                              <div className="flex flex-col items-center p-2 bg-purple-50 rounded-lg">
+                                <svg className="w-5 h-5 text-purple-700 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                                </svg>
+                                <span className="font-medium text-gray-900">Participants</span>
+                                <span className="text-gray-600">{activity.participants}</span>
+                              </div>
+                              <div className="flex flex-col items-center p-2 bg-green-50 rounded-lg">
+                                <svg className="w-5 h-5 text-green-700 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <span className="font-medium text-gray-900">Location</span>
+                                <span className="text-gray-600">{activity.locations}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Key Achievements */}
+                  {b.achievements && b.achievements.length > 0 && (
+                    <div className="mt-16 bg-gradient-to-r from-green-100 to-purple-100 rounded-xl p-8">
+                      <h3 className="text-2xl font-bold text-center mb-8 text-gray-900">Key Achievements</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {b.achievements.map((achievement, i) => (
+                          <div key={i} className="bg-white p-6 rounded-xl shadow-sm">
+                            <div className={`text-4xl font-bold mb-2 ${achievement.color === 'purple' ? 'text-purple-700' : 'text-green-700'}`}>
+                              {achievement.value}
+                            </div>
+                            <p className="text-gray-700">{achievement.description}</p>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>

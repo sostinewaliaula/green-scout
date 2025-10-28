@@ -20,6 +20,7 @@ const page = {
         { type: 'blockScoutHero' },
         { type: 'blockScoutOfMonth' },
         { type: 'blockScoutProgram' },
+        { type: 'blockScoutActivities' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }
