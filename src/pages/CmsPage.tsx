@@ -121,6 +121,19 @@ export function CmsPage() {
             scientificName,
             plantedDate,
             whyItMatters,
+            displayMode,
+            selectedTrees[]->{
+              _id,
+              treeName,
+              namedAfter,
+              role,
+              image{asset->{url}},
+              slug
+            },
+            maxTreesToShow,
+            showViewAllButton,
+            viewAllButtonText,
+            viewAllButtonLink,
             asset->{url}
           }
         }`,

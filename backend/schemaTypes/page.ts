@@ -24,6 +24,7 @@ const page = {
         { type: 'blockScoutTestimonials' },
         { type: 'blockJoinScout' },
         { type: 'blockTreeOfMonth' },
+        { type: 'blockNamedTrees' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }

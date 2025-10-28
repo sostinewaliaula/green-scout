@@ -16,10 +16,12 @@ import blockScoutActivities from './blockScoutActivities';
 import blockScoutTestimonials from './blockScoutTestimonials';
 import blockJoinScout from './blockJoinScout';
 import blockTreeOfMonth from './blockTreeOfMonth';
+import blockNamedTrees from './blockNamedTrees';
 import galleryImage from './galleryImage';
 import navigation from './navigation';
 import project from './project';
 import newsArticle from './newsArticle';
+import namedTree from './namedTree';
 import footerSettings from './footerSettings';
 import navbarSettings from './navbarSettings';
 
@@ -32,6 +34,7 @@ export const schemaTypes = [
   page,
   project,
   newsArticle,
+  namedTree,
   
   // Block types
   blockText,
@@ -51,6 +54,7 @@ export const schemaTypes = [
   blockScoutTestimonials,
   blockJoinScout,
   blockTreeOfMonth,
+  blockNamedTrees,
   
   // Other types
   galleryImage,
