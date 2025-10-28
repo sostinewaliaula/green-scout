@@ -21,6 +21,7 @@ const page = {
         { type: 'blockScoutOfMonth' },
         { type: 'blockScoutProgram' },
         { type: 'blockScoutActivities' },
+        { type: 'blockScoutTestimonials' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }

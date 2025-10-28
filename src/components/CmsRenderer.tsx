@@ -175,7 +175,30 @@ type BlockScoutActivities = {
   achievements?: Achievement[];
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities;
+type ScoutTestimonial = {
+  quote: string;
+  scoutName: string;
+  scoutLevel?: string;
+  age?: number;
+  school?: string;
+  image?: ImageAsset;
+};
+
+type LeaderQuote = {
+  quote: string;
+  name: string;
+  title: string;
+};
+
+type BlockScoutTestimonials = {
+  _type: 'blockScoutTestimonials';
+  title?: string;
+  subtitle?: string;
+  testimonials?: ScoutTestimonial[];
+  leaderQuote?: LeaderQuote;
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -997,6 +1020,84 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                           <p className="text-green-50">{audience.description}</p>
                         </div>
                       ))}
+                    </div>
+                  )}
+                </div>
+              </section>
+            );
+          }
+          case 'blockScoutTestimonials': {
+            const b = block as BlockScoutTestimonials;
+            return (
+              <section key={idx} className="py-20 px-4 md:px-8 bg-green-50">
+                <div className="max-w-6xl mx-auto">
+                  <div className="text-center mb-12">
+                    {b.title && (
+                      <h2 className="text-3xl md:text-4xl font-bold mb-4 text-green-800">
+                        {b.title}
+                      </h2>
+                    )}
+                    {b.subtitle && (
+                      <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+                        {b.subtitle}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    {b.testimonials?.map((testimonial, i) => (
+                      <div
+                        key={i}
+                        className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                      >
+                        <div className="h-64 overflow-hidden">
+                          {testimonial.image?.asset?.url ? (
+                            <img
+                              src={testimonial.image.asset.url}
+                              alt={testimonial.scoutName}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-green-100 to-purple-100 flex items-center justify-center">
+                              <span className="text-6xl">👤</span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="p-6">
+                          <p className="text-gray-700 italic mb-4">
+                            "{testimonial.quote}"
+                          </p>
+                          <div className="border-t border-gray-100 pt-4">
+                            <h3 className="font-bold text-gray-900">
+                              {testimonial.scoutName}
+                            </h3>
+                            {testimonial.scoutLevel && testimonial.age && (
+                              <p className="text-sm text-green-700">
+                                {testimonial.scoutLevel}, Age {testimonial.age}
+                              </p>
+                            )}
+                            {testimonial.school && (
+                              <p className="text-sm text-gray-600">{testimonial.school}</p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {b.leaderQuote && (
+                    <div className="bg-white rounded-xl shadow-md p-8 border-l-4 border-purple-600">
+                      <p className="text-lg italic text-gray-700 mb-4">
+                        "{b.leaderQuote.quote}"
+                      </p>
+                      <div className="text-right">
+                        <p className="font-bold text-gray-900">
+                          — {b.leaderQuote.name}
+                        </p>
+                        <p className="text-sm text-purple-700">
+                          {b.leaderQuote.title}
+                        </p>
+                      </div>
                     </div>
                   )}
                 </div>

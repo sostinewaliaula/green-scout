@@ -86,6 +86,19 @@ export function CmsPage() {
               description,
               color
             },
+            testimonials[]{
+              quote,
+              scoutName,
+              scoutLevel,
+              age,
+              school,
+              image{asset->{url}}
+            },
+            leaderQuote{
+              quote,
+              name,
+              title
+            },
             asset->{url}
           }
         }`,
