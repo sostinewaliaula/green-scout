@@ -23,6 +23,7 @@ const page = {
         { type: 'blockScoutActivities' },
         { type: 'blockScoutTestimonials' },
         { type: 'blockJoinScout' },
+        { type: 'blockTreeOfMonth' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }

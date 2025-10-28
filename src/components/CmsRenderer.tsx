@@ -228,7 +228,20 @@ type BlockJoinScout = {
   organizationsBox?: OrganizationsBox;
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout;
+type BlockTreeOfMonth = {
+  _type: 'blockTreeOfMonth';
+  title?: string;
+  month?: string;
+  treeName?: string;
+  scientificName?: string;
+  location?: string;
+  plantedDate?: string;
+  image?: ImageAsset;
+  description?: any[];
+  whyItMatters?: string;
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout | BlockTreeOfMonth;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -1245,6 +1258,124 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                           )}
                         </div>
                       )}
+                    </div>
+                  </div>
+                </div>
+              </section>
+            );
+          }
+          case 'blockTreeOfMonth': {
+            const b = block as BlockTreeOfMonth;
+            
+            // Simple block content to text converter
+            const blockContentToText = (blocks: any[]): string[] => {
+              if (!blocks) return [];
+              return blocks
+                .filter((block) => block._type === 'block')
+                .map((block) => {
+                  return block.children
+                    ?.map((child: any) => child.text)
+                    .join('') || '';
+                })
+                .filter((text) => text.length > 0);
+            };
+
+            const formatDate = (dateString?: string) => {
+              if (!dateString) return '';
+              const date = new Date(dateString);
+              return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              });
+            };
+
+            const descriptionParagraphs = blockContentToText(b.description || []);
+
+            return (
+              <section key={idx} className="py-20 px-4 md:px-8 bg-gradient-to-br from-green-50 to-green-100">
+                <div className="max-w-6xl mx-auto">
+                  {b.title && (
+                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-green-800">
+                      {b.title}
+                    </h2>
+                  )}
+
+                  <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                      {/* Left Column - Tree Details */}
+                      <div className="p-8 md:p-12">
+                        {b.month && (
+                          <div className="inline-block px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-medium mb-6">
+                            {b.month}
+                          </div>
+                        )}
+
+                        <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                          {b.treeName}
+                          {b.scientificName && (
+                            <span className="block text-xl md:text-2xl text-gray-600 font-normal italic mt-2">
+                              ({b.scientificName})
+                            </span>
+                          )}
+                        </h3>
+
+                        <div className="flex flex-col gap-3 mb-6 text-gray-700">
+                          {b.location && (
+                            <div className="flex items-center gap-2">
+                              <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </svg>
+                              <span>{b.location}</span>
+                            </div>
+                          )}
+                          {b.plantedDate && (
+                            <div className="flex items-center gap-2">
+                              <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                              </svg>
+                              <span>Planted: {formatDate(b.plantedDate)}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        {descriptionParagraphs.length > 0 && (
+                          <div className="space-y-4 mb-6">
+                            {descriptionParagraphs.map((paragraph, i) => (
+                              <p key={i} className="text-gray-700 leading-relaxed">
+                                {paragraph}
+                              </p>
+                            ))}
+                          </div>
+                        )}
+
+                        {b.whyItMatters && (
+                          <div className="bg-green-50 border-l-4 border-green-600 p-6 rounded-r-lg">
+                            <h4 className="text-lg font-bold text-green-800 mb-3">
+                              Why It Matters
+                            </h4>
+                            <p className="text-gray-700 leading-relaxed">
+                              {b.whyItMatters}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Right Column - Tree Image */}
+                      <div className="h-full min-h-[400px] lg:min-h-[600px]">
+                        {b.image?.asset?.url ? (
+                          <img
+                            src={b.image.asset.url}
+                            alt={b.treeName || 'Tree of the Month'}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-green-200 to-green-300 flex items-center justify-center">
+                            <span className="text-8xl">🌳</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

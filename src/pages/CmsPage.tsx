@@ -117,6 +117,10 @@ export function CmsPage() {
               linkText,
               linkUrl
             },
+            treeName,
+            scientificName,
+            plantedDate,
+            whyItMatters,
             asset->{url}
           }
         }`,
