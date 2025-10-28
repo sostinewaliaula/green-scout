@@ -12,10 +12,10 @@ function ScrollToTop() {
 }
 
 export function Layout() {
-  return <div className="w-full min-h-screen bg-white">
+  return <div className="w-full min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
     <ScrollToTop />
     <NavBarCms />
-    <main>
+    <main className="dark:bg-gray-900">
       <Outlet />
     </main>
     <FooterCms />

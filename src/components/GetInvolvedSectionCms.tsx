@@ -89,9 +89,9 @@ export function GetInvolvedSectionCms() {
 
   if (loading) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-green-100">
+      <section className="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-green-100 dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="text-gray-600">Loading...</div>
+          <div className="text-gray-600 dark:text-gray-400">Loading...</div>
         </div>
       </section>
     );
@@ -130,12 +130,12 @@ export function GetInvolvedSectionCms() {
   const options = block?.options || defaultOptions;
 
   return (
-    <section id="get-involved" className="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-green-100">
+    <section id="get-involved" className="py-20 px-4 md:px-8 bg-gradient-to-b from-white to-green-100 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 text-purple-700">
+        <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 text-purple-700 dark:text-purple-400">
           {title}
         </h2>
-        <p className="text-center text-gray-700 max-w-3xl mx-auto mb-12">
+        <p className="text-center text-gray-700 dark:text-gray-300 max-w-3xl mx-auto mb-12">
           {subtitle}
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -151,15 +151,15 @@ export function GetInvolvedSectionCms() {
             return (
               <div
                 key={index}
-                className="bg-white rounded-xl shadow-md p-6 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-md dark:shadow-gray-900/50 p-6 text-center hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-300 transform hover:-translate-y-2"
               >
-                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full ${bgColor} mb-6 transform transition-transform hover:scale-110`}>
-                  <Icon className={`w-8 h-8 ${iconColor}`} />
+                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-full ${bgColor} dark:${bgColor.replace('200', '900/40')} mb-6 transform transition-transform hover:scale-110`}>
+                  <Icon className={`w-8 h-8 ${iconColor} dark:${iconColor.replace('700', '400')}`} />
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-900">
+                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
                   {option.title}
                 </h3>
-                <p className="text-gray-700 mb-6">
+                <p className="text-gray-700 dark:text-gray-300 mb-6">
                   {option.description}
                 </p>
                 <a

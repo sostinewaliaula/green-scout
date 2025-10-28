@@ -89,7 +89,7 @@ export function FooterCms() {
   const copyrightText = copyright.replace('{year}', new Date().getFullYear().toString());
 
   return (
-    <footer className="bg-green-900 text-white py-12 px-4 md:px-8">
+    <footer className="bg-green-900 dark:bg-gray-950 text-white py-12 px-4 md:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
           <div className="mb-6 md:mb-0">
@@ -97,7 +97,7 @@ export function FooterCms() {
               <span className="text-green-400">{branding.siteName?.split(' ')[0]}</span>{' '}
               <span className="text-purple-400">{branding.siteName?.split(' ')[1]}</span>
             </h2>
-            <p className="text-green-200">{branding.tagline}</p>
+            <p className="text-green-200 dark:text-green-300">{branding.tagline}</p>
           </div>
           <div className="flex space-x-4">
             {socialMedia.facebook && (
@@ -146,7 +146,7 @@ export function FooterCms() {
             )}
           </div>
         </div>
-        <div className="border-t border-green-700 pt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="border-t border-green-700 dark:border-gray-700 pt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Contact Section */}
           <div>
             <h3 className="text-lg font-medium mb-4 text-green-300">Contact Us</h3>

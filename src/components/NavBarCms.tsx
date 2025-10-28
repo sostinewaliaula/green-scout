@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronUpIcon } from 'lucide-react';
 import sanityClient from '../sanityClient';
+import { DarkModeToggle } from './DarkModeToggle';
 
 interface NavigationItem {
   label: string;
@@ -104,10 +105,10 @@ export function NavBarCms() {
           isVisible
             ? 'opacity-100 translate-y-0 ' +
               (isScrolled
-                ? 'bg-white shadow-md'
+                ? 'bg-white dark:bg-gray-900 shadow-md'
                 : location.pathname === '/'
-                ? 'bg-black/20 backdrop-blur-sm'
-                : 'bg-white shadow-md')
+                ? 'bg-black/20 dark:bg-black/40 backdrop-blur-sm'
+                : 'bg-white dark:bg-gray-900 shadow-md')
             : 'opacity-0 -translate-y-full'
         }`}
       >
@@ -121,16 +122,16 @@ export function NavBarCms() {
               />
             ) : (
               <span className="text-xl font-bold">
-                <span className={location.pathname === '/' && !isScrolled ? 'text-green-400' : 'text-green-700'}>
+                <span className={location.pathname === '/' && !isScrolled ? 'text-green-400' : 'text-green-700 dark:text-green-400'}>
                   {branding.siteName?.split(' ')[0]}
                 </span>{' '}
-                <span className={location.pathname === '/' && !isScrolled ? 'text-purple-400' : 'text-purple-700'}>
+                <span className={location.pathname === '/' && !isScrolled ? 'text-purple-400' : 'text-purple-700 dark:text-purple-400'}>
                   {branding.siteName?.split(' ')[1]}
                 </span>
               </span>
             )}
           </Link>
-          <div className="hidden md:flex gap-6">
+          <div className="hidden md:flex gap-6 items-center">
             {navigationItems.map((item) => {
               const isActive = location.pathname === item.path;
               
@@ -155,17 +156,18 @@ export function NavBarCms() {
                       ? 'text-white bg-gradient-to-r from-green-600 to-purple-600'
                       : location.pathname === '/' && !isScrolled
                       ? 'text-white hover:text-green-300'
-                      : 'text-gray-600 hover:text-purple-700'
+                      : 'text-gray-600 dark:text-gray-300 hover:text-purple-700 dark:hover:text-purple-400'
                   }`}
                 >
                   {item.label}
                 </Link>
               );
             })}
+            <DarkModeToggle />
           </div>
           <button
             className={`md:hidden focus:outline-none ${
-              location.pathname === '/' && !isScrolled ? 'text-white' : 'text-gray-800'
+              location.pathname === '/' && !isScrolled ? 'text-white' : 'text-gray-800 dark:text-gray-200'
             }`}
             aria-label="Menu"
           >
