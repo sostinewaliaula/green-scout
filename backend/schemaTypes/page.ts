@@ -29,6 +29,7 @@ const page = {
         { type: 'blockImpactHero' },
         { type: 'blockObjectives' },
         { type: 'blockImpactNumbers' },
+        { type: 'blockImpactTimeline' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }

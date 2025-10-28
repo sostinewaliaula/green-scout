@@ -2,6 +2,7 @@ import React from 'react';
 import { ImpactHeroSectionCms } from '../components/ImpactHeroSectionCms';
 import { ObjectivesSectionCms } from '../components/ObjectivesSectionCms';
 import { ImpactNumbersSectionCms } from '../components/ImpactNumbersSectionCms';
+import { ImpactTimelineSectionCms } from '../components/ImpactTimelineSectionCms';
 
 export function ImpactPage() {
   return (
@@ -16,38 +17,7 @@ export function ImpactPage() {
       <ImpactNumbersSectionCms />
 
       {/* How We Measure Impact Timeline */}
-      <section className="py-16 px-4 md:px-8 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-purple-700">How We Measure Impact</h2>
-          <ol className="relative border-l-4 border-green-400 ml-4">
-            <li className="mb-10 ml-6">
-              <span className="absolute flex items-center justify-center w-8 h-8 bg-green-400 rounded-full -left-4 ring-4 ring-white">1</span>
-              <h3 className="font-bold text-green-700">Join</h3>
-              <p className="text-gray-700">Students and schools enroll in the GreenScout program.</p>
-            </li>
-            <li className="mb-10 ml-6">
-              <span className="absolute flex items-center justify-center w-8 h-8 bg-purple-400 rounded-full -left-4 ring-4 ring-white">2</span>
-              <h3 className="font-bold text-purple-700">Learn</h3>
-              <p className="text-gray-700">Participants receive training on climate action, tree care, and biodiversity.</p>
-            </li>
-            <li className="mb-10 ml-6">
-              <span className="absolute flex items-center justify-center w-8 h-8 bg-green-400 rounded-full -left-4 ring-4 ring-white">3</span>
-              <h3 className="font-bold text-green-700">Plant</h3>
-              <p className="text-gray-700">Scouts plant indigenous trees in schools and communities.</p>
-            </li>
-            <li className="mb-10 ml-6">
-              <span className="absolute flex items-center justify-center w-8 h-8 bg-purple-400 rounded-full -left-4 ring-4 ring-white">4</span>
-              <h3 className="font-bold text-purple-700">Care</h3>
-              <p className="text-gray-700">Ongoing care and monitoring ensure high tree survival rates.</p>
-            </li>
-            <li className="ml-6">
-              <span className="absolute flex items-center justify-center w-8 h-8 bg-green-400 rounded-full -left-4 ring-4 ring-white">5</span>
-              <h3 className="font-bold text-green-700">Inspire</h3>
-              <p className="text-gray-700">Successful scouts become ambassadors, inspiring others to join and grow the movement.</p>
-            </li>
-          </ol>
-        </div>
-      </section>
+      <ImpactTimelineSectionCms />
 
       {/* Real Stories/Testimonials */}
       <section className="py-16 px-4 md:px-8 bg-gradient-to-r from-green-100 to-purple-100">

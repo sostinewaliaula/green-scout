@@ -320,7 +320,20 @@ type BlockImpactNumbers = {
   stats?: ImpactStat[];
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout | BlockTreeOfMonth | BlockNamedTrees | BlockImpactMap | BlockImpactHero | BlockObjectives | BlockImpactNumbers;
+type TimelineStep = {
+  stepNumber: number;
+  title: string;
+  description: string;
+  colorTheme?: 'green' | 'purple';
+};
+
+type BlockImpactTimeline = {
+  _type: 'blockImpactTimeline';
+  title?: string;
+  steps?: TimelineStep[];
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout | BlockTreeOfMonth | BlockNamedTrees | BlockImpactMap | BlockImpactHero | BlockObjectives | BlockImpactNumbers | BlockImpactTimeline;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -1733,6 +1746,60 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                   ) : (
                     <div className="text-center text-gray-600">
                       No impact statistics configured.
+                    </div>
+                  )}
+                </div>
+              </section>
+            );
+          }
+          case 'blockImpactTimeline': {
+            const b = block as BlockImpactTimeline;
+            const sortedSteps = b.steps ? [...b.steps].sort((a, b) => a.stepNumber - b.stepNumber) : [];
+            
+            return (
+              <section key={idx} className="py-16 px-4 md:px-8 bg-white">
+                <div className="max-w-4xl mx-auto">
+                  {b.title && (
+                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-10 text-purple-700">
+                      {b.title}
+                    </h2>
+                  )}
+                  {sortedSteps.length > 0 ? (
+                    <div className="space-y-8">
+                      {sortedSteps.map((step, i) => {
+                        const isGreen = step.colorTheme === 'green';
+                        const bgColor = isGreen ? 'bg-green-500' : 'bg-purple-500';
+                        const textColor = isGreen ? 'text-green-700' : 'text-purple-700';
+                        const isLastStep = i === sortedSteps.length - 1;
+
+                        return (
+                          <div key={i} className="flex gap-6">
+                            {/* Timeline marker with connecting line */}
+                            <div className="flex flex-col items-center">
+                              <div className={`w-12 h-12 rounded-full ${bgColor} text-white flex items-center justify-center font-bold text-lg flex-shrink-0`}>
+                                {step.stepNumber}
+                              </div>
+                              {!isLastStep && (
+                                <div className="w-1 h-full bg-green-200 min-h-[60px]"></div>
+                              )}
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1 pb-8">
+                              <h3 className={`text-xl font-bold mb-2 ${textColor}`}>
+                                {step.title}
+                              </h3>
+                              <p className="text-gray-700">
+                                {step.description}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="text-center text-gray-600">
+                      No timeline steps configured.
                     </div>
                   )}
                 </div>

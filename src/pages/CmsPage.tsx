@@ -158,6 +158,12 @@ export function CmsPage() {
               label,
               colorTheme
             },
+            steps[]{
+              stepNumber,
+              title,
+              description,
+              colorTheme
+            },
             asset->{url}
           }
         }`,
