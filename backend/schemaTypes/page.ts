@@ -31,6 +31,7 @@ const page = {
         { type: 'blockImpactNumbers' },
         { type: 'blockImpactTimeline' },
         { type: 'blockImpactStories' },
+        { type: 'blockImpactCta' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }

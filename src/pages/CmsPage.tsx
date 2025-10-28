@@ -171,6 +171,8 @@ export function CmsPage() {
               location,
               colorTheme
             },
+            buttonText,
+            buttonLink,
             asset->{url}
           }
         }`,
