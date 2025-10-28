@@ -34,6 +34,7 @@ const page = {
         { type: 'blockImpactCta' },
         { type: 'blockGalleryHero' },
         { type: 'blockHeroCarousel' },
+        { type: 'blockGetInvolved' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }

@@ -1,7 +1,10 @@
 import React from 'react';
-import { GetInvolvedSection } from '../components/GetInvolvedSection';
+import { GetInvolvedSectionCms } from '../components/GetInvolvedSectionCms';
+
 export function GetInvolvedPage() {
-  return <div className="pt-16">
-      <GetInvolvedSection />
-    </div>;
+  return (
+    <div className="pt-16">
+      <GetInvolvedSectionCms />
+    </div>
+  );
 }

@@ -362,7 +362,21 @@ type BlockGalleryHero = {
   showCountyFilter?: boolean;
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout | BlockTreeOfMonth | BlockNamedTrees | BlockImpactMap | BlockImpactHero | BlockObjectives | BlockImpactNumbers | BlockImpactTimeline | BlockImpactStories | BlockImpactCta | BlockGalleryHero;
+type BlockGetInvolved = {
+  _type: 'blockGetInvolved';
+  title?: string;
+  subtitle?: string;
+  options?: Array<{
+    icon: string;
+    title: string;
+    description: string;
+    buttonText: string;
+    buttonLink: string;
+    colorTheme: 'purple' | 'green';
+  }>;
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth | BlockScoutProgram | BlockScoutActivities | BlockScoutTestimonials | BlockJoinScout | BlockTreeOfMonth | BlockNamedTrees | BlockImpactMap | BlockImpactHero | BlockObjectives | BlockImpactNumbers | BlockImpactTimeline | BlockImpactStories | BlockImpactCta | BlockGalleryHero | BlockGetInvolved;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -1925,6 +1939,11 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                 </div>
               </section>
             );
+          }
+          case 'blockGetInvolved': {
+            // Import the CMS component
+            const GetInvolvedSectionCms = require('../components/GetInvolvedSectionCms').GetInvolvedSectionCms;
+            return <GetInvolvedSectionCms key={idx} />;
           }
           default:
             return null;
