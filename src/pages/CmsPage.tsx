@@ -61,6 +61,11 @@ export function CmsPage() {
               value,
               label
             },
+            scoutName,
+            school,
+            month,
+            achievements,
+            quote,
             asset->{url}
           }
         }`,

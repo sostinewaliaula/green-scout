@@ -125,7 +125,19 @@ type BlockScoutHero = {
   stats?: Stat[];
 };
 
-export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero;
+type BlockScoutOfMonth = {
+  _type: 'blockScoutOfMonth';
+  title?: string;
+  month?: string;
+  scoutName?: string;
+  school?: string;
+  image?: ImageAsset;
+  description?: string;
+  achievements?: string[];
+  quote?: string;
+};
+
+export type CmsBlock = BlockText | BlockImage | BlockGallery | BlockStats | BlockAbout | BlockMission | BlockProjects | BlockTestimonials | BlockNews | BlockCta | BlockScoutHero | BlockScoutOfMonth;
 
 export function CmsRenderer({ content }: { content: CmsBlock[] }) {
   return (
@@ -659,6 +671,72 @@ export function CmsRenderer({ content }: { content: CmsBlock[] }) {
                       ))}
                     </div>
                   )}
+                </div>
+              </section>
+            );
+          }
+          case 'blockScoutOfMonth': {
+            const b = block as BlockScoutOfMonth;
+            return (
+              <section key={idx} id="scouts" className="py-20 px-4 md:px-8 bg-white">
+                <div className="max-w-6xl mx-auto">
+                  {b.title && (
+                    <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-purple-700">
+                      {b.title}
+                    </h2>
+                  )}
+                  <div className="bg-gradient-to-br from-green-100 to-purple-100 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <div className="flex flex-col md:flex-row">
+                      <div className="md:w-2/5 overflow-hidden">
+                        {b.image?.asset?.url ? (
+                          <img
+                            src={b.image.asset.url}
+                            alt={`${b.scoutName} - Scout of the Month`}
+                            className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-green-200 to-purple-200 flex items-center justify-center">
+                            <span className="text-6xl">👤</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="md:w-3/5 p-6 md:p-8 flex flex-col justify-center">
+                        {b.month && (
+                          <div className="inline-block px-4 py-1 rounded-full bg-purple-200 text-purple-800 font-medium text-sm mb-4 self-start">
+                            {b.month}
+                          </div>
+                        )}
+                        {b.scoutName && (
+                          <h3 className="text-2xl md:text-3xl font-bold mb-2 text-gray-900">
+                            {b.scoutName}
+                          </h3>
+                        )}
+                        {b.school && (
+                          <p className="text-lg text-green-800 font-medium mb-4">
+                            {b.school}
+                          </p>
+                        )}
+                        {b.description && (
+                          <p className="text-gray-700 mb-6">{b.description}</p>
+                        )}
+                        {b.achievements && b.achievements.length > 0 && (
+                          <div className="space-y-2 mb-6">
+                            {b.achievements.map((achievement, i) => (
+                              <div key={i} className="flex items-center gap-2">
+                                <div className="w-3 h-3 rounded-full bg-green-600"></div>
+                                <span className="text-gray-700">{achievement}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        {b.quote && (
+                          <blockquote className="mt-6 italic text-gray-600 border-l-4 border-purple-500 pl-4">
+                            "{b.quote}"
+                          </blockquote>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </section>
             );

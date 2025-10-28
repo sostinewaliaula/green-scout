@@ -18,6 +18,7 @@ const page = {
         { type: 'blockNews' },
         { type: 'blockCta' },
         { type: 'blockScoutHero' },
+        { type: 'blockScoutOfMonth' },
         { type: 'blockText' },
         { type: 'blockImage' },
         { type: 'blockGallery' }
