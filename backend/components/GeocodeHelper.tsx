@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
-import { StringInputProps, set, unset } from 'sanity';
+import { ObjectInputProps, set } from 'sanity';
 
-type GeocodeHelperProps = StringInputProps;
+type GeocodeHelperProps = ObjectInputProps;
 
 interface SearchResult {
   display_name: string;
@@ -53,14 +53,15 @@ export function GeocodeHelper(props: GeocodeHelperProps) {
   const handleSelectLocation = useCallback((result: SearchResult) => {
     const latitude = parseFloat(result.lat);
     const longitude = parseFloat(result.lon);
-    
-    // Create the coordinates string
-    const coordinatesString = `${latitude},${longitude}`;
-    
-    // Use Sanity's set patch to update the value
-    props.onChange(set(coordinatesString));
-    
-    setStatus(`✅ Selected: ${result.display_name}`);
+
+    // Patch child fields of the object
+    props.onChange([
+      set(result.display_name, ['address']),
+      set(latitude, ['lat']),
+      set(longitude, ['lng'])
+    ]);
+
+    setStatus(`🚀 Success! Location and coordinates auto-synced.`);
     setSearchResults([]);
   }, [props]);
 
@@ -71,15 +72,15 @@ export function GeocodeHelper(props: GeocodeHelperProps) {
     }
   }, [handleSearch]);
 
-  const coordinates = props.value ? props.value.split(',') : null;
+  const { address, lat, lng } = (props.value as any) || {};
 
   return (
     <div style={{ marginTop: '8px' }}>
       {/* Search Input */}
-      <div style={{ marginBottom: '12px' }}>
-        <div style={{ 
-          display: 'flex', 
-          gap: '8px',
+      <div style={{ marginBottom: '16px' }}>
+        <div style={{
+          display: 'flex',
+          gap: '10px',
           alignItems: 'stretch'
         }}>
           <input
@@ -87,20 +88,25 @@ export function GeocodeHelper(props: GeocodeHelperProps) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Search location in Kenya (e.g., Nairobi, Nakuru High School)"
+            placeholder="Search location in Kenya..."
             style={{
               flex: 1,
-              padding: '10px 12px',
+              padding: '12px 14px',
               fontSize: '14px',
-              border: '2px solid #d1d5db',
-              borderRadius: '6px',
-              outline: 'none'
+              backgroundColor: 'rgba(0,0,0,0.05)',
+              color: 'inherit',
+              border: '2px solid rgba(5, 150, 105, 0.2)',
+              borderRadius: '12px',
+              outline: 'none',
+              transition: 'all 0.2s'
             }}
             onFocus={(e) => {
               e.target.style.borderColor = '#059669';
+              e.target.style.boxShadow = '0 0 0 3px rgba(5, 150, 105, 0.1)';
             }}
             onBlur={(e) => {
-              e.target.style.borderColor = '#d1d5db';
+              e.target.style.borderColor = 'rgba(5, 150, 105, 0.2)';
+              e.target.style.boxShadow = 'none';
             }}
           />
           <button
@@ -108,26 +114,31 @@ export function GeocodeHelper(props: GeocodeHelperProps) {
             onClick={handleSearch}
             disabled={isLoading}
             style={{
-              padding: '10px 20px',
+              padding: '0 24px',
               backgroundColor: isLoading ? '#9ca3af' : '#059669',
               color: 'white',
               border: 'none',
-              borderRadius: '6px',
+              borderRadius: '12px',
               cursor: isLoading ? 'not-allowed' : 'pointer',
               fontSize: '14px',
-              fontWeight: '600',
-              whiteSpace: 'nowrap'
+              fontWeight: '700',
+              whiteSpace: 'nowrap',
+              transition: 'transform 0.1s, background-color 0.2s',
+              boxShadow: '0 4px 12px rgba(5, 150, 105, 0.2)'
             }}
+            onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.95)'; }}
+            onMouseUp={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
           >
-            {isLoading ? '🔄 Searching...' : '🔍 Search'}
+            {isLoading ? '🔄 Searching...' : '🔍 Find Location'}
           </button>
         </div>
-        <div style={{ 
-          fontSize: '11px', 
-          color: '#6b7280', 
-          marginTop: '4px' 
+        <div style={{
+          fontSize: '11px',
+          color: '#6b7280',
+          marginTop: '6px',
+          paddingLeft: '4px'
         }}>
-          💡 Tip: Include "Kenya" for better results. Press Enter to search.
+          💡 Tip: Include "Kenya" for better precision. Press Enter to search.
         </div>
       </div>
 
@@ -152,10 +163,12 @@ export function GeocodeHelper(props: GeocodeHelperProps) {
       {searchResults.length > 0 && (
         <div
           style={{
-            marginBottom: '12px',
-            border: '2px solid #e5e7eb',
-            borderRadius: '6px',
-            overflow: 'hidden'
+            marginBottom: '16px',
+            border: '1px solid rgba(5, 150, 105, 0.3)',
+            borderRadius: '12px',
+            overflow: 'hidden',
+            backgroundColor: 'rgba(0,0,0,0.02)',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
           }}
         >
           {searchResults.map((result, index) => (
@@ -165,26 +178,26 @@ export function GeocodeHelper(props: GeocodeHelperProps) {
               onClick={() => handleSelectLocation(result)}
               style={{
                 width: '100%',
-                padding: '12px',
+                padding: '14px 16px',
                 textAlign: 'left',
-                backgroundColor: 'white',
+                backgroundColor: 'transparent',
                 border: 'none',
-                borderBottom: index < searchResults.length - 1 ? '1px solid #e5e7eb' : 'none',
+                borderBottom: index < searchResults.length - 1 ? '1px solid rgba(0,0,0,0.05)' : 'none',
                 cursor: 'pointer',
                 fontSize: '13px',
                 transition: 'background-color 0.2s'
               }}
               onMouseOver={(e) => {
-                e.currentTarget.style.backgroundColor = '#f9fafb';
+                e.currentTarget.style.backgroundColor = 'rgba(5, 150, 105, 0.05)';
               }}
               onMouseOut={(e) => {
-                e.currentTarget.style.backgroundColor = 'white';
+                e.currentTarget.style.backgroundColor = 'transparent';
               }}
             >
-              <div style={{ fontWeight: '600', color: '#059669', marginBottom: '4px' }}>
+              <div style={{ fontWeight: '700', color: '#059669', marginBottom: '2px' }}>
                 📍 {result.display_name.split(',')[0]}
               </div>
-              <div style={{ fontSize: '11px', color: '#6b7280' }}>
+              <div style={{ fontSize: '11px', opacity: 0.7 }}>
                 {result.display_name}
               </div>
             </button>
@@ -192,42 +205,38 @@ export function GeocodeHelper(props: GeocodeHelperProps) {
         </div>
       )}
 
-      {/* Selected Coordinates */}
-      {coordinates && coordinates.length === 2 && (
+      {/* Sync Status */}
+      {address && lat && lng && (
         <div
           style={{
             padding: '12px',
             borderRadius: '6px',
             fontSize: '13px',
-            backgroundColor: '#fef3c7',
-            border: '2px solid #fbbf24',
-            color: '#92400e'
+            backgroundColor: '#f0fdf4',
+            border: '2px solid #86efac',
+            color: '#166534',
+            marginBottom: '12px'
           }}
         >
-          <div style={{ fontWeight: '600', marginBottom: '8px' }}>
-            ✅ Coordinates Selected - Copy these values:
-          </div>
-          <code
-            style={{
-              display: 'block',
-              padding: '8px',
-              backgroundColor: '#fffbeb',
-              borderRadius: '4px',
-              fontSize: '12px',
-              marginBottom: '8px',
-              fontFamily: 'monospace'
-            }}
-          >
-            Latitude: {parseFloat(coordinates[0]).toFixed(6)}
-            <br />
-            Longitude: {parseFloat(coordinates[1]).toFixed(6)}
-          </code>
-          <div style={{ fontSize: '11px', color: '#78350f' }}>
-            📋 Scroll down to "Map Coordinates" and paste these into the Latitude and Longitude fields.
+          <div style={{ fontWeight: '600' }}>
+            ✨ Location & coordinates are perfectly in sync.
           </div>
         </div>
       )}
+
+      {/* Render the actual fields below for manual overrides */}
+      <div style={{
+        padding: '20px',
+        backgroundColor: 'rgba(0,0,0,0.02)',
+        borderRadius: '16px',
+        border: '1px solid rgba(0,0,0,0.05)',
+        boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.05)'
+      }}>
+        <div style={{ marginBottom: '12px', fontSize: '12px', fontWeight: '700', opacity: 0.5, textTransform: 'uppercase', tracking: '1px' }}>
+          Manual Overrides
+        </div>
+        {props.renderDefault(props)}
+      </div>
     </div>
   );
 }
-

@@ -26,11 +26,33 @@ const blockImpactMap = {
           type: 'object',
           fields: [
             {
-              name: 'name',
-              title: 'Location Name',
-              type: 'string',
-              description: 'Enter the full location name (e.g., "Nakuru High School, Kenya" or "Nairobi, Kenya"). Click "Fetch Coordinates" button below after entering.',
-              validation: (Rule: any) => Rule.required()
+              name: 'plantingLocation',
+              title: '📍 Planting Location',
+              type: 'object',
+              description: 'Search for a location in Kenya and it will automatically populate the name and coordinates.',
+              components: {
+                input: GeocodeHelper
+              },
+              fields: [
+                {
+                  name: 'address',
+                  title: 'Location Name',
+                  type: 'string',
+                  validation: (Rule: any) => Rule.required()
+                },
+                {
+                  name: 'lat',
+                  title: 'Latitude',
+                  type: 'number',
+                  validation: (Rule: any) => Rule.required().min(-90).max(90)
+                },
+                {
+                  name: 'lng',
+                  title: 'Longitude',
+                  type: 'number',
+                  validation: (Rule: any) => Rule.required().min(-180).max(180)
+                }
+              ]
             },
             {
               name: 'treeName',
@@ -44,36 +66,6 @@ const blockImpactMap = {
               title: 'Description',
               type: 'text',
               description: 'Brief description of the planting project'
-            },
-            {
-              name: 'geocodeHelper',
-              title: '🌍 Search & Auto-Fetch Coordinates',
-              type: 'string',
-              description: 'Use the search box below to find your location in Kenya and automatically get coordinates.',
-              components: {
-                input: GeocodeHelper
-              }
-            },
-            {
-              name: 'coordinates',
-              title: 'Map Coordinates',
-              type: 'object',
-              description: 'Enter coordinates manually OR use the "Fetch Coordinates" button above to get them automatically.',
-              fields: [
-                {
-                  name: 'lat',
-                  title: 'Latitude',
-                  type: 'number',
-                  validation: (Rule: any) => Rule.required().min(-90).max(90)
-                },
-                {
-                  name: 'lng',
-                  title: 'Longitude',
-                  type: 'number',
-                  validation: (Rule: any) => Rule.required().min(-180).max(180)
-                }
-              ],
-              validation: (Rule: any) => Rule.required()
             },
             {
               name: 'treesPlanted',

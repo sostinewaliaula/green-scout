@@ -1,3 +1,5 @@
+import { GeocodeHelper } from '../components/GeocodeHelper';
+
 const namedTree = {
   name: 'namedTree',
   title: 'Named Tree',
@@ -48,10 +50,33 @@ const namedTree = {
       description: 'Scientific or common name of the tree species'
     },
     {
-      name: 'location',
-      title: 'Location',
-      type: 'string',
-      description: 'Where the tree is planted'
+      name: 'plantingLocation',
+      title: '📍 Planting Location',
+      type: 'object',
+      description: 'Search for a location in Kenya and it will automatically populate the name and coordinates.',
+      components: {
+        input: GeocodeHelper
+      },
+      fields: [
+        {
+          name: 'address',
+          title: 'Location Name',
+          type: 'string',
+          validation: (Rule: any) => Rule.required()
+        },
+        {
+          name: 'lat',
+          title: 'Latitude',
+          type: 'number',
+          validation: (Rule: any) => Rule.required().min(-90).max(90)
+        },
+        {
+          name: 'lng',
+          title: 'Longitude',
+          type: 'number',
+          validation: (Rule: any) => Rule.required().min(-180).max(180)
+        }
+      ]
     },
     {
       name: 'plantedDate',

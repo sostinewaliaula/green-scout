@@ -1,22 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import sanityClient from '../sanityClient';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Icon } from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import { GoogleMap, useJsApiLoader, MarkerF, InfoWindowF } from '@react-google-maps/api';
 import { useDarkMode } from '../context/DarkModeContext';
+import darkStyle from '../googleMapsDarkStyle.json';
+import treeIcon from '../assets/tree.png';
+import { NamedTreeModal } from './NamedTreeModal';
 
-// Add custom styles for dark mode popups
-const darkModePopupStyles = `
-  .dark-mode-popup .leaflet-popup-content-wrapper {
-    background-color: #1f2937;
-    color: #e5e7eb;
-  }
-  .dark-mode-popup .leaflet-popup-tip {
-    background-color: #1f2937;
-  }
-`;
-
-type ImageAsset = { asset?: { url?: string } };
 
 interface Coordinates {
   lat: number;
@@ -26,12 +15,23 @@ interface Coordinates {
 interface Location {
   name: string;
   treeName: string;
-  description?: string;
+  description?: string | any[];
   coordinates: Coordinates;
   treesPlanted?: number;
   plantedDate?: string;
-  image?: ImageAsset;
+  image?: string;
   detailsLink?: string;
+  _id?: string;
+  isNamedTree?: boolean;
+}
+
+interface NamedTree extends Location {
+  namedAfter?: string;
+  role?: string;
+  scientificName?: string;
+  story?: any[] | string;
+  fullDescription?: any[] | string;
+  bio?: any[] | string;
 }
 
 interface BlockImpactMap {
@@ -43,74 +43,103 @@ interface BlockImpactMap {
   defaultZoom?: number;
 }
 
-// Custom marker icon
-const customIcon = new Icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+const containerStyle = {
+  width: '100%',
+  height: '100%'
+};
 
 export function ImpactMapSectionCms() {
   const [mapBlock, setMapBlock] = useState<BlockImpactMap | null>(null);
+  const [allLocations, setAllLocations] = useState<Location[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(null);
+  const [selectedNamedTree, setSelectedNamedTree] = useState<NamedTree | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [dynamicApiKey, setDynamicApiKey] = useState<string | null>(null);
   const { isDarkMode } = useDarkMode();
 
-  // Inject custom dark mode popup styles
-  useEffect(() => {
-    const styleId = 'dark-mode-popup-styles';
-    let styleElement = document.getElementById(styleId) as HTMLStyleElement;
-    
-    if (!styleElement) {
-      styleElement = document.createElement('style');
-      styleElement.id = styleId;
-      document.head.appendChild(styleElement);
-    }
-    
-    styleElement.textContent = darkModePopupStyles;
-    
-    return () => {
-      // Clean up on unmount
-      const el = document.getElementById(styleId);
-      if (el) {
-        el.remove();
-      }
-    };
-  }, []);
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: dynamicApiKey || import.meta.env.VITE_GOOGLE_MAPS_API_KEY || ''
+  });
 
   useEffect(() => {
-    sanityClient
-      .fetch(
-        `*[_type == "page" && slug.current == "trees"][0]{
-          content[]{
-            _type == "blockImpactMap" => {
-              ...,
-              locations[]{
-                name,
-                treeName,
-                description,
-                coordinates,
-                treesPlanted,
-                plantedDate,
-                image{asset->{url}},
-                detailsLink
+    const query = `{
+      "settings": *[_type == "siteSettings"][0]{
+        googleMapsApiKey
+      },
+      "pageData": *[_type == "page" && slug.current == "trees"][0]{
+        content[]{
+          ...,
+          _type == "blockImpactMap" => {
+            ...,
+            locations[]{
+              "name": plantingLocation.address,
+              treeName,
+              description,
+              "coordinates": {
+                "lat": plantingLocation.lat,
+                "lng": plantingLocation.lng
               },
-              defaultCenter,
-              defaultZoom
+              treesPlanted,
+              plantedDate,
+              "image": image.asset->url,
+              detailsLink
             }
           }
-        }`
-      )
+        }
+      },
+      "namedTrees": *[_type == "namedTree" && defined(plantingLocation.lat) && defined(plantingLocation.lng)]{
+        _id,
+        treeName,
+        namedAfter,
+        role,
+        county,
+        scientificName,
+        plantedDate,
+        story,
+        description,
+        fullDescription,
+        bio,
+        "image": image.asset->url,
+        "name": plantingLocation.address,
+        "coordinates": {
+          "lat": plantingLocation.lat,
+          "lng": plantingLocation.lng
+        },
+        "isNamedTree": true
+      }
+    }`;
+
+    sanityClient
+      .fetch(query)
       .then((data) => {
-        const block = data?.content?.find((b: any) => b._type === 'blockImpactMap');
+        if (data?.settings?.googleMapsApiKey) {
+          setDynamicApiKey(data.settings.googleMapsApiKey);
+        }
+
+        const block = data?.pageData?.content?.find((b: any) => b._type === 'blockImpactMap');
         setMapBlock(block || null);
+
+        const standardLocations = block?.locations || [];
+        const namedTrees = data?.namedTrees || [];
+
+        // Merge locations
+        const merged = [
+          ...standardLocations.map((loc: any) => ({ ...loc, isNamedTree: false })),
+          ...namedTrees.map((tree: any) => ({
+            ...tree,
+            // Prioritize the new searchable address, fallback to county
+            name: tree.name || tree.county || 'Green Scout Forest',
+            isNamedTree: true
+          }))
+        ];
+
+        setAllLocations(merged);
         setLoading(false);
       })
       .catch((err) => {
-        console.error('Error fetching impact map block:', err);
+        console.error('Error fetching impact map data:', err);
         setLoading(false);
       });
   }, []);
@@ -125,15 +154,30 @@ export function ImpactMapSectionCms() {
     });
   };
 
-  if (loading) {
+  const center = {
+    lat: mapBlock?.defaultCenter?.lat || -0.0236,
+    lng: mapBlock?.defaultCenter?.lng || 37.9062
+  };
+
+  const mapOptions = {
+    styles: isDarkMode ? darkStyle : [],
+    disableDefaultUI: false,
+    zoomControl: true,
+  };
+
+  if (loading || !isLoaded) {
     return (
       <section className="py-20 px-4 md:px-8 bg-white dark:bg-gray-900">
-        <div className="max-w-6xl mx-auto text-center text-gray-600 dark:text-gray-400">Loading impact map...</div>
+        <div className="max-w-6xl mx-auto text-center text-gray-600 dark:text-gray-400">
+          {loading ? 'Loading impact map data...' : 'Loading Google Maps...'}
+        </div>
       </section>
     );
   }
 
-  if (!mapBlock || !mapBlock.locations || mapBlock.locations.length === 0) {
+  if (!mapBlock) return null;
+
+  if (!mapBlock.locations || mapBlock.locations.length === 0) {
     return (
       <section className="py-20 px-4 md:px-8 bg-white dark:bg-gray-900">
         <div className="max-w-6xl mx-auto text-center text-gray-600 dark:text-gray-400 px-4">
@@ -142,12 +186,6 @@ export function ImpactMapSectionCms() {
       </section>
     );
   }
-
-  const center: [number, number] = [
-    mapBlock.defaultCenter?.lat || -0.0236,
-    mapBlock.defaultCenter?.lng || 37.9062
-  ];
-  const zoom = mapBlock.defaultZoom || 6;
 
   return (
     <section className="py-20 px-4 md:px-8 bg-white dark:bg-gray-900">
@@ -166,70 +204,115 @@ export function ImpactMapSectionCms() {
         </div>
 
         <div className="rounded-xl overflow-hidden shadow-xl dark:shadow-gray-900/50 border-2 border-purple-100 dark:border-purple-900/30" style={{ height: '600px' }}>
-          <MapContainer
+          <GoogleMap
+            mapContainerStyle={containerStyle}
             center={center}
-            zoom={zoom}
-            style={{ height: '100%', width: '100%' }}
-            scrollWheelZoom={true}
+            zoom={mapBlock.defaultZoom || 6}
+            options={mapOptions}
+            onClick={() => setSelectedLocation(null)}
           >
-            <TileLayer
-              attribution={isDarkMode 
-                ? '&copy; <a href="https://carto.com/">CartoDB</a> contributors' 
-                : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              }
-              url={isDarkMode
-                ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              }
-            />
-            {mapBlock.locations.map((location, index) => (
-              <Marker
-                key={index}
-                position={[location.coordinates.lat, location.coordinates.lng]}
-                icon={customIcon}
+            {allLocations.map((location, index) => {
+              const lat = Number(location.coordinates?.lat);
+              const lng = Number(location.coordinates?.lng);
+
+              if (isNaN(lat) || isNaN(lng)) return null;
+
+              return (
+                <MarkerF
+                  key={`${index}-${lat}-${lng}`}
+                  position={{ lat, lng }}
+                  onClick={() => setSelectedLocation(location)}
+                  icon={{
+                    url: treeIcon,
+                    scaledSize: isLoaded && window.google ? new window.google.maps.Size(40, 40) : undefined,
+                    anchor: isLoaded && window.google ? new window.google.maps.Point(20, 40) : undefined,
+                  }}
+                />
+              );
+            })}
+
+            {selectedLocation && (
+              <InfoWindowF
+                position={{ lat: Number(selectedLocation.coordinates.lat), lng: Number(selectedLocation.coordinates.lng) }}
+                onCloseClick={() => setSelectedLocation(null)}
               >
-                <Popup className={isDarkMode ? 'dark-mode-popup' : ''}>
-                  <div className="p-2 min-w-[250px]">
-                    {location.image?.asset?.url && (
-                      <img
-                        src={location.image.asset.url}
-                        alt={location.treeName}
-                        className="w-full h-32 object-cover rounded mb-3"
-                      />
-                    )}
-                    <h3 className="font-bold text-green-700 dark:text-green-400 mb-2">
-                      {location.treeName}
-                    </h3>
-                    <p className="text-sm font-medium text-gray-900 dark:text-white mb-1">
-                      {location.name}
+                <div className="p-2 min-w-[200px] max-w-[280px] dark:text-white">
+                  {selectedLocation.image && (
+                    <img
+                      src={selectedLocation.image}
+                      alt={selectedLocation.treeName}
+                      className="w-full h-32 object-cover rounded-xl mb-3 shadow-sm"
+                    />
+                  )}
+                  <h3 className="font-bold text-green-700 dark:text-green-400 mb-1 leading-tight">
+                    {selectedLocation.treeName}
+                  </h3>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white/90 mb-1">
+                    {selectedLocation.name}
+                  </p>
+
+                  {/* Named Tree Specific Info */}
+                  {selectedLocation.isNamedTree && (selectedLocation as any).namedAfter && (
+                    <p className="text-xs font-bold text-purple-600 dark:text-purple-400 mt-1 mb-2">
+                      Dedicated to {(selectedLocation as any).namedAfter}
                     </p>
-                    {location.description && (
-                      <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
-                        {location.description}
-                        {location.plantedDate && ` Planted ${formatDate(location.plantedDate)}`}
-                      </p>
-                    )}
-                    {location.treesPlanted && (
-                      <p className="text-sm text-purple-700 dark:text-purple-400 mb-2">
-                        🌳 {location.treesPlanted} trees planted
-                      </p>
-                    )}
-                    {location.detailsLink && (
-                      <a
-                        href={location.detailsLink}
-                        className="text-sm text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 font-medium"
+                  )}
+
+                  {/* Remove description from popup to keep it small */}
+
+                  {selectedLocation.treesPlanted && (
+                    <p className="text-xs text-green-600 dark:text-green-400 font-bold mb-2">
+                      🌳 {selectedLocation.treesPlanted} trees planted
+                    </p>
+                  )}
+
+                  <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-800/50">
+                    {selectedLocation.isNamedTree ? (
+                      <button
+                        onClick={() => {
+                          setSelectedNamedTree(selectedLocation as any);
+                          setIsModalOpen(true);
+                        }}
+                        className="text-xs bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-3 py-1.5 rounded-lg font-bold hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors"
                       >
-                        View Details →
-                      </a>
+                        View Story →
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          // Prepare data for the modal
+                          const projectData = {
+                            ...selectedLocation,
+                            // Ensure the modal's 'location' field sees the project's address
+                            location: selectedLocation.name,
+                            story: selectedLocation.description
+                          };
+                          setSelectedNamedTree(projectData as any);
+                          setIsModalOpen(true);
+                        }}
+                        className="text-xs bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 px-3 py-1.5 rounded-lg font-bold hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-colors"
+                      >
+                        View Project →
+                      </button>
+                    )}
+                    {selectedLocation.plantedDate && (
+                      <span className="text-[10px] text-gray-400">
+                        {formatDate(selectedLocation.plantedDate)}
+                      </span>
                     )}
                   </div>
-                </Popup>
-              </Marker>
-            ))}
-          </MapContainer>
+                </div>
+              </InfoWindowF>
+            )}
+          </GoogleMap>
         </div>
+
+        <NamedTreeModal
+          tree={selectedNamedTree as any}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
       </div>
-    </section>
+    </section >
   );
 }
-

@@ -169,14 +169,14 @@ export function NewsDetailPage() {
           </h1>
 
           {/* Meta Information */}
-          <div className="flex items-center justify-between mb-8 pb-8 border-b">
+          <div className="flex items-center justify-between mb-8 pb-8 border-b border-gray-100 dark:border-gray-800">
             <div className="flex items-center text-gray-600 dark:text-gray-400">
               <CalendarIcon className="w-5 h-5 mr-2" />
               <span>{formatDate(article.publishedAt)}</span>
             </div>
             <button
               onClick={handleShare}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg transition-colors"
             >
               <ShareIcon className="w-5 h-5" />
               <span className="hidden sm:inline">Share</span>
@@ -195,13 +195,13 @@ export function NewsDetailPage() {
           )}
 
           {/* Excerpt */}
-          <div className="text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed font-medium border-l-4 border-purple-600 pl-6 py-2 bg-purple-50">
+          <div className="text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed font-medium border-l-4 border-purple-600 pl-6 py-4 bg-purple-50 dark:bg-purple-900/10 rounded-r-lg">
             {article.excerpt}
           </div>
 
           {/* Article Content */}
           {article.content && article.content.length > 0 ? (
-            <div className="prose prose-lg max-w-none">
+            <div className="prose prose-lg dark:prose-invert max-w-none prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-headings:text-gray-900 dark:prose-headings:text-white">
               <PortableText value={article.content} />
             </div>
           ) : (
@@ -214,7 +214,7 @@ export function NewsDetailPage() {
 
       {/* Related Articles */}
       {relatedArticles.length > 0 && (
-        <section className="py-16 px-4 md:px-8 bg-white dark:bg-gray-800 border-t">
+        <section className="py-16 px-4 md:px-8 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Related Articles</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -222,7 +222,7 @@ export function NewsDetailPage() {
                 <Link
                   key={related._id}
                   to={`/news/${related.slug.current}`}
-                  className="bg-white dark:bg-gray-800 border border-gray-200 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
                 >
                   <div className="h-40 overflow-hidden">
                     {related.image?.asset?.url ? (

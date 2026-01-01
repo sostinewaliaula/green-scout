@@ -34,18 +34,20 @@ import newsArticle from './newsArticle';
 import namedTree from './namedTree';
 import footerSettings from './footerSettings';
 import navbarSettings from './navbarSettings';
+import siteSettings from './siteSettings';
 
 export const schemaTypes = [
   // Singleton documents
+  siteSettings,
   navbarSettings,
   footerSettings,
-  
+
   // Regular documents
   page,
   project,
   newsArticle,
   namedTree,
-  
+
   // Block types
   blockText,
   blockImage,
@@ -75,7 +77,7 @@ export const schemaTypes = [
   blockGalleryHero,
   blockHeroCarousel,
   blockGetInvolved,
-  
+
   // Other types
   galleryImage,
   navigation

@@ -5,16 +5,47 @@
 /* DO NOT DELETE THESE TAILWIND IMPORTS, OTHERWISE THE STYLING WILL NOT RENDER AT ALL */
 
 @layer base {
+
   /* Dark mode base styles */
   :root {
     color-scheme: light;
   }
-  
+
   .dark {
     color-scheme: dark;
   }
-  
+
   body {
     @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200;
   }
+}
+
+/* Google Maps InfoWindow Dark Mode Overrides */
+.dark .gm-style-iw-c {
+  background-color: #1f2937 !important;
+  /* bg-gray-800 */
+  border: 1px solid rgba(139, 92, 246, 0.3) !important;
+  /* purple-500/30 */
+  padding: 0 !important;
+}
+
+.dark .gm-style-iw-d {
+  background-color: #1f2937 !important;
+  overflow: hidden !important;
+}
+
+.dark .gm-style-iw-t::after {
+  background-color: #1f2937 !important;
+}
+
+.dark .gm-ui-hover-effect {
+  filter: invert(1);
+  background-color: transparent !important;
+  margin-top: 5px !important;
+  margin-right: 5px !important;
+}
+
+/* Force children of the data container to not have white backgrounds */
+.dark .gm-style-iw-d div {
+  background-color: transparent !important;
 }

@@ -70,16 +70,16 @@ export function TreeOfMonthSectionCms() {
 
   if (loading) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-gradient-to-br from-green-50 to-green-100 dark:from-gray-900 dark:to-gray-800">
-        <div className="max-w-6xl mx-auto text-center text-gray-600">Loading tree of the month...</div>
+      <section className="py-20 px-4 md:px-8 bg-gradient-to-br from-green-50 to-green-100 dark:from-gray-950 dark:to-gray-900 transition-colors">
+        <div className="max-w-6xl mx-auto text-center text-gray-600 dark:text-gray-400">Loading tree of the month...</div>
       </section>
     );
   }
 
   if (!treeBlock) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-gradient-to-br from-green-50 to-green-100 dark:from-gray-900 dark:to-gray-800">
-        <div className="max-w-6xl mx-auto text-center text-gray-600 px-4">
+      <section className="py-20 px-4 md:px-8 bg-gradient-to-br from-green-50 to-green-100 dark:from-gray-950 dark:to-gray-900 transition-colors">
+        <div className="max-w-6xl mx-auto text-center text-gray-600 dark:text-gray-400 px-4">
           No "Tree of the Month" configured yet. Please add a "Tree of the Month" block to your Trees page in Sanity Studio.
         </div>
       </section>
@@ -89,7 +89,7 @@ export function TreeOfMonthSectionCms() {
   const descriptionParagraphs = blockContentToText(treeBlock.description || []);
 
   return (
-    <section className="py-20 px-4 md:px-8 bg-gradient-to-br from-green-50 to-green-100 dark:from-gray-900 dark:to-gray-800">
+    <section className="py-20 px-4 md:px-8 bg-gradient-to-br from-green-50 to-green-100 dark:from-gray-950 dark:to-gray-900 transition-colors">
       <div className="max-w-6xl mx-auto">
         {treeBlock.title && (
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-green-800 dark:text-green-400">
@@ -162,7 +162,7 @@ export function TreeOfMonthSectionCms() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-green-200 to-green-300 flex items-center justify-center">
+                <div className="w-full h-full bg-gradient-to-br from-green-200 to-green-300 dark:from-green-900/40 dark:to-green-900/60 flex items-center justify-center">
                   <span className="text-8xl">🌳</span>
                 </div>
               )}

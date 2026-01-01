@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import sanityClient from '../sanityClient';
 import { Link } from 'react-router-dom';
+import { NamedTreeModal } from './NamedTreeModal';
 
 type ImageAsset = { asset?: { url?: string } };
 
@@ -9,7 +10,14 @@ interface NamedTree {
   treeName: string;
   namedAfter: string;
   role: string;
+  county?: string;
+  scientificName?: string;
+  plantedDate?: string;
   image?: ImageAsset;
+  story?: any[] | string;
+  description?: any[] | string;
+  fullDescription?: any[] | string;
+  bio?: any[] | string;
   slug?: { current: string };
 }
 
@@ -29,6 +37,29 @@ export function NamedTreesSectionCms() {
   const [namedTreesBlock, setNamedTreesBlock] = useState<BlockNamedTrees | null>(null);
   const [trees, setTrees] = useState<NamedTree[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedTree, setSelectedTree] = useState<NamedTree | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleTreeClick = (tree: NamedTree) => {
+    setSelectedTree(tree);
+    setIsModalOpen(true);
+  };
+
+  const currentIndex = React.useMemo(() => {
+    return trees.findIndex(item => item._id === selectedTree?._id);
+  }, [trees, selectedTree]);
+
+  const handleNext = () => {
+    if (currentIndex < trees.length - 1) {
+      setSelectedTree(trees[currentIndex + 1]);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      setSelectedTree(trees[currentIndex - 1]);
+    }
+  };
 
   useEffect(() => {
     sanityClient
@@ -41,9 +72,21 @@ export function NamedTreesSectionCms() {
                 _id,
                 treeName,
                 namedAfter,
-                role,
-                image{asset->{url}},
-                slug
+                  role,
+                  county,
+                  scientificName,
+                  plantedDate,
+                  story,
+                  description,
+                  fullDescription,
+                  bio,
+                  image{asset->{url}},
+                  "location": plantingLocation.address,
+                  "coordinates": {
+                    "lat": plantingLocation.lat,
+                    "lng": plantingLocation.lng
+                  },
+                  slug
               }
             }
           }
@@ -63,10 +106,10 @@ export function NamedTreesSectionCms() {
           if (block?.displayMode === 'featured') {
             query = '*[_type == "namedTree" && featured == true]';
           }
-          query += '{ _id, treeName, namedAfter, role, image{asset->{url}}, slug } | order(_createdAt desc)';
+          query += '{ _id, treeName, namedAfter, role, county, scientificName, plantedDate, story, description, fullDescription, bio, image{asset->{url}}, "location": plantingLocation.address, "coordinates": { "lat": plantingLocation.lat, "lng": plantingLocation.lng }, slug } | order(_createdAt desc)';
 
           sanityClient.fetch(query).then((fetchedTrees) => {
-            const limitedTrees = block?.maxTreesToShow 
+            const limitedTrees = block?.maxTreesToShow
               ? fetchedTrees.slice(0, block.maxTreesToShow)
               : fetchedTrees;
             setTrees(limitedTrees);
@@ -82,7 +125,7 @@ export function NamedTreesSectionCms() {
 
   if (loading) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-purple-50 dark:bg-gray-800">
+      <section className="py-20 px-4 md:px-8 bg-purple-50 dark:bg-gray-950 transition-colors">
         <div className="max-w-6xl mx-auto text-center text-gray-600 dark:text-gray-400">Loading named trees...</div>
       </section>
     );
@@ -90,7 +133,7 @@ export function NamedTreesSectionCms() {
 
   if (!namedTreesBlock) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-purple-50 dark:bg-gray-800">
+      <section className="py-20 px-4 md:px-8 bg-purple-50 dark:bg-gray-950 transition-colors">
         <div className="max-w-6xl mx-auto text-center text-gray-600 dark:text-gray-400 px-4">
           No "Named Trees" section configured yet. Please add a "Named Trees Block" to your Trees page in Sanity Studio.
         </div>
@@ -100,7 +143,7 @@ export function NamedTreesSectionCms() {
 
   if (trees.length === 0) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-purple-50 dark:bg-gray-800">
+      <section className="py-20 px-4 md:px-8 bg-purple-50 dark:bg-gray-950 transition-colors">
         <div className="max-w-6xl mx-auto text-center text-gray-600 dark:text-gray-400 px-4">
           No named trees found. Please add some named trees in Sanity Studio.
         </div>
@@ -109,7 +152,7 @@ export function NamedTreesSectionCms() {
   }
 
   return (
-    <section className="py-20 px-4 md:px-8 bg-purple-50 dark:bg-gray-800">
+    <section className="py-20 px-4 md:px-8 bg-purple-50 dark:bg-gray-950 transition-colors">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           {namedTreesBlock.title && (
@@ -128,7 +171,8 @@ export function NamedTreesSectionCms() {
           {trees.map((tree) => (
             <div
               key={tree._id}
-              className="bg-white dark:bg-gray-900 rounded-xl shadow-md dark:shadow-gray-900/50 overflow-hidden hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-300 transform hover:-translate-y-1"
+              onClick={() => handleTreeClick(tree)}
+              className="bg-white dark:bg-gray-900 rounded-xl shadow-md dark:shadow-gray-900/50 overflow-hidden hover:shadow-xl dark:hover:shadow-gray-900 transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
             >
               <div className="h-48 overflow-hidden">
                 {tree.image?.asset?.url ? (
@@ -169,6 +213,18 @@ export function NamedTreesSectionCms() {
           </div>
         )}
       </div>
+
+      <NamedTreeModal
+        tree={selectedTree}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onNext={handleNext}
+        onPrev={handlePrev}
+        hasMore={{
+          next: currentIndex < trees.length - 1,
+          prev: currentIndex > 0
+        }}
+      />
     </section>
   );
 }
