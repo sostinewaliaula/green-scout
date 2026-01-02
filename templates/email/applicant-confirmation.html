@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Green Scout</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .header {
+            background-color: #166534;
+            padding: 32px 24px;
+            text-align: center;
+        }
+
+        .header img {
+            height: 48px;
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .content h2 {
+            color: #166534;
+            margin-top: 0;
+        }
+
+        .details-box {
+            background-color: #f0fdf4;
+            border: 1px solid #dcfce7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .details-box h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #15803d;
+            border-bottom: 1px solid #bbf7d0;
+            padding-bottom: 10px;
+        }
+
+        .footer {
+            background-color: #f9fafb;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #166534;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- Replace the src with your actual hosted logo URL -->
+            <img src="https://greenscout.org/logo.png" alt="Green Scout Logo">
+            <h1>GREEN SCOUT</h1>
+        </div>
+        <div class="content">
+            <h2>Welcome to the Movement, {{from_name}}!</h2>
+            <p>Thank you for your interest in joining Green Scout. We've received your application and our team is
+                excited to review it.</p>
+
+            <p>At Green Scout, we believe that every small action contributes to a larger impact on our planet. By
+                stepping forward, you're joining a community dedicated to environmental conservation and active
+                scouting.</p>
+
+            <div class="details-box">
+                <h3>Application Summary</h3>
+                <p><strong>Name:</strong> {{from_name}}</p>
+                <p><strong>Location:</strong> {{constituency}}, {{county}} County</p>
+                <p><strong>Status:</strong> Scout Member: {{is_scout}}</p>
+            </div>
+
+            <p><strong>What happens next?</strong></p>
+            <p>Our regional coordinators will review your details and reach out to you via phone or email within the
+                next 3-5 business days to discuss the next steps.</p>
+
+            <p>In the meantime, feel free to explore our latest projects and impact stories on our website.</p>
+
+            <a href="https://greenscout.org" class="btn">Visit Our Website</a>
+        </div>
+        <div class="footer">
+            <p>&copy; 2026 Green Scout. All rights reserved.</p>
+            <p>Promoting Environmental Conservation & Scouting Values</p>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: #1f2937;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #059669;
+            padding: 32px 24px;
+            text-align: center;
+        }
+
+        .header img {
+            height: 48px;
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            color: #ffffff;
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .content {
+            padding: 32px 24px;
+            background-color: #ffffff;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #059669;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #f3f4f6;
+            padding-bottom: 8px;
+            margin-top: 24px;
+        }
+
+        .data-item {
+            margin-bottom: 12px;
+        }
+
+        .label {
+            font-size: 12px;
+            color: #6b7280;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: block;
+        }
+
+        .value {
+            font-size: 15px;
+            color: #111827;
+            font-weight: 500;
+        }
+
+        .footer {
+            background-color: #f3f4f6;
+            padding: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #059669;
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- Replace the src with your actual hosted logo URL -->
+            <img src="https://greenscout.org/logo.png" alt="Green Scout Logo">
+            <h1>New Registration Received</h1>
+        </div>
+
+        <div class="content">
+            <p>Hello Green Scout Team,</p>
+            <p>A new volunteer has just submitted their application. Here are the refined details:</p>
+
+            <div class="section-title">Personal Details</div>
+            <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="50%" style="padding-bottom: 15px;">
+                        <span class="label">Full Name</span>
+                        <span class="value">{{from_name}}</span>
+                    </td>
+                    <td width="50%" style="padding-bottom: 15px;">
+                        <span class="label">Gender / Age</span>
+                        <span class="value">{{gender}} / {{age}} years</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-bottom: 15px;">
+                        <span class="label">Email Address</span>
+                        <span class="value">{{from_email}}</span>
+                    </td>
+                    <td style="padding-bottom: 15px;">
+                        <span class="label">Phone Number</span>
+                        <span class="value">{{phone}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-bottom: 15px;">
+                        <span class="label">County</span>
+                        <span class="value">{{county}}</span>
+                    </td>
+                    <td style="padding-bottom: 15px;">
+                        <span class="label">Constituency</span>
+                        <span class="value">{{constituency}}</span>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="section-title">Scouting Background</div>
+            <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="50%" style="padding-bottom: 15px;">
+                        <span class="label">Currently a Scout?</span>
+                        <span class="value">{{is_scout}}</span>
+                    </td>
+                    <td width="50%" style="padding-bottom: 15px;">
+                        <span class="label">Rank / Level</span>
+                        <span class="value">{{rank}}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-bottom: 15px;">
+                        <span class="label">School / Troop</span>
+                        <span class="value">{{school}}</span>
+                    </td>
+                    <td style="padding-bottom: 15px;">
+                        <span class="label">County Association</span>
+                        <span class="value">{{county_association}}</span>
+                    </td>
+                </tr>
+            </table>
+
+            <center>
+                <a href="mailto:{{from_email}}" class="button">Reply to Applicant</a>
+            </center>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2026 Green Scout Kenya. All rights reserved.</p>
+            <p>This is an automated notification from your website's registration portal.</p>
+        </div>
+    </div>
+</body>
+
+</html>

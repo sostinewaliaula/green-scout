@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import sanityClient from '../sanityClient';
 import { Link } from 'react-router-dom';
 import { CheckIcon, ArrowRightIcon } from 'lucide-react';
+import { useJoinModal } from '../context/JoinModalContext';
 
 interface Step {
   title: string;
@@ -36,6 +37,7 @@ interface BlockJoinScout {
 export function JoinScoutSectionCms() {
   const [joinBlock, setJoinBlock] = useState<BlockJoinScout | null>(null);
   const [loading, setLoading] = useState(true);
+  const { openJoinModal } = useJoinModal();
 
   useEffect(() => {
     sanityClient
@@ -91,7 +93,7 @@ export function JoinScoutSectionCms() {
                 {joinBlock.title}
               </h2>
             )}
-            
+
             {joinBlock.description && (
               <p className="text-lg text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
                 {joinBlock.description}
@@ -119,13 +121,13 @@ export function JoinScoutSectionCms() {
             )}
 
             {joinBlock.applyButton?.text && (
-              <Link
-                to={joinBlock.applyButton.link || '/get-involved'}
+              <button
+                onClick={openJoinModal}
                 className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-green-600 to-purple-600 dark:from-green-700 dark:to-purple-700 text-white rounded-full font-medium hover:from-green-700 hover:to-purple-700 dark:hover:from-green-800 dark:hover:to-purple-800 transition-all transform hover:scale-105 shadow-lg"
               >
                 {joinBlock.applyButton.text}
                 <ArrowRightIcon className="w-5 h-5" />
-              </Link>
+              </button>
             )}
           </div>
 

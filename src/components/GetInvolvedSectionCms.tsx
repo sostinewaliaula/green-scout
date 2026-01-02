@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { 
-  UserPlusIcon, 
-  LeafIcon, 
-  HandshakeIcon, 
-  TreeDeciduousIcon, 
-  HeartIcon, 
+import { useEffect, useState } from 'react';
+import {
+  UserPlusIcon,
+  LeafIcon,
+  HandshakeIcon,
+  TreeDeciduousIcon,
+  HeartIcon,
   BookOpenIcon,
   DollarSignIcon,
   SchoolIcon
 } from 'lucide-react';
 import { fetchSanity } from '../cms/sanityRest';
+import { useJoinModal } from '../context/JoinModalContext';
 
 interface InvolvementOption {
   icon: string;
@@ -42,6 +43,7 @@ const iconMap: Record<string, any> = {
 export function GetInvolvedSectionCms() {
   const [block, setBlock] = useState<GetInvolvedBlock | null>(null);
   const [loading, setLoading] = useState(true);
+  const { openJoinModal } = useJoinModal();
 
   useEffect(() => {
     // Try multiple slug variations to match whatever format is used in Sanity
@@ -52,7 +54,7 @@ export function GetInvolvedSectionCms() {
         '/get-involved/',
         'Get Involved'
       ];
-      
+
       for (const slugVar of slugVariations) {
         const data = await fetchSanity<any>(
           `*[_type == "page" && slug.current == $slug][0]{
@@ -68,10 +70,10 @@ export function GetInvolvedSectionCms() {
           }`,
           { slug: slugVar }
         );
-        
+
         if (data) {
           const getInvolvedBlock = data?.content?.find((block: any) => block._type === 'blockGetInvolved');
-          
+
           if (getInvolvedBlock) {
             setBlock(getInvolvedBlock);
           }
@@ -79,11 +81,11 @@ export function GetInvolvedSectionCms() {
           return;
         }
       }
-      
+
       // If no page found with any slug variation, just show fallback content
       setLoading(false);
     };
-    
+
     tryFetchPage();
   }, []);
 
@@ -144,9 +146,11 @@ export function GetInvolvedSectionCms() {
             const isPurple = option.colorTheme === 'purple';
             const bgColor = isPurple ? 'bg-purple-200' : 'bg-green-200';
             const iconColor = isPurple ? 'text-purple-700' : 'text-green-700';
-            const gradientColors = isPurple 
-              ? 'from-purple-600 to-purple-800' 
+            const gradientColors = isPurple
+              ? 'from-purple-600 to-purple-800'
               : 'from-green-600 to-green-800';
+
+            const isJoinButton = option.buttonText.toLowerCase().includes('join');
 
             return (
               <div
@@ -162,12 +166,21 @@ export function GetInvolvedSectionCms() {
                 <p className="text-gray-700 dark:text-gray-300 mb-6">
                   {option.description}
                 </p>
-                <a
-                  href={option.buttonLink}
-                  className={`inline-block px-6 py-3 bg-gradient-to-r ${gradientColors} text-white hover:opacity-90 transition-all rounded-lg font-medium w-full`}
-                >
-                  {option.buttonText}
-                </a>
+                {isJoinButton ? (
+                  <button
+                    onClick={openJoinModal}
+                    className={`inline-block px-6 py-3 bg-gradient-to-r ${gradientColors} text-white hover:opacity-90 transition-all rounded-lg font-medium w-full`}
+                  >
+                    {option.buttonText}
+                  </button>
+                ) : (
+                  <a
+                    href={option.buttonLink}
+                    className={`inline-block px-6 py-3 bg-gradient-to-r ${gradientColors} text-white hover:opacity-90 transition-all rounded-lg font-medium w-full`}
+                  >
+                    {option.buttonText}
+                  </a>
+                )}
               </div>
             );
           })}
@@ -176,4 +189,3 @@ export function GetInvolvedSectionCms() {
     </section>
   );
 }
-

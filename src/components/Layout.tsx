@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { NavBarCms } from './NavBarCms';
 import { FooterCms } from './FooterCms';
 import { SiteBranding } from './SiteBranding';
+import { JoinModalProvider } from '../context/JoinModalContext';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -13,13 +14,17 @@ function ScrollToTop() {
 }
 
 export function Layout() {
-  return <div className="w-full min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
-    <ScrollToTop />
-    <SiteBranding />
-    <NavBarCms />
-    <main className="dark:bg-gray-900">
-      <Outlet />
-    </main>
-    <FooterCms />
-  </div>;
+  return (
+    <div className="w-full min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
+      <JoinModalProvider>
+        <ScrollToTop />
+        <SiteBranding />
+        <NavBarCms />
+        <main className="dark:bg-gray-900">
+          <Outlet />
+        </main>
+        <FooterCms />
+      </JoinModalProvider>
+    </div>
+  );
 }

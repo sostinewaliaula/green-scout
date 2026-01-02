@@ -16,6 +16,11 @@
   ],
   "dependencies": {
     "@sanity/vision": "^4.9.0",
+    "concurrently": "^9.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "nodemailer": "^7.0.12",
     "react": "^19.1",
     "react-dom": "^19.1",
     "sanity": "^4.9.0",

@@ -35,18 +35,24 @@ import namedTree from './namedTree';
 import footerSettings from './footerSettings';
 import navbarSettings from './navbarSettings';
 import siteSettings from './siteSettings';
+import registrationForm from './registrationForm';
+import kenyanGeography from './kenyanGeography';
+import volunteer from './volunteer';
 
 export const schemaTypes = [
   // Singleton documents
   siteSettings,
   navbarSettings,
   footerSettings,
+  registrationForm,
+  kenyanGeography,
 
   // Regular documents
   page,
   project,
   newsArticle,
   namedTree,
+  volunteer,
 
   // Block types
   blockText,
