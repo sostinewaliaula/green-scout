@@ -38,6 +38,10 @@ import siteSettings from './siteSettings';
 import registrationForm from './registrationForm';
 import kenyanGeography from './kenyanGeography';
 import volunteer from './volunteer';
+import partner from './partner';
+import donation from './donation';
+import donationImpact from './donationImpact';
+import donationSettings from './donationSettings';
 
 export const schemaTypes = [
   // Singleton documents
@@ -45,6 +49,8 @@ export const schemaTypes = [
   navbarSettings,
   footerSettings,
   registrationForm,
+  donationImpact,
+  donationSettings,
   kenyanGeography,
 
   // Regular documents
@@ -53,6 +59,8 @@ export const schemaTypes = [
   newsArticle,
   namedTree,
   volunteer,
+  partner,
+  donation,
 
   // Block types
   blockText,

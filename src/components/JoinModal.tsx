@@ -1,13 +1,13 @@
-import React from 'react';
 import { XIcon } from 'lucide-react';
 import { JoinRegistrationForm } from './JoinRegistrationForm';
 
 interface JoinModalProps {
     isOpen: boolean;
     onClose: () => void;
+    formId?: string;
 }
 
-export function JoinModal({ isOpen, onClose }: JoinModalProps) {
+export function JoinModal({ isOpen, onClose, formId }: JoinModalProps) {
     if (!isOpen) return null;
 
     return (
@@ -30,7 +30,7 @@ export function JoinModal({ isOpen, onClose }: JoinModalProps) {
 
                 {/* Form Content */}
                 <div className="p-1">
-                    <JoinRegistrationForm />
+                    <JoinRegistrationForm formId={formId} />
                 </div>
             </div>
         </div>

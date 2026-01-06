@@ -14,27 +14,27 @@ const sanityClient = createClient({
 const cache = new Map<string, { data: any; timestamp: number }>();
 const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
-// Wrapper with caching
+// Wrapper with caching and common actions
 const cachedClient = {
   fetch: async <T = any>(query: string, params?: Record<string, unknown>): Promise<T> => {
     const cacheKey = JSON.stringify({ query, params });
     const cached = cache.get(cacheKey);
-    
-    // Return cached data if still valid
+
     if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
       return cached.data as T;
     }
-    
-    // Fetch fresh data
+
     const result = await sanityClient.fetch<T>(query, params || {});
-    
-    // Store in cache
     cache.set(cacheKey, { data: result, timestamp: Date.now() });
-    
     return result;
   },
-  
-  // Method to clear cache (useful for admin actions)
+
+  // Document creation (uses the raw client)
+  create: (doc: any) => sanityClient.create(doc),
+
+  // Expose raw client if needed
+  raw: sanityClient,
+
   clearCache: () => {
     cache.clear();
   }

@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { fetchSanity } from '../cms/sanityRest';
 import { useJoinModal } from '../context/JoinModalContext';
+import { useDonationModal } from '../context/DonationModalContext';
 
 interface InvolvementOption {
   icon: string;
@@ -44,6 +45,7 @@ export function GetInvolvedSectionCms() {
   const [block, setBlock] = useState<GetInvolvedBlock | null>(null);
   const [loading, setLoading] = useState(true);
   const { openJoinModal } = useJoinModal();
+  const { openDonationModal } = useDonationModal();
 
   useEffect(() => {
     // Try multiple slug variations to match whatever format is used in Sanity
@@ -151,6 +153,9 @@ export function GetInvolvedSectionCms() {
               : 'from-green-600 to-green-800';
 
             const isJoinButton = option.buttonText.toLowerCase().includes('join');
+            const isPartnerButton = option.buttonText.toLowerCase().includes('partner');
+            const isDonateButton = option.buttonText.toLowerCase().includes('donate');
+            const isModalButton = isJoinButton || isPartnerButton || isDonateButton;
 
             return (
               <div
@@ -166,9 +171,16 @@ export function GetInvolvedSectionCms() {
                 <p className="text-gray-700 dark:text-gray-300 mb-6">
                   {option.description}
                 </p>
-                {isJoinButton ? (
+                {isModalButton ? (
                   <button
-                    onClick={openJoinModal}
+                    onClick={() => {
+                      if (isDonateButton) {
+                        openDonationModal();
+                      } else {
+                        const id = isPartnerButton ? 'partner-form' : 'volunteer-form';
+                        openJoinModal(id);
+                      }
+                    }}
                     className={`inline-block px-6 py-3 bg-gradient-to-r ${gradientColors} text-white hover:opacity-90 transition-all rounded-lg font-medium w-full`}
                   >
                     {option.buttonText}

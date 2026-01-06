@@ -21,7 +21,7 @@ const DynamicIcon = ({ name, className }: { name: string; className?: string }) 
 interface FormField {
     name: string;
     label: string;
-    type: 'text' | 'email' | 'tel' | 'number' | 'radio' | 'select' | 'countyDropdown' | 'constituencyDropdown' | 'rankDropdown';
+    type: 'text' | 'email' | 'tel' | 'number' | 'radio' | 'select' | 'textarea' | 'date' | 'countyDropdown' | 'constituencyDropdown' | 'rankDropdown';
     placeholder?: string;
     required?: boolean;
     options?: string[];
@@ -51,7 +51,7 @@ interface CountyData {
     constituencies: string[];
 }
 
-export function JoinRegistrationForm() {
+export function JoinRegistrationForm({ formId = 'volunteer-form' }: { formId?: string }) {
     const { closeJoinModal } = useJoinModal();
     const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
     const [schema, setSchema] = useState<FormSchema | null>(null);
@@ -111,11 +111,11 @@ export function JoinRegistrationForm() {
                 emailjsPublicKey,
                 sanityWriteToken
             }`,
-            `*[_type == "registrationForm"][0]`,
+            `*[_type == "registrationForm" && slug.current == $formId][0]`,
             `*[_type == "kenyanGeography"][0]`
         ];
 
-        Promise.all(queries.map(q => sanityClient.fetch(q)))
+        Promise.all(queries.map(q => sanityClient.fetch(q, { formId })))
             .then(([settings, formSchema, geoData]) => {
                 setConfig({
                     notificationEmails: settings?.notificationEmails || [],
@@ -206,7 +206,8 @@ export function JoinRegistrationForm() {
                         mutations: [
                             {
                                 create: {
-                                    _type: 'volunteer',
+                                    _type: formId === 'partner-form' ? 'partner' : 'volunteer',
+                                    // For Volunteer
                                     name: formData.name || '',
                                     email: formData.email || '',
                                     phone: formData.phone || '',
@@ -218,6 +219,17 @@ export function JoinRegistrationForm() {
                                     rank: formData.rank || '',
                                     school: formData.school || '',
                                     countyAssociation: formData.countyAssociation || '',
+                                    // For Partner (map their fields)
+                                    organizationName: formData.organizationName || '',
+                                    organizationType: formData.organizationType || '',
+                                    organizationTypeOther: formData.organizationTypeOther || '',
+                                    regionOfOperation: formData.regionOfOperation || '',
+                                    website: formData.website || '',
+                                    contactPerson: formData.contactPerson || '',
+                                    designation: formData.designation || '',
+                                    proposedScope: formData.proposedScope || '',
+                                    duration: formData.duration || '',
+                                    preferredMeetingDate: formData.preferredMeetingDate || '',
                                     submittedAt: new Date().toISOString(),
                                     rawSubmission: JSON.stringify(formData, null, 2)
                                 }
@@ -396,6 +408,39 @@ export function JoinRegistrationForm() {
                         <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-gray-400">
                             <ChevronDownIcon className="h-4 w-4" />
                         </div>
+                    </div>
+                );
+
+            case 'textarea':
+                return (
+                    <div className="relative group">
+                        <div className="absolute top-3 left-4 flex items-start pointer-events-none">
+                            <DynamicIcon name={field.icon || "AlignLeft"} className="h-4 w-4 text-gray-400 group-focus-within:text-green-500 transition-colors" />
+                        </div>
+                        <textarea
+                            required={field.required}
+                            placeholder={field.placeholder}
+                            rows={3}
+                            className="block w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none dark:text-white resize-none"
+                            value={formData[field.name] || ''}
+                            onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
+                        />
+                    </div>
+                );
+
+            case 'date':
+                return (
+                    <div className="relative group">
+                        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <DynamicIcon name={field.icon || "CalendarDays"} className="h-4 w-4 text-gray-400 group-focus-within:text-green-500 transition-colors" />
+                        </div>
+                        <input
+                            required={field.required}
+                            type="date"
+                            className="block w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all outline-none dark:text-white"
+                            value={formData[field.name] || ''}
+                            onChange={(e) => setFormData({ ...formData, [field.name]: e.target.value })}
+                        />
                     </div>
                 );
 

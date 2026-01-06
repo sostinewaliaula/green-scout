@@ -4,6 +4,14 @@ export default {
     type: 'document',
     fields: [
         {
+            name: 'slug',
+            title: 'Form ID (Slug)',
+            type: 'slug',
+            description: 'Unique identifier for the form (e.g. "volunteer-form", "partner-form")',
+            options: { source: 'title' },
+            validation: (Rule: any) => Rule.required(),
+        },
+        {
             name: 'title',
             title: 'Form Title',
             type: 'string',
@@ -83,6 +91,8 @@ export default {
                                                     { title: 'Number', value: 'number' },
                                                     { title: 'Select', value: 'select' },
                                                     { title: 'Radio', value: 'radio' },
+                                                    { title: 'Textarea', value: 'textarea' },
+                                                    { title: 'Date', value: 'date' },
                                                     { title: 'County Dropdown', value: 'countyDropdown' },
                                                     { title: 'Constituency Dropdown', value: 'constituencyDropdown' },
                                                     { title: 'Rank/Level Dropdown', value: 'rankDropdown' },

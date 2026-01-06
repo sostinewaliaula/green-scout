@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import sanityClient from '../sanityClient';
+import { useJoinModal } from '../context/JoinModalContext';
 
 interface Button {
   text?: string;
@@ -24,6 +25,7 @@ interface CtaBlock {
 export function CallToActionSectionCms() {
   const [ctaBlock, setCtaBlock] = useState<CtaBlock | null>(null);
   const [loading, setLoading] = useState(true);
+  const { openJoinModal } = useJoinModal();
 
   useEffect(() => {
     // Fetch the Home page and get the blockCta
@@ -54,11 +56,43 @@ export function CallToActionSectionCms() {
       });
   }, []);
 
+  const renderButton = (button: Button | undefined, isPrimary: boolean) => {
+    if (!button?.text) return null;
+
+    const textLower = button.text.toLowerCase();
+    const isJoin = textLower.includes('join');
+    const isPartner = textLower.includes('partner');
+
+    const className = isPrimary
+      ? "px-8 py-3 bg-white text-purple-700 dark:text-purple-800 rounded-full font-medium hover:bg-green-50 dark:hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg inline-block text-center"
+      : "px-8 py-3 bg-transparent border-2 border-white text-white rounded-full font-medium hover:bg-white/10 dark:hover:bg-white/20 transition-all transform hover:scale-105 inline-block text-center";
+
+    if (isJoin || isPartner) {
+      return (
+        <button
+          onClick={() => {
+            const formId = isPartner ? 'partner-form' : 'volunteer-form';
+            openJoinModal(formId);
+          }}
+          className={className}
+        >
+          {button.text}
+        </button>
+      );
+    }
+
+    return (
+      <Link to={button.link || '/get-involved'} className={className}>
+        {button.text}
+      </Link>
+    );
+  };
+
   // Show loading state
   if (loading) {
     return (
-      <section className="py-20 px-4 md:px-8 bg-gradient-to-r from-green-600 to-purple-600 dark:from-green-800 dark:to-purple-800 text-white">
-        <div className="max-w-6xl mx-auto text-center">
+      <section className="py-20 px-4 md:px-8 bg-gradient-to-r from-green-600 to-purple-600 dark:from-green-800 dark:to-purple-800 text-white text-center">
+        <div className="max-w-6xl mx-auto">
           <div className="text-white">Loading...</div>
         </div>
       </section>
@@ -91,22 +125,8 @@ export function CallToActionSectionCms() {
           {ctaBlock.subtitle || "Be part of Kenya's youth-led environmental transformation. Together, we can create a greener, more sustainable future."}
         </p>
         <div className="flex flex-col md:flex-row gap-4 justify-center">
-          {ctaBlock.primaryButton?.text && (
-            <Link
-              to={ctaBlock.primaryButton.link || '/get-involved'}
-              className="px-8 py-3 bg-white text-purple-700 dark:text-purple-800 rounded-full font-medium hover:bg-green-50 dark:hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg"
-            >
-              {ctaBlock.primaryButton.text}
-            </Link>
-          )}
-          {ctaBlock.secondaryButton?.text && (
-            <Link
-              to={ctaBlock.secondaryButton.link || '/get-involved'}
-              className="px-8 py-3 bg-transparent border-2 border-white text-white rounded-full font-medium hover:bg-white/10 dark:hover:bg-white/20 transition-all transform hover:scale-105"
-            >
-              {ctaBlock.secondaryButton.text}
-            </Link>
-          )}
+          {renderButton(ctaBlock.primaryButton, true)}
+          {renderButton(ctaBlock.secondaryButton, false)}
         </div>
         {ctaBlock.audiences && ctaBlock.audiences.length > 0 && (
           <div className="mt-12 pt-12 border-t border-white/20 grid grid-cols-1 md:grid-cols-3 gap-8">

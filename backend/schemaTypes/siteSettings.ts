@@ -65,6 +65,12 @@ const siteSettings = {
             title: 'Sanity Write Token',
             type: 'string',
             description: 'A token with "Editor" or "Administrator" permissions to save registrations from the website.'
+        },
+        {
+            name: 'paystackPublicKey',
+            title: 'Paystack Public Key',
+            type: 'string',
+            description: 'The Public Key from your Paystack dashboard (starts with pk_).'
         }
     ]
 };

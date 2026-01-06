@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeftIcon, ChevronRightIcon, ArrowDownIcon } from 'lucide-react';
 import sanityClient from '../sanityClient';
+import { useJoinModal } from '../context/JoinModalContext';
 
 type ImageAsset = { asset?: { url?: string } };
 
@@ -31,6 +32,7 @@ export function HeroCarouselCms() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [loading, setLoading] = useState(true);
+  const { openJoinModal } = useJoinModal();
 
   useEffect(() => {
     sanityClient
@@ -59,12 +61,7 @@ export function HeroCarouselCms() {
         }`
       )
       .then((data) => {
-        console.log('Hero Carousel Page Data:', data);
-        console.log('Page Title:', data?.title);
-        console.log('Page Slug:', data?.slug);
-        console.log('Content Array:', data?.content);
         const block = data?.content?.find((b: any) => b._type === 'blockHeroCarousel');
-        console.log('Found Carousel Block:', block);
         setCarouselBlock(block || null);
         setLoading(false);
         setIsLoaded(true);
@@ -102,6 +99,37 @@ export function HeroCarouselCms() {
     );
   };
 
+  const renderHeroButton = (button: Button | undefined) => {
+    if (!button?.showButton || !button.text) return null;
+
+    const textLower = button.text.toLowerCase();
+    const isJoin = textLower.includes('join');
+    const isPartner = textLower.includes('partner');
+    const className = "mt-8 px-8 py-3 bg-gradient-to-r from-green-500 to-purple-500 rounded-full text-white font-medium flex items-center gap-2 hover:opacity-90 transition-all transform hover:scale-105";
+
+    if (isJoin || isPartner) {
+      return (
+        <button
+          onClick={() => {
+            const formId = isPartner ? 'partner-form' : 'volunteer-form';
+            openJoinModal(formId);
+          }}
+          className={className}
+        >
+          {button.text}
+          <ArrowDownIcon className="w-5 h-5 animate-bounce" />
+        </button>
+      );
+    }
+
+    return (
+      <Link to={button.link || '/about'} className={className}>
+        {button.text}
+        <ArrowDownIcon className="w-5 h-5 animate-bounce" />
+      </Link>
+    );
+  };
+
   if (loading) {
     return (
       <header id="home" className="relative w-full h-screen overflow-hidden bg-gray-900 flex items-center justify-center">
@@ -132,9 +160,8 @@ export function HeroCarouselCms() {
         {slides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentImageIndex ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+              }`}
           >
             {slide.backgroundImage?.asset?.url ? (
               <img
@@ -155,9 +182,8 @@ export function HeroCarouselCms() {
 
       {/* Content */}
       <div
-        className={`absolute inset-0 flex flex-col items-center justify-center text-white z-10 px-4 transition-all duration-1000 ${
-          isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-        }`}
+        className={`absolute inset-0 flex flex-col items-center justify-center text-white z-10 px-4 transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+          }`}
       >
         <h1 className="text-5xl md:text-7xl font-bold mb-4 text-center">
           {currentSlide.title.split(' ').map((word, i) => {
@@ -181,15 +207,7 @@ export function HeroCarouselCms() {
           {currentSlide.subtitle}
         </p>
 
-        {currentSlide.button?.showButton && currentSlide.button.text && (
-          <Link
-            to={currentSlide.button.link || '/about'}
-            className="mt-8 px-8 py-3 bg-gradient-to-r from-green-500 to-purple-500 rounded-full text-white font-medium flex items-center gap-2 hover:opacity-90 transition-all transform hover:scale-105"
-          >
-            {currentSlide.button.text}
-            <ArrowDownIcon className="w-5 h-5 animate-bounce" />
-          </Link>
-        )}
+        {renderHeroButton(currentSlide.button)}
       </div>
 
       {/* Navigation Controls */}
@@ -207,9 +225,8 @@ export function HeroCarouselCms() {
               <button
                 key={index}
                 onClick={() => setCurrentImageIndex(index)}
-                className={`w-3 h-3 rounded-full transition-all ${
-                  index === currentImageIndex ? 'bg-white w-6' : 'bg-white bg-opacity-50'
-                }`}
+                className={`w-3 h-3 rounded-full transition-all ${index === currentImageIndex ? 'bg-white w-6' : 'bg-white bg-opacity-50'
+                  }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
             ))}
