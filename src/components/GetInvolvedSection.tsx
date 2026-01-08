@@ -29,7 +29,7 @@ export function GetInvolvedSection() {
             conservation.
           </p>
           <button
-            onClick={() => openJoinModal('volunteer-form')}
+            onClick={() => openJoinModal('join-the-movement')}
             className="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-800 text-white hover:opacity-90 transition-all rounded-lg font-medium w-full"
           >
             Join Green Scout

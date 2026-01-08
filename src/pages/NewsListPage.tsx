@@ -129,7 +129,7 @@ export function NewsListPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      
+
       {/* Hero Section */}
       <section className="pt-32 pb-16 px-4 md:px-8 bg-gradient-to-br from-purple-50 to-green-50 dark:from-gray-800 dark:to-gray-900">
         <div className="max-w-6xl mx-auto text-center">
@@ -143,7 +143,7 @@ export function NewsListPage() {
       </section>
 
       {/* Filters Section */}
-      <section className="py-8 px-4 md:px-8 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-20 z-10 shadow-sm dark:shadow-gray-900/50">
+      <section className="py-8 px-4 md:px-8 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-16 z-10 shadow-sm dark:shadow-gray-900/50">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
             {/* Type Filter */}
@@ -151,31 +151,28 @@ export function NewsListPage() {
               <FilterIcon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
               <button
                 onClick={() => setFilter('all')}
-                className={`px-4 py-2 rounded-full font-medium transition-colors ${
-                  filter === 'all'
+                className={`px-4 py-2 rounded-full font-medium transition-colors ${filter === 'all'
                     ? 'bg-purple-600 text-white'
                     : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-                }`}
+                  }`}
               >
                 All
               </button>
               <button
                 onClick={() => setFilter('news')}
-                className={`px-4 py-2 rounded-full font-medium transition-colors ${
-                  filter === 'news'
+                className={`px-4 py-2 rounded-full font-medium transition-colors ${filter === 'news'
                     ? 'bg-purple-600 text-white'
                     : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-                }`}
+                  }`}
               >
                 News & Events
               </button>
               <button
                 onClick={() => setFilter('projects')}
-                className={`px-4 py-2 rounded-full font-medium transition-colors ${
-                  filter === 'projects'
+                className={`px-4 py-2 rounded-full font-medium transition-colors ${filter === 'projects'
                     ? 'bg-green-600 text-white'
                     : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-                }`}
+                  }`}
               >
                 Projects
               </button>

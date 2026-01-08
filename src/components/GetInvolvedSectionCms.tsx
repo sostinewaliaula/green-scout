@@ -177,7 +177,7 @@ export function GetInvolvedSectionCms() {
                       if (isDonateButton) {
                         openDonationModal();
                       } else {
-                        const id = isPartnerButton ? 'partner-form' : 'volunteer-form';
+                        const id = isPartnerButton ? 'partner-form' : 'join-the-movement';
                         openJoinModal(id);
                       }
                     }}

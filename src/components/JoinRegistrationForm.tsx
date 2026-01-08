@@ -51,7 +51,7 @@ interface CountyData {
     constituencies: string[];
 }
 
-export function JoinRegistrationForm({ formId = 'volunteer-form' }: { formId?: string }) {
+export function JoinRegistrationForm({ formId = 'join-the-movement' }: { formId?: string }) {
     const { closeJoinModal } = useJoinModal();
     const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
     const [schema, setSchema] = useState<FormSchema | null>(null);

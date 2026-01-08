@@ -71,7 +71,7 @@ export function CallToActionSectionCms() {
       return (
         <button
           onClick={() => {
-            const formId = isPartner ? 'partner-form' : 'volunteer-form';
+            const formId = isPartner ? 'partner-form' : 'join-the-movement';
             openJoinModal(formId);
           }}
           className={className}

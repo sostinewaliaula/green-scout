@@ -111,7 +111,7 @@ export function HeroCarouselCms() {
       return (
         <button
           onClick={() => {
-            const formId = isPartner ? 'partner-form' : 'volunteer-form';
+            const formId = isPartner ? 'partner-form' : 'join-the-movement';
             openJoinModal(formId);
           }}
           className={className}
@@ -122,8 +122,29 @@ export function HeroCarouselCms() {
       );
     }
 
-    return (
-      <Link to={button.link || '/about'} className={className}>
+    let link = button.link || '#about';
+    // If the link is '/about', treat it as a scroll to the #about section
+    if (link === '/about') {
+      link = '#about';
+    }
+
+    const isScrollLink = link.startsWith('#');
+
+    return isScrollLink ? (
+      <a
+        href={link}
+        onClick={(e) => {
+          e.preventDefault();
+          const element = document.querySelector(link);
+          element?.scrollIntoView({ behavior: 'smooth' });
+        }}
+        className={className}
+      >
+        {button.text}
+        <ArrowDownIcon className="w-5 h-5 animate-bounce" />
+      </a>
+    ) : (
+      <Link to={link} className={className}>
         {button.text}
         <ArrowDownIcon className="w-5 h-5 animate-bounce" />
       </Link>

@@ -57,9 +57,9 @@ export function MissionSection() {
               'https://images.unsplash.com/photo-1624958723474-564d8770f0c9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
               'https://images.unsplash.com/photo-1621451537084-482c73073a0f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80',
               'https://images.unsplash.com/photo-1564121211835-e88c852648ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80'
-            ]).slice(0,4).map((src, i) => (
-              <div key={i} className="overflow-hidden rounded-lg shadow-lg">
-                <img src={src} alt="" className="w-full h-auto object-cover max-h-[250px] hover:scale-105 transition-transform duration-500" />
+            ]).slice(0, 4).map((src, i) => (
+              <div key={i} className="overflow-hidden rounded-lg shadow-lg h-full">
+                <img src={src} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
               </div>
             ))}
           </div>
